@@ -113,7 +113,11 @@ namespace DietApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseCors(options => options.WithOrigins("https://localhost:3000").AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options =>
+            {
+                options.WithOrigins("https://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                options.WithOrigins("https://192.168.8.105").AllowAnyMethod().AllowAnyHeader();
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();
