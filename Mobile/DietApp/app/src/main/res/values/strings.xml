@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">DietApp</string>
+    <string name="facebook_app_id">2340245359405923</string>
+    <string name="fb_login_protocol_scheme">fb2340245359405923</string>
+
+    <string name="hint_email">Email</string>
+    <string name="description_app_logo">App logo</string>
+    <string name="hint_password">Password</string>
+    <string name="button_text_login">LOGIN</string>
+    <string name="link_to_register_activity_text">Or make an account</string>
+    <string name="hint_nickname">Nickname</string>
+    <string name="sharedprefs_file_key">com.example.dietapp.sharedprefsfilekey</string>
+    <string name="preference_access_token">com.example.dietapp.preferenceaccesstoken</string>
+    <string name="preference_refresh_token">com.example.dietapp.preferencerefreshtoken</string>
+    <string name="preference_token_expiration">com.example.dietapp.preferencetokenexpiration</string>
+    <string name="text_connection_failure">Request falied. Please check your internet connection and try again later</string>
+    <string name="error_nickname_input">Enter your nickname</string>
+    <string name="error_password_input">Enter your password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_text_register_with_email">Register with your email</string>
+    <string name="link_text_go_to_login">Already have an account? Click here!</string>
+    <string name="hint_avatar_link">Avatar image link (optional)</string>
+    <string name="confirm">Confirm</string>
+    <string name="radio_button_text_lose_weight">Lose weight</string>
+    <string name="radio_button_text_maintain_weight">Maintain weight</string>
+    <string name="radio_button_text_gain_weight">Gain weight</string>
+    <string name="text_goal_title">Your goal is to</string>
+    <string name="text_activity_level_title">Your daily activity level is</string>
+    <string name="radio_button_text_activity_very_low">Very low</string>
+    <string name="radio_button_text_activity_low">Low</string>
+    <string name="radio_button_text_activity_moderate">Moderate</string>
+    <string name="radio_button_text_activity_high">High</string>
+    <string name="radio_button_text_activity_very_high">Very high</string>
 </resources>

@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DietApp.Helpers
 {
-    public class DecimalJsonConverter: JsonConverter
+    public class DecimalJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
