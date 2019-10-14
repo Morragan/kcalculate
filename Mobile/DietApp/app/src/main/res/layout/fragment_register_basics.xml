@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.register.fragments.RegisterBasicsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.register.fragments.RegisterBasicsFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -16,19 +16,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/register_input_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_password"
-            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +35,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_input_password"
+            android:id="@+id/register_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
@@ -60,15 +47,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_input_avatar_link"
+            android:id="@+id/register_input_avatar_link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_avatar_link"
             android:inputType="textWebEditText" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm"/>
 </LinearLayout>

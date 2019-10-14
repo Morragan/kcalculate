@@ -60,6 +60,7 @@
             android:layout_marginBottom="24dp"
             />
 
+        <!-- padding added to make it more clickable-->
         <TextView
             android:id="@+id/login_link_register"
             android:layout_width="match_parent"
@@ -67,6 +68,7 @@
             android:gravity="center"
             android:text="@string/link_to_register_activity_text"
             android:textSize="16sp"
+            android:padding="20dp"
             android:layout_marginBottom="72dp"/>
         <TextView
             android:id="@+id/login_text_connection_failure"

@@ -8,8 +8,6 @@ namespace DietApp.ViewModels.Outgoing
         public string Nickname { get; set; }
         public string AvatarLink { get; set; }
         public int Points { get; set; }
-        public decimal WeightKg { get; set; }
-        public int HeightCm { get; set; }
         public Gender Gender { get; set; }
         public bool IsPrivate { get; set; }
         public int FriendshipID { get; set; }

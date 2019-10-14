@@ -36,8 +36,6 @@ namespace DietApp.Persistence.Contexts
             modelBuilder.Entity<User>().Property(m => m.Password).IsRequired();
             modelBuilder.Entity<User>().Property(m => m.Role).IsRequired().HasDefaultValue(UserRole.User);
             modelBuilder.Entity<User>().Property(m => m.IsPrivate).HasDefaultValue(false);
-            modelBuilder.Entity<User>().Property(m => m.WeightKg).HasColumnType("decimal(18,2)");
-            modelBuilder.Entity<User>().Property(m => m.HeightCm).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<User>().Ignore(m => m.Friendships);
             #endregion
 
@@ -66,7 +64,7 @@ namespace DietApp.Persistence.Contexts
             #region Friendship
             modelBuilder.Entity<Friendship>().HasKey(m => new { m.SrcUserID, m.DestUserID });
             modelBuilder.Entity<Friendship>().HasOne(m => m.SrcUser).WithMany(m => m.RequestedFriendships).HasForeignKey(m => m.SrcUserID).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Friendship>().HasOne(m => m.DestUser).WithMany(m => m.ReceivedFriendships).HasForeignKey(m => m.DestUserID); 
+            modelBuilder.Entity<Friendship>().HasOne(m => m.DestUser).WithMany(m => m.ReceivedFriendships).HasForeignKey(m => m.DestUserID);
             modelBuilder.Entity<Friendship>().Property(m => m.Status).IsRequired();
             #endregion
 

@@ -11,6 +11,7 @@ import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.register.RegisterActivity
+import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
@@ -59,7 +60,14 @@ class LoginActivity : AppCompatActivity(), LoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        (application as? DietApp)!!.appComponent.inject(this)
+
+        val activityComponent = (application as DietApp).appComponent.newActivityComponent()
+        activityComponent.inject(this)
+
+        val nickname = intent.getStringExtra(Constants.intentKeyRegisterToLoginNickname)
+        if (nickname != null) {
+            login_input_nickname.setText(nickname)
+        }
 
         login_button_login.setOnClickListener {
             if (!validateForm()) return@setOnClickListener

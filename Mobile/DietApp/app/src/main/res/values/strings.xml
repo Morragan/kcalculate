@@ -16,9 +16,6 @@
     <string name="text_connection_failure">Request falied. Please check your internet connection and try again later</string>
     <string name="error_nickname_input">Enter your nickname</string>
     <string name="error_password_input">Enter your password</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_text_register_with_email">Register with your email</string>
     <string name="link_text_go_to_login">Already have an account? Click here!</string>
     <string name="hint_avatar_link">Avatar image link (optional)</string>
@@ -33,4 +30,31 @@
     <string name="radio_button_text_activity_moderate">Moderate</string>
     <string name="radio_button_text_activity_high">High</string>
     <string name="radio_button_text_activity_very_high">Very high</string>
+    <string name="hint_weight">Weight</string>
+    <string name="radio_button_text_gender_male">Male</string>
+    <string name="radio_button_text_gender_female">Female</string>
+    <string name="text_gender_title">Your biological gender</string>
+    <string-array name="height_units">
+        <item>cm</item>
+        <item>ft</item>
+    </string-array>
+    <string-array name="weight_units">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+    <string name="text_select_fat_percentage">Select your body fat percentage</string>
+    <string name="button_text_proceed">Proceed</string>
+    <string name="error_email_input">Enter your email</string>
+    <string name="hint_height_cm">Height (cm)</string>
+    <string name="hint_height_in">Height (in)</string>
+    <string name="hint_height_ft">Height (ft)</string>
+    <string name="error_height_input">Enter your height</string>
+    <string name="button_text_register">Register</string>
+    <string name="error_weight_input">Enter your weight</string>
+    <string name="register_dialog_message">Next, you can calculate your recommended daily calorie intake. For that, you need to input some informations about your body, like weight, height and gender. Don\'t worry, they won\'t be saved anywhere, this app will only use them to calculate your calorie limit one-time. If you don\'t want this app to calculate it for you, you can skip the process and manually set your calorie limit by clicking \"SKIP\"</string>
+    <string name="register_dialog_positive_button">DON\'T SKIP</string>
+    <string name="register_dialog_negative_button">SKIP</string>
+    <string name="error_gender_button">Select your biological gender</string>
+    <string name="text_calorie_level_label">Your recommended calorie limit</string>
+    <string name="text_calorie_level_description">If you disagree with our estimate, feel free to correct it</string>
 </resources>

@@ -9,12 +9,6 @@ class DietApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = initDaggerApp()
+        appComponent = DaggerAppComponent.factory().create(this)
     }
-
-    private fun initDaggerApp(): AppComponent =
-        DaggerAppComponent.builder()
-            .application(this)
-            .build()
-
 }

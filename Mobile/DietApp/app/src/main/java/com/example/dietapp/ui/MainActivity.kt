@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                 remove(getString(R.string.preference_refresh_token))
                 apply()
             }
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
         }
         else{
             // Token is valid (unless server restarted)

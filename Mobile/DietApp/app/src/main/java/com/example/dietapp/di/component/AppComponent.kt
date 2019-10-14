@@ -7,6 +7,7 @@ import com.example.dietapp.di.module.ApiModule
 import com.example.dietapp.di.module.AppModule
 import com.example.dietapp.ui.MainActivity
 import com.example.dietapp.ui.login.LoginActivity
+import com.example.dietapp.ui.register.RegisterActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -14,18 +15,17 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [AppModule::class, ApiModule::class])
 interface AppComponent {
+    fun newActivityComponent(): ActivityComponent
+
     fun inject(target: MainActivity)
-    fun inject(target: LoginActivity)
+
     fun getAccountService(): AccountService
     fun getSharedPreferences(): SharedPreferences
     fun getApplication(): Application
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun application(application: Application): Builder
-
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance application: Application): AppComponent
     }
 
 }

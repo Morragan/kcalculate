@@ -13,12 +13,8 @@ namespace DietApp.Domain.Models
         public string AvatarLink { get; set; } //TODO: dodać do rejestracji
         public UserRole Role { get; set; }
         public string Password { get; set; }
-        public string TelephoneNumber { get; set; } //TODO: zmiana numeru
         public bool IsEmailConfirmed { get; set; } //TODO: potwierdzenie emaila
         public DateTime JoinDate { get; set; }
-        public decimal WeightKg { get; set; }
-        public int HeightCm { get; set; }
-        public Gender Gender { get; set; }
         public int CalorieLimit { get; set; }
         public bool IsPrivate { get; set; }
         public IEnumerable<MealEntry> MealsHistory { get; set; }

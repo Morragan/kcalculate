@@ -24,9 +24,6 @@ namespace DietApp.Mapping
                 .ForMember(dest => dest.Nickname, opt => opt.MapFrom(src => src.user.Nickname))
                 .ForMember(dest => dest.AvatarLink, opt => opt.MapFrom(src => src.user.AvatarLink))
                 //TODO: dodać punkty
-                .ForMember(dest => dest.WeightKg, opt => opt.MapFrom(src => src.user.WeightKg))
-                .ForMember(dest => dest.HeightCm, opt => opt.MapFrom(src => src.user.HeightCm))
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.user.Gender))
                 .ForMember(dest => dest.IsPrivate, opt => opt.MapFrom(src => src.user.IsPrivate))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.status));
         }

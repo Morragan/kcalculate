@@ -2,10 +2,18 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#32cd32</item>
+        <item name="colorPrimary">#ffa33f</item>
+        <item name="colorPrimaryDark">#f78914</item>
+        <item name="colorAccent">#a4ee34</item>
+        <item name="colorButtonNormal">#92cd28</item>
+        <item name="colorControlActivated">#a4ee34</item>
+        <item name="editTextColor">#e4ff7f</item>
     </style>
 
+    <style name="BottomAppBarTheme" parent="@style/Widget.MaterialComponents.BottomAppBar">
+        <item name="backgroundTint">#92cd28</item>
+        <item name="android:backgroundTint">#92cd28</item>
+        <item name="android:colorBackground">#92cd28</item>
+        <item name="android:colorPrimary">#92cd28</item>
+    </style>
 </resources>

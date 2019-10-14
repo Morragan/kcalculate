@@ -10,7 +10,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.dietapp"
-        minSdkVersion 22
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -65,8 +65,12 @@ dependencies {
     implementation "com.android.support:support-core-utils:$support_version"
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation 'br.com.simplepass:loading-button-android:2.1.5'
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
 
     // 3rd party login
     implementation 'com.facebook.android:facebook-login:5.5.1'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
+    // scanner
+    implementation 'com.journeyapps:zxing-android-embedded:4.0.0'
 }

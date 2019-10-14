@@ -27,14 +27,15 @@ namespace DietApp.Services
         public async Task<CreateUserResponse> Create(User user)
         {
             var existingUser = await userRepository.FindByEmail(user.Email);
-            if(existingUser != null)
-            {
+            if (existingUser != null)
                 return new CreateUserResponse(false, "Email already in use", null);
-            }
+
+            existingUser = await userRepository.FindByNickname(user.Nickname);
+            if (existingUser != null)
+                return new CreateUserResponse(false, "Nickname already in use", null);
 
             user.Password = passwordHasher.HashPassword(user.Password);
             user.JoinDate = DateTime.UtcNow;
-            user.CalorieLimit = 2000;
 
             await userRepository.Add(user);
             await unitOfWork.Complete();
@@ -52,7 +53,7 @@ namespace DietApp.Services
 
             return new UpdateUserResponse(true, null, user);
         }
-        
+
         public async Task<User> FindById(int id)
         {
             return await userRepository.FindById(id);

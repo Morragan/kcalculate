@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/app_bar_home"
+        android:icon="@drawable/baseline_add_white_48"
+        android:title="HOME"
+        app:showAsAction="always" />
+    <item android:title=""
+        android:enabled="false"/>
+    <item
+        android:id="@+id/app_bar_profile"
+        android:icon="@drawable/baseline_person_white_48"
+        android:title="PROFILE"
+        app:showAsAction="always" />
+</menu>

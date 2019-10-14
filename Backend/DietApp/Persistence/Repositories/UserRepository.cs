@@ -26,19 +26,16 @@ namespace DietApp.Persistence.Repositories
             if (_user == null) return;
 
             _user.CalorieLimit = user.CalorieLimit;
-            _user.HeightCm = user.HeightCm;
-            _user.WeightKg = user.WeightKg;
             _user.IsEmailConfirmed = user.IsEmailConfirmed;
             _user.IsPrivate = user.IsPrivate;
             _user.Password = user.Password;
-            _user.TelephoneNumber = user.TelephoneNumber;
 
             context.Users.Update(_user);
         }
 
         public async Task<User> FindById(int id)
         {
-            return await context.Users.SingleOrDefaultAsync(u => u.ID == id); 
+            return await context.Users.SingleOrDefaultAsync(u => u.ID == id);
         }
 
         public async Task<User> FindByIdIncludeFriendships(int id)
