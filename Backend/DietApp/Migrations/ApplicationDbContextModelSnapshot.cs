@@ -15,32 +15,9 @@ namespace DietApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-rc1.19456.14")
+                .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("DietApp.Domain.Models.ExerciseReading", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("KcalBurned")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("ExerciseReadings");
-                });
 
             modelBuilder.Entity("DietApp.Domain.Models.Friendship", b =>
                 {
@@ -121,9 +98,6 @@ namespace DietApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageLink")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -148,9 +122,6 @@ namespace DietApp.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageLink")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -224,18 +195,27 @@ namespace DietApp.Migrations
                     b.Property<string>("AvatarLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CalorieLimit")
+                    b.Property<int>("CalorieLimitLower")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CalorieLimitUpper")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarbsLimitLower")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarbsLimitUpper")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
+                    b.Property<int>("FatLimitLower")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("HeightCm")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("FatLimitUpper")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsEmailConfirmed")
                         .ValueGeneratedOnAdd()
@@ -259,29 +239,20 @@ namespace DietApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProteinLimitLower")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProteinLimitUpper")
+                        .HasColumnType("int");
+
                     b.Property<int>("Role")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<string>("TelephoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("WeightKg")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("ID");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("DietApp.Domain.Models.ExerciseReading", b =>
-                {
-                    b.HasOne("DietApp.Domain.Models.User", "User")
-                        .WithMany("ExercisesHistory")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("DietApp.Domain.Models.Friendship", b =>
@@ -341,9 +312,6 @@ namespace DietApp.Migrations
                             b1.Property<int>("ProteinGram")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("WaterMilli")
-                                .HasColumnType("int");
-
                             b1.HasKey("MealID");
 
                             b1.ToTable("Meals");
@@ -378,9 +346,6 @@ namespace DietApp.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<int>("ProteinGram")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("WaterMilli")
                                 .HasColumnType("int");
 
                             b1.HasKey("MealEntryID");

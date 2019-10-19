@@ -36,7 +36,7 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = mapper.Map<RegisterViewModel, User>(viewModel);
-            var response = await userService.Create(user);
+            var response = await userService.Create(user).ConfigureAwait(false);
 
             if (!response.IsSuccess) return BadRequest(response.Message);
 
@@ -48,26 +48,29 @@ namespace DietApp.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var response = await authenticationService.CreateAccessToken(viewModel.Nickname, viewModel.Password);
+            var response = await authenticationService.CreateAccessToken(viewModel.Nickname, viewModel.Password).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var accesTokenResponse = mapper.Map<JwtAccessToken, AccessTokenViewModel>(response.Token);
             return Ok(accesTokenResponse);
         }
         [HttpPost]
-        [Route("refreshtoken")]
+        [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenViewModel viewModel)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var response = await authenticationService.RefreshToken(viewModel.Token, viewModel.Email);
+            var principal = authenticationService.GetPrincipalFromToken(viewModel.AccessToken, false);
+            var email = principal.Identity.Name;
+
+            var response = await authenticationService.RefreshToken(viewModel.RefreshToken, email).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var tokenResponse = mapper.Map<JwtAccessToken, AccessTokenViewModel>(response.Token);
             return Ok(tokenResponse);
         }
         [HttpPost]
-        [Route("revoketoken")]
+        [Route("revoke-token")]
         [Authorize]
         public IActionResult RevokeToken([FromBody] RevokeTokenViewModel viewModel)
         {
@@ -81,7 +84,7 @@ namespace DietApp.Controllers
         public async Task<IActionResult> GetCurrentUserData()
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var userData = await userService.FindById(userId);
+            var userData = await userService.FindById(userId).ConfigureAwait(false);
             if (userData == null) return BadRequest();
 
             var userDataResponse = mapper.Map<User, UserViewModel>(userData);
@@ -94,7 +97,7 @@ namespace DietApp.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = await userService.FindByNickname(viewModel.Nickname);
+            var user = await userService.FindByNickname(viewModel.Nickname).ConfigureAwait(false);
 
             var response = new ViewModels.Outgoing.CheckNicknameAccessibilityViewModel();
             if (user == null) response.Taken = false;
@@ -111,14 +114,22 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var userId = userService.GetCurrentUserId(HttpContext);
-            var user = await userService.FindById(userId);
+            var user = await userService.FindById(userId).ConfigureAwait(false);
             user.IsPrivate = viewModel.IsPrivate;
 
-            var response = await userService.Update(user);
+            var response = await userService.Update(user).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var userViewModel = mapper.Map<User, UserViewModel>(user);
             return Ok(userViewModel);
+        }
+
+        [HttpGet]
+        [Route("check-logged-in")]
+        [Authorize]
+        public IActionResult CheckUserLoggedIn()
+        {
+            return Ok();
         }
     }
 }

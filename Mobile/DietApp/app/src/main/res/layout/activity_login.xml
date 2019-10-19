@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".ui.login.LoginActivity"
+    android:paddingTop="48dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,11 +16,11 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:contentDescription="@string/description_app_logo"
-            android:src="@drawable/ic_launcher_background"/>
+            android:src="@mipmap/img_logo_full2"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -68,8 +68,17 @@
             android:gravity="center"
             android:text="@string/link_to_register_activity_text"
             android:textSize="16sp"
+            android:padding="20dp"/>
+
+        <TextView
+            android:id="@+id/login_link_forgot_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="@string/link_to_forgot_password_text"
             android:padding="20dp"
-            android:layout_marginBottom="72dp"/>
+            android:layout_marginBottom="50dp"/>
         <TextView
             android:id="@+id/login_text_connection_failure"
             android:layout_width="match_parent"

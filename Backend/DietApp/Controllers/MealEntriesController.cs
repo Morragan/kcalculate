@@ -35,10 +35,10 @@ namespace DietApp.Controllers
 
             var mealEntry = mapper.Map<CreateMealEntryViewModel, MealEntry>(viewModel);
             mealEntry.UserID = userService.GetCurrentUserId(HttpContext);
-            var response = await mealEntryService.RecordMeal(mealEntry);
+            var response = await mealEntryService.RecordMeal(mealEntry).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var mealEntriesResponse = await mealEntryService.GetMealEntries(mealEntry.UserID);
+            var mealEntriesResponse = await mealEntryService.GetMealEntries(mealEntry.UserID).ConfigureAwait(false);
             if (!mealEntriesResponse.IsSuccess) return BadRequest(response.Message);
             var mealEntriesViewModel = mapper.Map<IEnumerable<MealEntry>, IEnumerable<MealEntryViewModel>>(mealEntriesResponse.MealEntries);
             return Ok(mealEntriesViewModel);
@@ -49,7 +49,7 @@ namespace DietApp.Controllers
         public async Task<IActionResult> GetTodaysEntries()
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await mealEntryService.GetMealEntriesToday(userId);
+            var response = await mealEntryService.GetMealEntriesToday(userId).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
             // Dać view modele
             return Ok(response.MealEntries);
@@ -60,7 +60,7 @@ namespace DietApp.Controllers
         public async Task<IActionResult> GetEntries()
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await mealEntryService.GetMealEntries(userId);
+            var response = await mealEntryService.GetMealEntries(userId).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var responseViewModel = mapper.Map<IEnumerable<MealEntry>, IEnumerable<MealEntryViewModel>>(response.MealEntries);

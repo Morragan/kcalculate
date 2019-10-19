@@ -32,7 +32,7 @@ namespace DietApp.Controllers
         public async Task<IActionResult> GetUserMeals()
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await mealService.GetUserMeals(userId);
+            var response = await mealService.GetUserMeals(userId).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var mealViewModels = mapper.Map<IEnumerable<Meal>, IEnumerable<MealViewModel>>(response.MealsFound);
@@ -48,10 +48,10 @@ namespace DietApp.Controllers
             var userId = userService.GetCurrentUserId(HttpContext);
             meal.UserID = userId;
 
-            var response = await mealService.Create(meal);
+            var response = await mealService.Create(meal).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var userMealsResponse = await mealService.GetUserMeals(userId);
+            var userMealsResponse = await mealService.GetUserMeals(userId).ConfigureAwait(false);
             if (!userMealsResponse.IsSuccess) return BadRequest(userMealsResponse.Message);
 
             var userMealsViewModel = mapper.Map<IEnumerable<Meal>, IEnumerable<MealViewModel>>(userMealsResponse.MealsFound);
@@ -64,13 +64,13 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest();
 
             var userId = userService.GetCurrentUserId(HttpContext);
-            var findMealsResponse = await mealService.GetUserMeals(userId);
+            var findMealsResponse = await mealService.GetUserMeals(userId).ConfigureAwait(false);
             if (!findMealsResponse.IsSuccess) return BadRequest(findMealsResponse.Message);
 
             var meal = findMealsResponse.MealsFound.Where(m => m.ID == id).SingleOrDefault();
             if (meal == null) return BadRequest("Meal doesn't exist");
 
-            var response = await mealService.Delete(meal);
+            var response = await mealService.Delete(meal).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             return NoContent();
@@ -83,13 +83,13 @@ namespace DietApp.Controllers
 
             var meal = mapper.Map<MealViewModel, Meal>(viewModel);
             var userId = userService.GetCurrentUserId(HttpContext);
-            var userMealsResponse = await mealService.GetUserMeals(userId);
+            var userMealsResponse = await mealService.GetUserMeals(userId).ConfigureAwait(false);
             if (!userMealsResponse.IsSuccess) return BadRequest(userMealsResponse.Message);
 
             var userMealsIds = userMealsResponse.MealsFound.Select(m => m.ID);
             if (!userMealsIds.Contains(meal.ID)) return BadRequest("Meal doesn't exist");
 
-            var response = await mealService.Update(meal);
+            var response = await mealService.Update(meal).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             return NoContent();

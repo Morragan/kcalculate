@@ -11,9 +11,9 @@ namespace DietApp.Helpers
         {
             byte[] buffer4;
             if (passwordHash == null) return false;
-            if (providedPassword == null) throw new ArgumentNullException("providedPassword");
+            if (providedPassword == null) throw new ArgumentNullException(nameof(providedPassword));
             byte[] src = Convert.FromBase64String(passwordHash);
-            if(src.Length!=0x31 ||src[0] != 0) return false;
+            if (src.Length != 0x31 || src[0] != 0) return false;
             byte[] dst = new byte[0x10];
             Buffer.BlockCopy(src, 1, dst, 0, 0x10);
             byte[] buffer3 = new byte[0x20];
@@ -29,7 +29,7 @@ namespace DietApp.Helpers
         {
             byte[] salt;
             byte[] buffer2;
-            if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
+            if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
             using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, 0x10, 0x3e8))
             {
                 salt = bytes.Salt;

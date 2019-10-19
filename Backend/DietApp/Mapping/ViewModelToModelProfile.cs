@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.ViewModels;
+using System.Collections.Generic;
 
 namespace DietApp.Mapping
 {

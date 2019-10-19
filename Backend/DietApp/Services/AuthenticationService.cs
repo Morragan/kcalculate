@@ -1,6 +1,12 @@
 ﻿using DietApp.Domain.Helpers;
 using DietApp.Domain.Responses;
 using DietApp.Domain.Services;
+using DietApp.Domain.Tokens;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DietApp.Services
@@ -10,12 +16,14 @@ namespace DietApp.Services
         readonly IUserService userService;
         readonly IPasswordHasher passwordHasher;
         readonly ITokenService tokenService;
+        readonly SigningConfigurations configurations;
 
-        public AuthenticationService(IUserService userService, IPasswordHasher passwordHasherService, ITokenService tokenService)
+        public AuthenticationService(IUserService userService, IPasswordHasher passwordHasher, ITokenService tokenService, SigningConfigurations configurations)
         {
             this.userService = userService;
-            this.passwordHasher = passwordHasherService;
+            this.passwordHasher = passwordHasher;
             this.tokenService = tokenService;
+            this.configurations = configurations;
         }
         public async Task<TokenResponse> CreateAccessToken(string nickname, string password)
         {
@@ -32,6 +40,7 @@ namespace DietApp.Services
             var token = tokenService.TakeRefreshToken(refreshToken);
             if (token == null) return new TokenResponse(false, "Invalid refresh token", null);
             if (token.IsExpired()) return new TokenResponse(false, "Expired refresh token", null);
+
             var user = await userService.FindByEmail(userEmail);
             if (user == null) return new TokenResponse(false, "Invalid refresh token", null);
 
@@ -43,5 +52,28 @@ namespace DietApp.Services
         {
             tokenService.RevokeRefreshToken(refreshToken);
         }
+
+
+        public ClaimsPrincipal GetPrincipalFromToken(string token, bool validateLifetime)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = validateLifetime,
+                IssuerSigningKey = configurations.Key
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (!(securityToken is JwtSecurityToken jwtSecurityToken)
+                || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.RsaSha256Signature, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+
     }
 }

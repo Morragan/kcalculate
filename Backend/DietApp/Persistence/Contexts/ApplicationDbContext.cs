@@ -14,7 +14,6 @@ namespace DietApp.Persistence.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Meal> Meals { get; set; }
-        public DbSet<ExerciseReading> ExerciseReadings { get; set; }
         public DbSet<ScoreLog> ScoreLogs { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<GoalInvitation> GoalInvitations { get; set; }
@@ -26,7 +25,6 @@ namespace DietApp.Persistence.Contexts
             modelBuilder.Entity<User>().HasMany(m => m.MealsHistory).WithOne(m => m.User).HasForeignKey(m => m.UserID);
             modelBuilder.Entity<User>().HasMany(m => m.RefreshTokens).WithOne(m => m.User).HasForeignKey(m => m.UserID);
             modelBuilder.Entity<User>().HasMany(m => m.SavedMeals).WithOne(m => m.User).HasForeignKey(m => m.UserID);
-            modelBuilder.Entity<User>().HasMany(m => m.ExercisesHistory).WithOne(m => m.User).HasForeignKey(m => m.UserID);
             modelBuilder.Entity<User>().HasMany(m => m.ScoreLogs).WithOne(m => m.User).HasForeignKey(m => m.UserID);
             modelBuilder.Entity<User>().HasMany(m => m.GoalInvitations).WithOne(m => m.InvitedUser).HasForeignKey(m => m.InvitedUserID);
             modelBuilder.Entity<User>().Property(m => m.ID).IsRequired().ValueGeneratedOnAdd();
@@ -66,11 +64,6 @@ namespace DietApp.Persistence.Contexts
             modelBuilder.Entity<Friendship>().HasOne(m => m.SrcUser).WithMany(m => m.RequestedFriendships).HasForeignKey(m => m.SrcUserID).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Friendship>().HasOne(m => m.DestUser).WithMany(m => m.ReceivedFriendships).HasForeignKey(m => m.DestUserID);
             modelBuilder.Entity<Friendship>().Property(m => m.Status).IsRequired();
-            #endregion
-
-            #region ExerciseReading
-            modelBuilder.Entity<ExerciseReading>().Property(m => m.Date).IsRequired();
-            modelBuilder.Entity<ExerciseReading>().Property(m => m.KcalBurned).IsRequired();
             #endregion
 
             #region ScoreLog

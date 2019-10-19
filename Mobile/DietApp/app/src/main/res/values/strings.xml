@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DietApp</string>
+    <string name="app_name">KCALculate</string>
     <string name="facebook_app_id">2340245359405923</string>
     <string name="fb_login_protocol_scheme">fb2340245359405923</string>
 
@@ -9,11 +9,7 @@
     <string name="button_text_login">LOGIN</string>
     <string name="link_to_register_activity_text">Or make an account</string>
     <string name="hint_nickname">Nickname</string>
-    <string name="sharedprefs_file_key">com.example.dietapp.sharedprefsfilekey</string>
-    <string name="preference_access_token">com.example.dietapp.preferenceaccesstoken</string>
-    <string name="preference_refresh_token">com.example.dietapp.preferencerefreshtoken</string>
-    <string name="preference_token_expiration">com.example.dietapp.preferencetokenexpiration</string>
-    <string name="text_connection_failure">Request falied. Please check your internet connection and try again later</string>
+    <string name="text_connection_failure">Request failed. Please check your internet connection and try again</string>
     <string name="error_nickname_input">Enter your nickname</string>
     <string name="error_password_input">Enter your password</string>
     <string name="button_text_register_with_email">Register with your email</string>
@@ -57,4 +53,25 @@
     <string name="error_gender_button">Select your biological gender</string>
     <string name="text_calorie_level_label">Your recommended calorie limit</string>
     <string name="text_calorie_level_description">If you disagree with our estimate, feel free to correct it</string>
+    <string name="button_text_go_back">GO BACK</string>
+    <string name="hint_find_food">Enter food\'s name</string>
+    <string name="other_actions">Other actions</string>
+    <string name="link_text_create_meal">Create meal</string>
+    <string name="link_text_scan_barcode">Scan barcode</string>
+    <string name="text_carbs_title">Carbs (g)</string>
+    <string name="text_fat_title">Fats (g)</string>
+    <string name="text_protein_title">Protein (g)</string>
+    <string name="text_kcalper100_title">Kcal per 100g</string>
+    <string name="hint_meal_weight">Weight (g)</string>
+    <string name="button_text_record_meal">RECORD MEAL</string>
+    <string name="error_meal_weight_input">Enter meal weight</string>
+    <string name="link_to_forgot_password_text">Click here if you forgot your password</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="tab_text_my_meals">MY MEALS</string>
+    <string name="tab_text_all_meals">ALL MEALS</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="record_meal_placeholder">Search for meals using the search box above</string>
 </resources>

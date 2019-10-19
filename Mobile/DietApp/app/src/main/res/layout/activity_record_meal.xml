@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.recordmeal.RecordMealActivity">
+
+    <SearchView
+        android:id="@+id/record_meal_input_search_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input_box_shape"
+        android:hint="@string/hint_find_food"
+        android:inputType="textAutoComplete"
+        android:textColor="#000"
+        android:textColorHint="#a88"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/record_meal_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_input_search_food"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/record_meal_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/record_meal_text_other_actions"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_tabs" />
+
+    <TextView
+        android:id="@+id/record_meal_text_other_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingStart="12dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="3dp"
+        android:text="@string/other_actions"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/record_meal_link_create_meal" />
+
+    <ImageView
+        android:id="@+id/record_meal_icon_create_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:foregroundGravity="center"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:src="@drawable/baseline_add_black_24"
+        app:layout_constraintBottom_toBottomOf="@id/record_meal_link_create_meal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/record_meal_link_create_meal"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/record_meal_link_create_meal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="6dp"
+        android:text="@string/link_text_create_meal"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/record_meal_link_scan_barcode"
+        app:layout_constraintLeft_toRightOf="@id/record_meal_icon_create_meal"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/record_meal_icon_scan_barcode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foregroundGravity="center"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:src="@mipmap/ic_barcode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/record_meal_icon_create_meal"
+        app:layout_constraintTop_toTopOf="@id/record_meal_link_scan_barcode"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/record_meal_link_scan_barcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="6dp"
+        android:text="@string/link_text_scan_barcode"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/record_meal_icon_scan_barcode"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

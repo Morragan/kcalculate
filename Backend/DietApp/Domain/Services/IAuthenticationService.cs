@@ -1,4 +1,5 @@
 ﻿using DietApp.Domain.Responses;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DietApp.Domain.Services
@@ -8,5 +9,6 @@ namespace DietApp.Domain.Services
         Task<TokenResponse> CreateAccessToken(string email, string password);
         Task<TokenResponse> RefreshToken(string refreshToken, string userEmail);
         void RevokeRefreshToken(string refreshToken);
+        ClaimsPrincipal GetPrincipalFromToken(string token, bool validateLifetime);
     }
 }

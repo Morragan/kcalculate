@@ -2,7 +2,6 @@
 {
     public class Nutrients
     {
-        public int WaterMilli { get; set; }
         public int CarbsGram { get; set; }
         public int FatGram { get; set; }
         public int ProteinGram { get; set; }

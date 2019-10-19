@@ -35,7 +35,7 @@ namespace DietApp.Controllers
         public async Task<IActionResult> GetFriendsList()
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId);
+            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
 
             var requestedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(requestedFriends);
             var receivedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(receivedFriends);
@@ -59,10 +59,10 @@ namespace DietApp.Controllers
                 DestUserID = viewModel.FriendID,
                 Status = FriendshipStatus.Pending
             };
-            var response = await friendshipService.Create(friendship);
+            var response = await friendshipService.Create(friendship).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId);
+            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
 
             var requestedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(requestedFriends);
             var receivedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(receivedFriends);
@@ -81,13 +81,13 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await friendshipService.AcceptFriend(userId, viewModel.FriendID);
+            var response = await friendshipService.AcceptFriend(userId, viewModel.FriendID).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId);
+            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
 
-            var requestedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<ViewModels.Outgoing.FriendViewModel>>(requestedFriends);
-            var receivedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<ViewModels.Outgoing.FriendViewModel>>(receivedFriends);
+            var requestedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(requestedFriends);
+            var receivedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(receivedFriends);
 
             return Ok(new
             {
@@ -101,10 +101,10 @@ namespace DietApp.Controllers
         public async Task<IActionResult> DeleteFriend(InFriendViewModel viewModel)
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await friendshipService.Delete(userId, viewModel.FriendID);
+            var response = await friendshipService.Delete(userId, viewModel.FriendID).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId);
+            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
 
             var requestedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(requestedFriends);
             var receivedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(receivedFriends);
@@ -123,10 +123,10 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await friendshipService.BlockUser(userId, viewModel.UserID);
+            var response = await friendshipService.BlockUser(userId, viewModel.UserID).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId);
+            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
 
             var requestedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(requestedFriends);
             var receivedFriendsViewModel = mapper.Map<IEnumerable<(User, FriendshipStatus)>, IEnumerable<OutFriendViewModel>>(receivedFriends);

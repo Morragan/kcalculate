@@ -25,7 +25,14 @@ namespace DietApp.Persistence.Repositories
             var _user = await context.Users.FirstOrDefaultAsync(_user => _user.ID == user.ID);
             if (_user == null) return;
 
-            _user.CalorieLimit = user.CalorieLimit;
+            _user.CalorieLimitLower = user.CalorieLimitLower;
+            _user.CalorieLimitUpper = user.CalorieLimitUpper;
+            _user.CarbsLimitLower = user.CarbsLimitLower;
+            _user.CarbsLimitUpper = user.CarbsLimitUpper;
+            _user.FatLimitLower = user.FatLimitLower;
+            _user.FatLimitUpper = user.FatLimitUpper;
+            _user.ProteinLimitLower = user.ProteinLimitLower;
+            _user.ProteinLimitUpper = user.ProteinLimitUpper;
             _user.IsEmailConfirmed = user.IsEmailConfirmed;
             _user.IsPrivate = user.IsPrivate;
             _user.Password = user.Password;

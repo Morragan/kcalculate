@@ -8,6 +8,7 @@ import com.example.dietapp.di.scopes.ActivityScope
 import com.example.dietapp.models.LoginDTO
 import com.example.dietapp.models.TokenDTO
 import com.example.dietapp.ui.base.BasePresenter
+import com.example.dietapp.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,8 +17,7 @@ import javax.inject.Inject
 @ActivityScope
 class LoginPresenter @Inject constructor(
     private val accountService: AccountService,
-    private val sharedPreferences: SharedPreferences,
-    private val app: Application
+    private val sharedPreferences: SharedPreferences
 ) :
     BasePresenter<LoginView>() {
 
@@ -36,15 +36,15 @@ class LoginPresenter @Inject constructor(
                 val token = response.body()!!
                 with(sharedPreferences.edit()) {
                     putString(
-                        app.resources.getString(R.string.preference_access_token),
+                        Constants.sharedPreferencesKeyAccessToken,
                         token.accessToken
                     )
                     putString(
-                        app.resources.getString(R.string.preference_refresh_token),
+                        Constants.sharedPreferencesKeyRefreshToken,
                         token.refreshToken
                     )
                     putLong(
-                        app.resources.getString(R.string.preference_token_expiration),
+                        Constants.sharedPreferencesKeyTokenExpiration,
                         token.expiration
                     )
                     commit()
