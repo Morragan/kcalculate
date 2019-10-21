@@ -1,9 +1,11 @@
 package com.example.dietapp.ui.recordmeal
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -60,7 +62,7 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
         if (isSuccess) {
             button?.doneLoadingAnimation(
                 ContextCompat.getColor(this, R.color.success),
-                Converters.drawableToBitmap(getDrawable(R.drawable.baseline_done_black_48)!!)
+                Converters.drawableToBitmap(getDrawable(R.drawable.ic_done_white)!!)
             )
             Handler().postDelayed({
                 button?.revertAnimation()
@@ -68,7 +70,7 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
         } else {
             button?.doneLoadingAnimation(
                 ContextCompat.getColor(this, R.color.error),
-                Converters.drawableToBitmap(getDrawable(R.drawable.baseline_error_outline_black_48)!!)
+                Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
             )
             Handler().postDelayed({
                 button?.revertAnimation()
@@ -95,21 +97,32 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
             scanner.initiateScan()
         }
 
+        record_meal_input_search_food.setOnCloseListener {
+            getCurrentFragment().adapter?.filter?.filter("")
+            true
+        }
+
         record_meal_input_search_food.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (record_meal_view_pager.currentItem != 1 || query.isNullOrBlank()) return true
+                if (query.isNullOrBlank()) return true
+                if (record_meal_view_pager.currentItem == 1) {
+                    presenter.searchMeals(query)
+                }
+                // Hide keyboard
+                val inputManager =
+                    getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                val focusedView = currentFocus ?: View(this@RecordMealActivity)
+                inputManager.hideSoftInputFromWindow(focusedView.windowToken, 0)
 
-                presenter.searchMeals(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (record_meal_view_pager.currentItem != 0 || newText.isNullOrBlank()) return false
+                if (record_meal_view_pager.currentItem != 0 || newText == null) return false
                 getCurrentFragment().adapter?.filter?.filter(newText)
                 return false
             }
-
         })
 
         record_meal_icon_create_meal.setOnClickListener(createMealOnClickListener)
@@ -119,17 +132,20 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //TODO: sprawdzić jaki request code ma scanner
-        val result: IntentResult? =
-            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        // reqCode = 49374
-        if (result != null) {
-            if (result.contents != null)
-                Toast.makeText(this, "Scanned " + result.contents, Toast.LENGTH_LONG).show()
-            else
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
-        } else
-            super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.requestCodeCreateMeal) {
+            presenter.getMeals()
+        } else if (requestCode == Constants.requestCodeScanBarcode) {
+            val result: IntentResult? =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+            if (result != null) {
+                if (result.contents != null)
+                    Toast.makeText(this, "Scanned " + result.contents, Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+            }
+        } else super.onActivityResult(requestCode, resultCode, data)
+
+
     }
 
     override fun onStart() {
@@ -150,6 +166,6 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
 
     private fun getCurrentFragment(): RecordMealFragment {
         val position = record_meal_view_pager.currentItem
-        return (record_meal_view_pager.adapter as RecordMealPagerAdapter).getItem(position)
+        return viewPagerAdapter.getItem(position)
     }
 }

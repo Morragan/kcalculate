@@ -15,4 +15,5 @@ object Constants {
 
     // Activity request codes
     const val requestCodeCreateMeal = 100
+    const val requestCodeScanBarcode = 49374
 }

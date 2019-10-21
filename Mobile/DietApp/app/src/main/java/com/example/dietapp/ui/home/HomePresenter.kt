@@ -1,6 +1,7 @@
 package com.example.dietapp.ui.home
 
 import android.content.SharedPreferences
+import androidx.core.net.toUri
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.api.AccountService
@@ -67,65 +68,72 @@ class HomePresenter @Inject constructor(
             Methods.datesAreTheSameDay(date, entry.date)
         }
 
-        val kcal = selectedDateEntries.sumBy { entry -> entry.kcal }
-        val carbs = selectedDateEntries.sumBy { entry -> entry.nutrients.carbsGram }
-        val fats = selectedDateEntries.sumBy { entry -> entry.nutrients.fatGram }
-        val proteins = selectedDateEntries.sumBy { entry -> entry.nutrients.proteinGram }
+        val kcalEaten = selectedDateEntries.sumBy { entry -> entry.kcal }
+        val carbsEaten = selectedDateEntries.sumBy { entry -> entry.nutrients.carbsGram }
+        val fatEaten = selectedDateEntries.sumBy { entry -> entry.nutrients.fatGram }
+        val proteinEaten = selectedDateEntries.sumBy { entry -> entry.nutrients.proteinGram }
 
-        val kcalProgress = kcal.toFloat() / DietApp.user!!.calorieLimit * 100f
-        val carbsProgress = carbs.toFloat() / DietApp.user!!.carbsLimit * 100f
-        val fatProgress = fats.toFloat() / DietApp.user!!.fatLimit * 100f
-        val proteinProgress = proteins.toFloat() / DietApp.user!!.proteinLimit * 100f
+        val kcalProgress = kcalEaten.toFloat() / DietApp.user!!.calorieLimit * 100f
+        val carbsProgress = carbsEaten.toFloat() / DietApp.user!!.carbsLimit * 100f
+        val fatProgress = fatEaten.toFloat() / DietApp.user!!.fatLimit * 100f
+        val proteinProgress = proteinEaten.toFloat() / DietApp.user!!.proteinLimit * 100f
+
+        val kcalLeft = if (DietApp.user!!.calorieLimit - kcalEaten < 0) 0 else DietApp.user!!.calorieLimit - kcalEaten
+        val carbsLeft = if (DietApp.user!!.carbsLimit - carbsEaten < 0) 0 else DietApp.user!!.carbsLimit - carbsEaten
+        val fatLeft = if (DietApp.user!!.fatLimit - fatEaten < 0) 0 else DietApp.user!!.fatLimit - fatEaten
+        val proteinLeft = if (DietApp.user!!.proteinLimit - proteinEaten < 0) 0 else DietApp.user!!.proteinLimit - proteinEaten
 
         val kcalProgressColorId = when {
-            kcal < DietApp.user!!.calorieLimitLower -> R.color.warning
-            kcal > DietApp.user!!.calorieLimitUpper -> R.color.error
+            kcalEaten < DietApp.user!!.calorieLimitLower -> R.color.warning
+            kcalEaten > DietApp.user!!.calorieLimitUpper -> R.color.error
             else -> R.color.success
         }
         val carbsProgressColorId = when {
-            carbs < DietApp.user!!.carbsLimitLower -> R.color.warning
-            carbs > DietApp.user!!.carbsLimitUpper -> R.color.error
+            carbsEaten < DietApp.user!!.carbsLimitLower -> R.color.warning
+            carbsEaten > DietApp.user!!.carbsLimitUpper -> R.color.error
             else -> R.color.success
         }
         val fatProgressColorId = when {
-            fats < DietApp.user!!.fatLimitLower -> R.color.warning
-            fats > DietApp.user!!.fatLimitUpper -> R.color.error
+            fatEaten < DietApp.user!!.fatLimitLower -> R.color.warning
+            fatEaten > DietApp.user!!.fatLimitUpper -> R.color.error
             else -> R.color.success
         }
         val proteinProgressColorId = when {
-            proteins < DietApp.user!!.proteinLimitLower -> R.color.warning
-            proteins > DietApp.user!!.proteinLimitUpper -> R.color.error
+            proteinEaten < DietApp.user!!.proteinLimitLower -> R.color.warning
+            proteinEaten > DietApp.user!!.proteinLimitUpper -> R.color.error
             else -> R.color.success
         }
 
         mvpView?.updateKcalProgress(
             kcalProgress,
             DietApp.user!!.calorieLimit,
-            kcal,
-            DietApp.user!!.calorieLimit - kcal,
+            kcalEaten,
+            kcalLeft,
             kcalProgressColorId
         )
         mvpView?.updateCarbsProgress(
-            carbsProgress,
+            carbsProgress.toInt(),
             DietApp.user!!.carbsLimit,
-            carbs,
-            DietApp.user!!.carbsLimit - carbs,
+            carbsEaten,
+            carbsLeft,
             carbsProgressColorId
         )
         mvpView?.updateFatProgress(
-            fatProgress,
+            fatProgress.toInt(),
             DietApp.user!!.fatLimit,
-            fats,
-            DietApp.user!!.fatLimit - fats,
+            fatEaten,
+            fatLeft,
             fatProgressColorId
         )
         mvpView?.updateProteinProgress(
-            proteinProgress,
+            proteinProgress.toInt(),
             DietApp.user!!.proteinLimit,
-            proteins,
-            DietApp.user!!.proteinLimit - proteins,
+            proteinEaten,
+            proteinLeft,
             proteinProgressColorId
         )
+
+        mvpView?.updateProfile(DietApp.user!!.nickname, DietApp.user!!.email, DietApp.user!!.avatarLink.toUri())
     }
 
 

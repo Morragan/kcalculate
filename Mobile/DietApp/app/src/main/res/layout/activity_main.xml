@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_marginTop="180dp"
+        android:src="@mipmap/img_logo_full"
+        tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginTop="156dp" />
 
 </LinearLayout>

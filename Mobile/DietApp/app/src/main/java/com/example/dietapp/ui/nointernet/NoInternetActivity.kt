@@ -19,7 +19,7 @@ class NoInternetActivity : AppCompatActivity() {
 
         no_internet_button_go_back.setOnClickListener {
             try{
-                finish()
+                startActivity(Intent(this, callingActivity.javaClass))
             }
             catch (e: NullPointerException){
                 startActivity(Intent(this, MainActivity::class.java))

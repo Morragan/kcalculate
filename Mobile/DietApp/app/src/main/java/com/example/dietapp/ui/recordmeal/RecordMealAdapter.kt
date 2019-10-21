@@ -102,7 +102,7 @@ class RecordMealAdapter(
         holder.title.setOnClickListener {
             expandedPosition = if (isExpanded) -1 else position
             TransitionManager.beginDelayedTransition(recyclerView)
-            notifyDataSetChanged()
+            notifyItemChanged(position)
         }
 
         holder.title.text = meal.name

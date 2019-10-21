@@ -10,8 +10,6 @@ import com.example.dietapp.api.AccountService
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.nointernet.NoInternetActivity
-import com.example.dietapp.ui.recordmeal.RecordMealActivity
-import com.example.dietapp.utils.Constants
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainView {

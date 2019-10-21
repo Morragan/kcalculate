@@ -1,6 +1,7 @@
 package com.example.dietapp.ui.login
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -19,12 +20,14 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity(), LoginView {
     @Inject
     lateinit var presenter: LoginPresenter
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun showErrorMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.baseline_error_outline_black_48)!!)
+            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
         )
         Handler().postDelayed({
             login_button_login.revertAnimation()
@@ -34,7 +37,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
     override fun startHomeActivity() {
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.success),
-            Converters.drawableToBitmap(getDrawable(R.drawable.baseline_done_black_48)!!)
+            Converters.drawableToBitmap(getDrawable(R.drawable.ic_done_white)!!)
         )
 
         Handler().postDelayed({
@@ -49,7 +52,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.baseline_error_outline_black_48)!!)
+            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
         )
 
         Handler().postDelayed({
@@ -63,6 +66,13 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         val activityComponent = (application as DietApp).appComponent.newActivityComponent()
         activityComponent.inject(this)
+
+        with(sharedPreferences.edit()) {
+            remove(Constants.sharedPreferencesKeyAccessToken)
+            remove(Constants.sharedPreferencesKeyRefreshToken)
+            remove(Constants.sharedPreferencesKeyTokenExpiration)
+            apply()
+        }
 
         val nickname = intent.getStringExtra(Constants.intentKeyRegisterToLoginNickname)
         if (nickname != null) {

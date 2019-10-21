@@ -195,10 +195,16 @@ namespace DietApp.Migrations
                     b.Property<string>("AvatarLink")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CalorieLimit")
+                        .HasColumnType("int");
+
                     b.Property<int>("CalorieLimitLower")
                         .HasColumnType("int");
 
                     b.Property<int>("CalorieLimitUpper")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarbsLimit")
                         .HasColumnType("int");
 
                     b.Property<int>("CarbsLimitLower")
@@ -210,6 +216,9 @@ namespace DietApp.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FatLimit")
+                        .HasColumnType("int");
 
                     b.Property<int>("FatLimitLower")
                         .HasColumnType("int");
@@ -238,6 +247,9 @@ namespace DietApp.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProteinLimit")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProteinLimitLower")
                         .HasColumnType("int");

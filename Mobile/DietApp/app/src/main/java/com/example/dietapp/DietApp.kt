@@ -10,6 +10,7 @@ import com.example.dietapp.models.UserDTO
 class DietApp : Application() {
     lateinit var appComponent: AppComponent
 
+    // If possible, move state to Room, replace fields with observables
     companion object {
 
         var mealEntries: List<MealEntryDTO>? = null
@@ -23,6 +24,3 @@ class DietApp : Application() {
         appComponent = DaggerAppComponent.factory().create(this)
     }
 }
-
-//TODO: Dodać do credits <a href="https://www.freepik.com/free-photos-vectors/business">Business vector created by freepik - www.freepik.com</a>
-// https://icons8.com

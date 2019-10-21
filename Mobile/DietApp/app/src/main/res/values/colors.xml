@@ -7,4 +7,5 @@
     <color name="error">#f44</color>
     <color name="success">#00c851</color>
     <color name="warning">#ffde17</color>
+    <color name="white">#fff</color>
 </resources>

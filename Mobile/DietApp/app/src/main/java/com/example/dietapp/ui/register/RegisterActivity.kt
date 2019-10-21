@@ -45,12 +45,11 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
         this.calorieLimit = calorieLimit
     }
 
-    // TODO: handle circular button
     override fun showConnectionFailure() {
         register_text_connection_failure.visibility = View.VISIBLE
         register_button_register.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.baseline_error_outline_black_48)!!)
+            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
         )
         Handler().postDelayed({
             register_button_register.revertAnimation()
@@ -62,7 +61,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
         register_text_connection_failure.visibility = View.GONE
         register_button_register.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.baseline_error_outline_black_48)!!)
+            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
         )
         Handler().postDelayed({
             register_button_register.revertAnimation()
@@ -72,7 +71,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
     override fun startLoginActivity() {
         register_button_register.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.success),
-            Converters.drawableToBitmap(getDrawable(R.drawable.baseline_done_black_48)!!)
+            Converters.drawableToBitmap(getDrawable(R.drawable.ic_done_white)!!)
         )
 
         Handler().postDelayed({

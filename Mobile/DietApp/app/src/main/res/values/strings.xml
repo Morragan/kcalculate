@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KCALculate</string>
+    <string name="app_name">KCALCULATE</string>
     <string name="facebook_app_id">2340245359405923</string>
     <string name="fb_login_protocol_scheme">fb2340245359405923</string>
 
@@ -48,8 +48,8 @@
     <string name="button_text_register">Register</string>
     <string name="error_weight_input">Enter your weight</string>
     <string name="register_dialog_message">Next, you can calculate your recommended daily calorie intake. For that, you need to input some informations about your body, like weight, height and gender. Don\'t worry, they won\'t be saved anywhere, this app will only use them to calculate your calorie limit one-time. If you don\'t want this app to calculate it for you, you can skip the process and manually set your calorie limit by clicking \"SKIP\"</string>
-    <string name="register_dialog_positive_button">DON\'T SKIP</string>
-    <string name="register_dialog_negative_button">SKIP</string>
+    <string name="register_dialog_positive_button">Don\'t skip</string>
+    <string name="register_dialog_negative_button">Skip</string>
     <string name="error_gender_button">Select your biological gender</string>
     <string name="text_calorie_level_label">Your recommended calorie limit</string>
     <string name="text_calorie_level_description">If you disagree with our estimate, feel free to correct it</string>
@@ -61,7 +61,7 @@
     <string name="text_carbs_title">Carbs (g)</string>
     <string name="text_fat_title">Fats (g)</string>
     <string name="text_protein_title">Protein (g)</string>
-    <string name="text_kcalper100_title">Kcal per 100g</string>
+    <string name="text_kcalper100_title">Kcal</string>
     <string name="hint_meal_weight">Weight (g)</string>
     <string name="button_text_record_meal">RECORD MEAL</string>
     <string name="error_meal_weight_input">Enter meal weight</string>
@@ -70,8 +70,45 @@
     <string name="yesterday">Yesterday</string>
     <string name="tab_text_my_meals">MY MEALS</string>
     <string name="tab_text_all_meals">ALL MEALS</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="record_meal_placeholder">Search for meals using the search box above</string>
+    <string name="text_home_eaten">Eaten</string>
+    <string name="text_home_goal">Goal</string>
+    <string name="text_home_left">Left</string>
+    <string name="text_home_kcal_left">Kcal left</string>
+    <string name="text_home_carbs">Carbs</string>
+    <string name="text_home_fat">Fat</string>
+    <string name="text_home_protein">Protein</string>
+    <string name="text_zero">0</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_menu_home">Home</string>
+    <string name="title_menu_profile">Profile</string>
+    <string name="nav_text_home">Home</string>
+    <string name="nav_text_profile">Profile</string>
+    <string name="nav_text_friends">Friends</string>
+    <string name="nav_text_logout">Log out</string>
+    <string name="nav_text_goals">Goals</string>
+    <string name="nav_text_credits">Credits</string>
+    <string name="nav_text_sync">Synchronize</string>
+    <string name="title_menu_goals">Goals</string>
+    <string name="text_created_by">Created by Cezary Szmurło</string>
+    <string name="text_credits">Icons designed by\nwww.freepik.com\n icon8.com</string>
+    <string name="button_text_cancel">Cancel</string>
+    <string name="button_text_create">Create</string>
+    <string name="hint_meal_name">Food\'s name</string>
+    <string name="hint_meal_protein">Grams of protein in 100g of the meal</string>
+    <string name="hint_meal_fat">Grams of fat in 100g of the meal</string>
+    <string name="hint_meal_carbs">Grams of carbs in 100g of the meal</string>
+    <string name="hint_meal_kcal">Kcal in 100g of the meal</string>
+    <string name="error_meal_name_input">Enter meal\'s name</string>
+    <string name="error_meal_kcal_input">Enter meal\'s kcal per 100g value</string>
+    <string name="error_meal_carbs_input">Enter meal\'s carbs per 100g value</string>
+    <string name="error_meal_fat_input">Enter meal\'s fat per 100g value</string>
+    <string name="error_meal_protein_input">Enter meal\'s protein per 100g value</string>
 </resources>

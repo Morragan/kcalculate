@@ -3,14 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/app_bar_home"
-        android:icon="@drawable/baseline_home_white_48"
-        android:title="HOME"
-        app:showAsAction="always" />
-    <item android:title=""
-        android:enabled="false"/>
+        android:icon="@drawable/ic_home_white"
+        android:title="@string/title_menu_home"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/app_bar_profile"
-        android:icon="@drawable/baseline_person_white_48"
-        android:title="PROFILE"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_account"
+        android:title="@string/title_menu_profile"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/app_bar_goals"
+        android:icon="@drawable/ic_goals_white"
+        android:title="@string/title_menu_goals"
+        app:showAsAction="ifRoom" />
 </menu>
