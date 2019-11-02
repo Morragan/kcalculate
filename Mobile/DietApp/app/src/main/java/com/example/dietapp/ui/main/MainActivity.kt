@@ -1,12 +1,14 @@
 package com.example.dietapp.ui.main
 
+import android.app.ActivityOptions
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.transition.Explode
+import android.transition.Slide
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
-import com.example.dietapp.api.AccountService
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.nointernet.NoInternetActivity
@@ -14,10 +16,6 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
-    @Inject
-    lateinit var accountService: AccountService
     @Inject
     lateinit var presenter: MainPresenter
 
@@ -31,6 +29,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun logout() {
         startActivity(Intent(this, LoginActivity::class.java))
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

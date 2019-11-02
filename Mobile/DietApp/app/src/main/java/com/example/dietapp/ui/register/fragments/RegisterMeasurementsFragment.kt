@@ -1,13 +1,13 @@
 package com.example.dietapp.ui.register.fragments
 
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.EditText
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import com.example.dietapp.R
 import com.example.dietapp.ui.register.RegisterActivity
@@ -22,57 +22,76 @@ class RegisterMeasurementsFragment : RegisterFragment() {
     private var heightUnit = Enums.HeightUnit.Centimeters
     private var weightUnit = Enums.WeightUnit.Kilograms
 
-    override fun passData() {
-        val registerActivity = activity as RegisterActivity
+    override fun passData(activity: RegisterActivity) {
+        val registerInputHeightCm = activity.findViewById<EditText>(R.id.register_input_height_cm)
+        val registerInputHeightFt = activity.findViewById<EditText>(R.id.register_input_height_ft)
+        val registerInputHeightIn = activity.findViewById<EditText>(R.id.register_input_height_in)
+
+        val registerInputWeight = activity.findViewById<EditText>(R.id.register_input_weight)
+
+        val registerRBGenderMale =
+            activity.findViewById<RadioButton>(R.id.register_radio_button_gender_male)
 
         val heightCm: Float =
             if (heightUnit == Enums.HeightUnit.Centimeters)
-                register_input_height_cm.text.toString().toFloat()
+                registerInputHeightCm.text.toString().toFloat()
             else
-                register_input_height_ft.text.toString().toFloat() * 30.48f + register_input_height_in.text.toString().toFloat() * 2.54f
+                registerInputHeightFt.text.toString().toFloat() * 30.48f + registerInputHeightIn.text.toString().toFloat() * 2.54f
 
-        val weight = register_input_weight.text.toString().toFloat()
+        val weight = registerInputWeight.text.toString().toFloat()
         val weightKg: Float =
             if (weightUnit == Enums.WeightUnit.Kilograms) weight else weight * 0.4536f
 
-        val gender = if(register_radio_button_gender_male.isChecked) Enums.Gender.Male else Enums.Gender.Female
+        val gender =
+            if (registerRBGenderMale.isChecked) Enums.Gender.Male else Enums.Gender.Female
 
-        registerActivity.heightCm = heightCm
-        registerActivity.weightKg = weightKg
-        registerActivity.gender = gender
+        activity.heightCm = heightCm
+        activity.weightKg = weightKg
+        activity.gender = gender
 
     }
 
-    override fun validate(): Boolean {
+    override fun validate(activity: RegisterActivity): Boolean {
         var isValid = true
 
-        val heightCm = register_input_height_cm.text.toString().toFloatOrNull()
-        val heightFt = register_input_height_ft.text.toString().toIntOrNull()
-        val heightIn = register_input_height_in.text.toString().toIntOrNull()
+        val registerInputHeightCm = activity.findViewById<EditText>(R.id.register_input_height_cm)
+        val registerInputHeightFt = activity.findViewById<EditText>(R.id.register_input_height_in)
+        val registerInputHeightIn = activity.findViewById<EditText>(R.id.register_input_height_ft)
+
+        val registerInputWeight = activity.findViewById<EditText>(R.id.register_input_weight)
+
+        val registerRBGenderMale =
+            activity.findViewById<RadioButton>(R.id.register_radio_button_gender_male)
+        val registerRBGenderFemale =
+            activity.findViewById<RadioButton>(R.id.register_radio_button_gender_female)
+
+        val heightCm = registerInputHeightCm.text.toString().toFloatOrNull()
+        val heightFt = registerInputHeightFt.text.toString().toIntOrNull()
+        val heightIn = registerInputHeightIn.text.toString().toIntOrNull()
 
         if (heightUnit == Enums.HeightUnit.Centimeters && (heightCm == null || heightCm <= 0f)) {
             isValid = false
-            register_input_height_cm.error = getString(R.string.error_height_input)
+            registerInputHeightCm.error = getString(R.string.error_height_input)
         }
         if (heightUnit == Enums.HeightUnit.Feet && (heightFt == null || heightFt <= 0)) {
             isValid = false
-            register_input_height_ft.error = getString(R.string.error_height_input)
+            registerInputHeightFt.error = getString(R.string.error_height_input)
         }
         if (heightUnit == Enums.HeightUnit.Feet && (heightIn == null || heightIn <= 0 || heightIn >= 12)) {
             isValid = false
-            register_input_height_in.error = getString(R.string.error_height_input)
+            registerInputHeightIn.error = getString(R.string.error_height_input)
         }
 
-        val weight = register_input_weight.text.toString().toFloatOrNull()
+        val weight = registerInputWeight.text.toString().toFloatOrNull()
         if (weight == null || weight <= 0) {
             isValid = false
-            register_input_weight.error = getString(R.string.error_weight_input)
+            registerInputWeight.error = getString(R.string.error_weight_input)
         }
 
-        if(!register_radio_button_gender_male.isChecked && !register_radio_button_gender_female.isChecked){
+        if (!registerRBGenderMale.isChecked && !registerRBGenderFemale.isChecked) {
             isValid = false
-            register_radio_button_gender_male.error = getString(R.string.error_gender_button)
-            register_radio_button_gender_female.error = getString(R.string.error_gender_button)
+            registerRBGenderMale.error = getString(R.string.error_gender_button)
+            registerRBGenderFemale.error = getString(R.string.error_gender_button)
         }
 
         return isValid

@@ -12,10 +12,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.models.MealDTO
 import com.example.dietapp.models.RecordMealDTO
-import com.google.android.material.button.MaterialButton
 import java.util.*
 
 class RecordMealAdapter(
@@ -24,29 +24,25 @@ class RecordMealAdapter(
 ) :
     RecyclerView.Adapter<RecordMealAdapter.ViewHolder>(), Filterable {
 
-    private val meals = mutableListOf<MealDTO>()
-    private val filteredMeals = mutableListOf<MealDTO>()
-
     private var expandedPosition = -1
     lateinit var recyclerView: RecyclerView
 
     fun replaceMeals(meals: List<MealDTO>) {
-        this.meals.clear()
-        filteredMeals.clear()
-        this.meals.addAll(meals)
-        filteredMeals.addAll(meals)
+        DietApp.meals.clear()
+        DietApp.filteredMeals.clear()
+        DietApp.meals.addAll(meals)
+        DietApp.filteredMeals.addAll(meals)
         notifyDataSetChanged()
     }
 
-    //
     override fun getFilter() = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filteredList = mutableListOf<MealDTO>()
             if (constraint.isNullOrBlank())
-                filteredList.addAll(meals)
+                filteredList.addAll(DietApp.meals)
             else {
                 val pattern = constraint.toString().toLowerCase(Locale.getDefault()).trim()
-                for (item: MealDTO in meals) {
+                for (item: MealDTO in DietApp.meals) {
                     if (item.name.toLowerCase(Locale.getDefault()).contains(pattern))
                         filteredList.add(item)
                 }
@@ -57,11 +53,10 @@ class RecordMealAdapter(
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            filteredMeals.clear()
+            DietApp.filteredMeals.clear()
             @Suppress("UNCHECKED_CAST")
-            filteredMeals.addAll(results?.values as Collection<MealDTO>)
+            DietApp.filteredMeals.addAll(results?.values as Collection<MealDTO>)
             this@RecordMealAdapter.notifyDataSetChanged()
-
         }
     }
 
@@ -76,11 +71,11 @@ class RecordMealAdapter(
     }
 
     override fun getItemCount(): Int {
-        return filteredMeals.size
+        return DietApp.filteredMeals.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val meal = filteredMeals[position]
+        val meal = DietApp.filteredMeals[position]
 
         holder.addMealButton.setOnClickListener {
             // validate
@@ -97,12 +92,12 @@ class RecordMealAdapter(
         }
 
         val isExpanded = position == expandedPosition
-        holder.details.visibility = if(isExpanded) View.VISIBLE else View.GONE
+        holder.details.visibility = if (isExpanded) View.VISIBLE else View.GONE
         holder.itemView.isActivated = isExpanded
         holder.title.setOnClickListener {
             expandedPosition = if (isExpanded) -1 else position
             TransitionManager.beginDelayedTransition(recyclerView)
-            notifyItemChanged(position)
+            notifyDataSetChanged()
         }
 
         holder.title.text = meal.name
@@ -119,7 +114,8 @@ class RecordMealAdapter(
         internal val addMealButton =
             rootItemView.findViewById<CircularProgressButton>(R.id.record_meal_list_item_button_add_meal)
         internal val title = rootItemView.findViewById<TextView>(R.id.record_meal_list_item_title)
-        internal val details = rootItemView.findViewById<ConstraintLayout>(R.id.record_meal_list_item_details)
+        internal val details =
+            rootItemView.findViewById<ConstraintLayout>(R.id.record_meal_list_item_details)
         internal val carbs = rootItemView.findViewById<TextView>(R.id.record_meal_list_item_carbs)
         internal val fats = rootItemView.findViewById<TextView>(R.id.record_meal_list_item_fats)
         internal val protein =

@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dietapp.R
 import com.example.dietapp.ui.recordmeal.RecordMealAdapter
 
-/**
- * A simple [Fragment] subclass.
- */
 class RecordMealAllMealsFragment : RecordMealFragment() {
 
     companion object {

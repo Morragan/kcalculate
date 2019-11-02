@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="88dp"
         android:layout_marginTop="180dp"
         android:src="@mipmap/img_logo_full"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"/>
 
     <ProgressBar
         android:layout_width="match_parent"

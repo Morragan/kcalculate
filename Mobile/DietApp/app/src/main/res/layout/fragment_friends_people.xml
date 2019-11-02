@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.friends.fragments.FriendsPeopleFragment">
+
+    <TextView
+        android:id="@+id/friends_placeholder_people"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/friends_placeholder_people"
+        android:gravity="center" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friends_recycler_view_people"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</FrameLayout>

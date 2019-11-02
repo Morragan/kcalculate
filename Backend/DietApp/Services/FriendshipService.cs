@@ -29,37 +29,37 @@ namespace DietApp.Services
             var friend = userRepository.FindById(friendship.DestUserID);
             if (friend == null) return new FriendshipResponse(false, "User doesn't exist");
 
-            await friendshipRepository.Add(friendship);
-            await unitOfWork.Complete();
+            await friendshipRepository.Add(friendship).ConfigureAwait(false);
+            await unitOfWork.Complete().ConfigureAwait(false);
             return new FriendshipResponse(true, null);
         }
 
         public async Task<FriendshipResponse> Delete(int userId, int friendId)
         {
-            var existingFriendship = await friendshipRepository.Find(userId, friendId);
+            var existingFriendship = await friendshipRepository.Find(userId, friendId).ConfigureAwait(false);
             if (existingFriendship == null) return new FriendshipResponse(false, "Friendship doesn't exist");
             if (existingFriendship.DestUserID == userId && existingFriendship.Status == FriendshipStatus.Blocked)
                 return new FriendshipResponse(false, "You can't unblock yourself");
 
             friendshipRepository.Delete(existingFriendship);
-            await unitOfWork.Complete();
+            await unitOfWork.Complete().ConfigureAwait(false);
 
             return new FriendshipResponse(true, null);
         }
 
         public async Task<IEnumerable<Friendship>> ListRequested(int userId)
         {
-            return await friendshipRepository.ListRequested(userId);
+            return await friendshipRepository.ListRequested(userId).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Friendship>> ListReceived(int userId)
         {
-            return (await friendshipRepository.ListReceived(userId)).Where(f => f.Status != FriendshipStatus.Blocked);
+            return (await friendshipRepository.ListReceived(userId).ConfigureAwait(false)).Where(f => f.Status != FriendshipStatus.Blocked);
         }
 
         public async Task<FriendshipResponse> AcceptFriend(int userId, int friendId)
         {
-            var existingFriendship = await friendshipRepository.Find(userId, friendId);
+            var existingFriendship = await friendshipRepository.Find(userId, friendId).ConfigureAwait(false);
             if (existingFriendship == null || existingFriendship.Status == FriendshipStatus.Blocked)
                 return new FriendshipResponse(false, "Friend request doesn't exist");
 
@@ -68,14 +68,14 @@ namespace DietApp.Services
 
             existingFriendship.Status = FriendshipStatus.Accepted;
             friendshipRepository.Update(existingFriendship);
-            await unitOfWork.Complete();
+            await unitOfWork.Complete().ConfigureAwait(false);
 
             return new FriendshipResponse(true, null);
         }
 
         public async Task<FriendshipResponse> BlockUser(int userId, int blockedUserId)
         {
-            var existingFriendship = await friendshipRepository.Find(userId, blockedUserId);
+            var existingFriendship = await friendshipRepository.Find(userId, blockedUserId).ConfigureAwait(false);
             if (existingFriendship == null)
             {
                 var friendship = new Friendship()
@@ -85,20 +85,20 @@ namespace DietApp.Services
                     Status = FriendshipStatus.Blocked,
                     StartDate = DateTime.Now
                 };
-                await friendshipRepository.Add(friendship);
+                await friendshipRepository.Add(friendship).ConfigureAwait(false);
             }
             else
             {
                 existingFriendship.Status = FriendshipStatus.Accepted;
                 friendshipRepository.Update(existingFriendship);
             }
-            await unitOfWork.Complete();
+            await unitOfWork.Complete().ConfigureAwait(false);
             return new FriendshipResponse(true, null);
         }
 
         public async Task<(IEnumerable<(User, FriendshipStatus)> requestedFriends, IEnumerable<(User, FriendshipStatus)> receivedFriends)> GetUserFriends(int userId)
         {
-            var userIncludeFriendships = await userRepository.FindByIdIncludeFriendships(userId);
+            var userIncludeFriendships = await userRepository.FindByIdIncludeFriendships(userId).ConfigureAwait(false);
             var requestedFriends = (IEnumerable<(User, FriendshipStatus)>)userIncludeFriendships.RequestedFriendships.Select(f => (f.DestUser, f.Status));
             var receivedFriends = (IEnumerable<(User, FriendshipStatus)>)userIncludeFriendships.ReceivedFriendships
                 .Where(f => f.Status != FriendshipStatus.Blocked).Select(f => (f.SrcUser, f.Status));

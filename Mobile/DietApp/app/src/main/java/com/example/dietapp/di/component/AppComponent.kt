@@ -5,13 +5,14 @@ import android.content.SharedPreferences
 import com.example.dietapp.api.AccountService
 import com.example.dietapp.di.module.ApiModule
 import com.example.dietapp.di.module.AppModule
+import com.example.dietapp.di.module.DatabaseModule
 import com.example.dietapp.ui.main.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, ApiModule::class])
+@Component(modules = [AppModule::class, ApiModule::class, DatabaseModule::class])
 interface AppComponent {
     fun newActivityComponent(): ActivityComponent
 

@@ -137,5 +137,18 @@ namespace DietApp.Controllers
                 receivedFriends = receivedFriendsViewModel
             });
         }
+
+        [HttpGet]
+        [Route("search")]
+        public IActionResult SearchPeople(string nickname)
+        {
+            if (nickname == null || nickname.Length == 0) return BadRequest(ModelState);
+
+            var users = userService.FindByNicknameContains(nickname);
+            var usersViewModel = mapper.Map<IEnumerable<User>, IEnumerable<SearchUserViewModel>>(users);
+
+            return Ok(usersViewModel);
+        }
+
     }
 }

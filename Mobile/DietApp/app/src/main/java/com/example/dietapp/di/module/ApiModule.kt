@@ -2,6 +2,7 @@ package com.example.dietapp.di.module
 
 import android.content.SharedPreferences
 import com.example.dietapp.api.AccountService
+import com.example.dietapp.api.SocialService
 import com.example.dietapp.api.MealEntriesService
 import com.example.dietapp.api.MealsService
 import com.example.dietapp.utils.Constants
@@ -136,5 +137,12 @@ object ApiModule {
     @JvmStatic
     fun provideMealEntriesService(retrofit: Retrofit): MealEntriesService {
         return retrofit.create(MealEntriesService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideFriendsService(retrofit: Retrofit): SocialService {
+        return retrofit.create(SocialService::class.java)
     }
 }
