@@ -7,19 +7,18 @@ import com.example.dietapp.ui.register.fragments.*
 class RegisterPagerAdapter(fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     companion object {
-        private const val FRAGMENTS_COUNT = 6
+        private const val FRAGMENTS_COUNT = 5
     }
 
-    private val fragments: List<RegisterFragment> = listOf(
-        RegisterMethodFragment(),
-        RegisterBasicsFragment(),
-        RegisterMeasurementsFragment(),
-        RegisterQuizFragment(),
-        RegisterFatPercentageFragment(),
-        RegisterResultFragment()
-    )
+    override fun getItem(position: Int) = when (position) {
+        0 -> RegisterMethodFragment()
+        1 -> RegisterBasicsFragment()
+        2 -> RegisterMeasurementsFragment()
+        3 -> RegisterQuizFragment()
+        else -> RegisterResultFragment()
 
-    override fun getItem(position: Int) = fragments[position]
+//        4->RegisterFatPercentageFragment()
+    }
 
     override fun getCount() = FRAGMENTS_COUNT
 }

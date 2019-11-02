@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_register_fat_percentage.*
  * A simple [Fragment] subclass.
  */
 class RegisterFatPercentageFragment : RegisterFragment() {
-    override fun passData() {
+    override fun passData(activity: RegisterActivity) {
         val registerActivity = activity as RegisterActivity
         val fatPercentage = when {
             register_radio_button_fat_class1.isChecked -> Enums.BodyFatPercentage.Class1
@@ -28,7 +28,7 @@ class RegisterFatPercentageFragment : RegisterFragment() {
         registerActivity.fatPercentage = fatPercentage
     }
 
-    override fun validate() = true
+    override fun validate(activity: RegisterActivity) = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

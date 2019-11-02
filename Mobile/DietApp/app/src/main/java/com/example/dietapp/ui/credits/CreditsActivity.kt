@@ -70,7 +70,8 @@ class CreditsActivity : AppCompatActivity() {
                     6 -> sync()
                     7 -> startActivity(Intent(this@CreditsActivity, LoginActivity::class.java))
                 }
-                return true
+                drawer.closeDrawer()
+                return false
             }
         }
 
@@ -80,6 +81,7 @@ class CreditsActivity : AppCompatActivity() {
             accountHeader,
             onDrawerItemClickListener
         ).build()
+        drawer.setSelection(5)
     }
 
     // TODO:synchronize

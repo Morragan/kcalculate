@@ -188,6 +188,7 @@ class HomePresenter @Inject constructor(
                         apply()
                     }
                     mvpView?.logout()
+                    return
                 }
                 val token = response.body()!!
                 with(sharedPreferences.edit()) {
@@ -196,7 +197,7 @@ class HomePresenter @Inject constructor(
                     putLong(Constants.sharedPreferencesKeyTokenExpiration, token.expiration)
                     commit()
                 }
-                mvpView?.logout()
+                //mvpView?.logout()
             }
         })
     }

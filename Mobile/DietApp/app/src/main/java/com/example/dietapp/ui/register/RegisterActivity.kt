@@ -12,7 +12,7 @@ import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.register.fragments.RegisterBasicsFragment
-import com.example.dietapp.ui.register.fragments.RegisterFatPercentageFragment
+import com.example.dietapp.ui.register.fragments.RegisterQuizFragment
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
 import com.example.dietapp.utils.Enums
@@ -38,11 +38,22 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
 
     lateinit var fatPercentage: Enums.BodyFatPercentage
 
-    var calorieLimit: Int = 2000
+    var calorieLimit: Int = 2500
+    var carbsLimit: Int = 0
+    var fatLimit: Int = 0
+    var proteinLimit: Int = 0
 
-    override fun showCalorieLimit(calorieLimit: Int) {
-        register_view_pager.currentItem = register_view_pager.adapter!!.count - 1
+    override fun showCalorieLimit(
+        calorieLimit: Int,
+        carbsLimit: Int,
+        fatLimit: Int,
+        proteinLimit: Int
+    ) {
         this.calorieLimit = calorieLimit
+        this.carbsLimit = carbsLimit
+        this.fatLimit = fatLimit
+        this.proteinLimit = proteinLimit
+        register_view_pager.currentItem = register_view_pager.adapter!!.count - 1
     }
 
     override fun showConnectionFailure() {
@@ -105,21 +116,20 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
         register_button_proceed.setOnClickListener {
             val position = register_view_pager.currentItem
             val fragment = (register_view_pager.adapter as RegisterPagerAdapter).getItem(position)
-            if (!fragment.validate()) return@setOnClickListener
+            if (!fragment.validate(this)) return@setOnClickListener
 
-            fragment.passData()
+            fragment.passData(this)
 
             if (fragment is RegisterBasicsFragment)
                 builder.show()
 
-            if (fragment is RegisterFatPercentageFragment) {
+            if (fragment is RegisterQuizFragment) {
                 presenter.calculateCalorieLimit(
                     heightCm,
                     weightKg,
                     gender,
                     weightGoal,
-                    activityLevel,
-                    fatPercentage
+                    activityLevel
                 )
                 return@setOnClickListener
             }
@@ -137,6 +147,11 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
                 calorieLimit
             )
         }
+    }
+
+    override fun onBackPressed() {
+        if (register_view_pager.currentItem == 0) super.onBackPressed()
+        else register_view_pager.currentItem--
     }
 
     override fun onStart() {

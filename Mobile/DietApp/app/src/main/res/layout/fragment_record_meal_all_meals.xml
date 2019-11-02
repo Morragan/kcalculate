@@ -6,7 +6,7 @@
     tools:context=".ui.recordmeal.fragments.RecordMealAllMealsFragment">
 
     <TextView
-        android:id="@+id/record_meal_placeholer_all_meals"
+        android:id="@+id/record_meal_placeholder_all_meals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

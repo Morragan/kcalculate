@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -41,15 +42,20 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
     }
 
     override fun replaceUserMeals(meals: List<MealDTO>) {
-        viewPagerAdapter.getItem(0).adapter?.replaceMeals(meals)
+        val adapter = viewPagerAdapter.getItem(0).adapter
+        adapter?.replaceMeals(meals)
+        adapter?.filter?.filter("")
         findViewById<RecyclerView>(R.id.record_meal_recycler_view_my_meals).visibility =
             View.VISIBLE
-        findViewById<TextView>(R.id.record_meal_placeholer_my_meals).visibility = View.GONE
+        findViewById<ProgressBar>(R.id.record_meal_placeholder_my_meals).visibility = View.GONE
 
     }
 
     override fun onAddMealClick(meal: RecordMealDTO) {
         presenter.recordMeal(meal)
+        val button =
+            findViewById<CircularProgressButton?>(R.id.record_meal_list_item_button_add_meal)
+        button?.startAnimation()
     }
 
     override fun logout() {
@@ -133,7 +139,7 @@ class RecordMealActivity : AppCompatActivity(), RecordMealView,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.requestCodeCreateMeal) {
-            presenter.getMeals()
+            if (resultCode == RESULT_OK) presenter.getMeals()
         } else if (requestCode == Constants.requestCodeScanBarcode) {
             val result: IntentResult? =
                 IntentIntegrator.parseActivityResult(requestCode, resultCode, data)

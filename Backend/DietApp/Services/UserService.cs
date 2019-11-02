@@ -26,47 +26,47 @@ namespace DietApp.Services
         }
         public async Task<CreateUserResponse> Create(User user)
         {
-            var existingUser = await userRepository.FindByEmail(user.Email);
+            var existingUser = await userRepository.FindByEmail(user.Email).ConfigureAwait(false);
             if (existingUser != null)
                 return new CreateUserResponse(false, "Email already in use", null);
 
-            existingUser = await userRepository.FindByNickname(user.Nickname);
+            existingUser = await userRepository.FindByNickname(user.Nickname).ConfigureAwait(false);
             if (existingUser != null)
                 return new CreateUserResponse(false, "Nickname already in use", null);
 
             user.Password = passwordHasher.HashPassword(user.Password);
             user.JoinDate = DateTime.UtcNow;
 
-            await userRepository.Add(user);
-            await unitOfWork.Complete();
+            await userRepository.Add(user).ConfigureAwait(false);
+            await unitOfWork.Complete().ConfigureAwait(false);
 
             return new CreateUserResponse(true, null, user);
         }
 
         public async Task<UpdateUserResponse> Update(User user)
         {
-            var existingUser = await userRepository.FindById(user.ID);
+            var existingUser = await userRepository.FindById(user.ID).ConfigureAwait(false);
             if (existingUser == null) return new UpdateUserResponse(false, "User does not exist", null);
 
-            await userRepository.Update(user);
-            await unitOfWork.Complete();
+            await userRepository.Update(user).ConfigureAwait(false);
+            await unitOfWork.Complete().ConfigureAwait(false);
 
             return new UpdateUserResponse(true, null, user);
         }
 
         public async Task<User> FindById(int id)
         {
-            return await userRepository.FindById(id);
+            return await userRepository.FindById(id).ConfigureAwait(false);
         }
 
         public async Task<User> FindByNickname(string nickname)
         {
-            return await userRepository.FindByNickname(nickname);
+            return await userRepository.FindByNickname(nickname).ConfigureAwait(false);
         }
 
         public async Task<User> FindByEmail(string email)
         {
-            return await userRepository.FindByEmail(email);
+            return await userRepository.FindByEmail(email).ConfigureAwait(false);
         }
 
         public int GetCurrentUserId(HttpContext httpContext)
@@ -76,7 +76,7 @@ namespace DietApp.Services
 
         public async Task<IEnumerable<User>> List()
         {
-            return await userRepository.List();
+            return await userRepository.List().ConfigureAwait(false);
         }
 
         public IEnumerable<User> FindByIdRange(IEnumerable<int> ids)
@@ -86,7 +86,12 @@ namespace DietApp.Services
 
         public async Task<User> FindByIdIncludeFriendships(int id)
         {
-            return await userRepository.FindByIdIncludeFriendships(id);
+            return await userRepository.FindByIdIncludeFriendships(id).ConfigureAwait(false);
+        }
+
+        public IEnumerable<User> FindByNicknameContains(string nickname)
+        {
+            return userRepository.FindByNicknameContains(nickname).Where(user => !user.IsPrivate);
         }
     }
 }

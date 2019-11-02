@@ -14,5 +14,6 @@ namespace DietApp.Domain.Repositories
         Task<User> FindByIdIncludeFriendships(int id);
         Task<User> FindByEmail(string email);
         Task<User> FindByNickname(string nickname);
+        IEnumerable<User> FindByNicknameContains(string nickname);
     }
 }

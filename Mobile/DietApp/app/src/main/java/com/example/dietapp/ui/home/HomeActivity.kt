@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dietapp.DietApp
-import com.example.dietapp.utils.DietDrawerBuilder
 import com.example.dietapp.R
 import com.example.dietapp.ui.credits.CreditsActivity
 import com.example.dietapp.ui.friends.FriendsActivity
@@ -16,6 +15,7 @@ import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.nointernet.NoInternetActivity
 import com.example.dietapp.ui.profile.ProfileActivity
 import com.example.dietapp.ui.recordmeal.RecordMealActivity
+import com.example.dietapp.utils.DietDrawerBuilder
 import com.example.dietapp.utils.Methods
 import com.example.dietapp.utils.ProgressBarAnimator
 import com.mikepenz.materialdrawer.AccountHeader
@@ -183,14 +183,15 @@ class HomeActivity : AppCompatActivity(), HomeView {
                 position: Int,
                 drawerItem: IDrawerItem<*>
             ): Boolean {
-                when(position){
+                when (position) {
                     2 -> startActivity(Intent(this@HomeActivity, FriendsActivity::class.java))
                     3 -> startActivity(Intent(this@HomeActivity, GoalsActivity::class.java))
                     5 -> startActivity(Intent(this@HomeActivity, CreditsActivity::class.java))
                     6 -> sync()
                     7 -> startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
                 }
-                return true
+                drawer.closeDrawer()
+                return false
             }
         }
 
@@ -200,7 +201,7 @@ class HomeActivity : AppCompatActivity(), HomeView {
             accountHeader,
             onDrawerItemClickListener
         ).build()
-
+        drawer.setSelection(1)
 
         home_add_fab.setOnClickListener {
             startActivity(Intent(this, RecordMealActivity::class.java))
@@ -235,5 +236,5 @@ class HomeActivity : AppCompatActivity(), HomeView {
         super.onStop()
     }
 
-    private fun sync(){}
+    private fun sync() {}
 }

@@ -31,7 +31,7 @@ class CreateMealPresenter @Inject constructor(
             override fun onResponse(call: Call<List<MealDTO>>, response: Response<List<MealDTO>>) {
                 if (!response.isSuccessful) {
                     if (response.code() == 401) tryRefreshToken()
-                    mvpView?.logout()
+                    return
                 }
                 mvpView?.onSuccess()
             }

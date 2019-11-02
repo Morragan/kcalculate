@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.Fragment
 import com.example.dietapp.R
 import com.example.dietapp.ui.register.RegisterActivity
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_register_result.*
 
 class RegisterResultFragment : RegisterFragment() {
-    override fun validate() = true
+    override fun validate(activity: RegisterActivity) = true
 
-    override fun passData() {}
+    override fun passData(activity: RegisterActivity) {}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +25,6 @@ class RegisterResultFragment : RegisterFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        register_input_calorie_limit.setText((activity!! as RegisterActivity).calorieLimit.toString())
     }
 
     override fun onResume() {
@@ -36,6 +33,11 @@ class RegisterResultFragment : RegisterFragment() {
 
         proceedButton.visibility = View.GONE
         registerButton.visibility = View.VISIBLE
+
+        register_input_calorie_limit.setText((activity!! as RegisterActivity).calorieLimit.toString())
+        register_input_carbs_limit.setText((activity!! as RegisterActivity).carbsLimit.toString())
+        register_input_fat_limit.setText((activity!! as RegisterActivity).fatLimit.toString())
+        register_input_protein_limit.setText((activity!! as RegisterActivity).proteinLimit.toString())
 
         super.onResume()
     }

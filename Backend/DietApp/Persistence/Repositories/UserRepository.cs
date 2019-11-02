@@ -69,5 +69,10 @@ namespace DietApp.Persistence.Repositories
                    where ids.Contains(user.ID)
                    select user;
         }
+
+        public IEnumerable<User> FindByNicknameContains(string nickname)
+        {
+            return context.Users.Where(user => user.Nickname.Contains(nickname));
+        }
     }
 }
