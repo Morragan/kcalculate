@@ -5,22 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
-import com.example.dietapp.models.MergedFriend
-import com.example.dietapp.models.SearchUserDTO
 import com.example.dietapp.ui.credits.CreditsActivity
 import com.example.dietapp.ui.friends.fragments.FriendsFragment
 import com.example.dietapp.ui.goals.GoalsActivity
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
-import com.example.dietapp.ui.nointernet.NoInternetActivity
 import com.example.dietapp.ui.profile.ProfileActivity
 import com.example.dietapp.utils.DietDrawerBuilder
+import com.example.dietapp.viewmodels.ViewModelFactory
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -30,69 +28,45 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_friends.*
 import javax.inject.Inject
 
-class FriendsActivity : AppCompatActivity(), FriendsView, FriendsAdapter.AcceptedOnClickListener,
+class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListener,
     FriendsAdapter.PendingOnClickListener, FriendsAdapter.BlockedOnClickListener {
 
     @Inject
-    lateinit var presenter: FriendsPresenter
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var drawer: Drawer
     private lateinit var profileDrawerItem: ProfileDrawerItem
     private lateinit var accountHeader: AccountHeader
 
     private lateinit var viewPagerAdapter: FriendsPagerAdapter
-z
-    override fun showConnectionError() {
-        startActivityForResult(Intent(this, NoInternetActivity::class.java), -1)
-    }
 
-    override fun logout() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
-
-    override fun replaceFriends(friends: List<MergedFriend>) {
-        val adapter = viewPagerAdapter.getItem(0).adapter
-        adapter?.replaceUsers(friends)
-        adapter?.filter?.filter("")
-        findViewById<RecyclerView>(R.id.friends_recycler_view_friends).visibility =
-            View.VISIBLE
-        findViewById<ProgressBar>(R.id.friends_placeholder_friends).visibility = View.GONE
-
-    }
-
-    override fun replaceUsers(users: List<SearchUserDTO>) {
-
-    }
-
-    override fun showOperationResult(isSuccessful: Boolean) {
-
-    }
+    private lateinit var viewModel: FriendsViewModel
 
     override fun onUnfriendClick(friendId: Int) {
-        presenter.deleteFriend(friendId)
+        viewModel.deleteUser(friendId)
     }
 
     override fun onBlockClick(userId: Int) {
-        presenter.blockUser(userId)
+        viewModel.blockUser(userId)
     }
 
     override fun onAcceptClick(friendId: Int) {
-        presenter.acceptFriend(friendId)
+        viewModel.acceptFriendRequest(friendId)
     }
 
     override fun onRejectClick(friendId: Int) {
-        presenter.deleteFriend(friendId)
+        viewModel.deleteUser(friendId)
     }
 
     override fun onUnblockClick(userId: Int) {
-        presenter.deleteFriend(userId)
+        viewModel.deleteUser(userId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friends)
 
-        (application as DietApp).appComponent.newActivityComponent().inject(this)
+        (application as DietApp).appComponent.inject(this)
 
         setSupportActionBar(friends_toolbar)
 
@@ -147,11 +121,11 @@ z
         ).build()
         drawer.setSelection(2)
 
-        friends_input_search_people.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        friends_input_search_people.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if(query.isNullOrBlank()) return true
+                if (query.isNullOrBlank()) return true
                 if (friends_view_pager.currentItem == 1) {
-                    presenter.searchPeople(query)
+                    viewModel.searchPeople(query)
                 }
                 // Hide keyboard
                 val inputManager =
@@ -163,31 +137,32 @@ z
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(friends_view_pager.currentItem != 0 || newText == null) return false
+                if (friends_view_pager.currentItem != 0 || newText == null) return false
                 getCurrentFragment().adapter?.filter?.filter(newText)
                 return false
             }
-
         })
+
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(FriendsViewModel::class.java)
     }
 
     override fun onStart() {
         super.onStart()
-        presenter.bind(this)
 
         viewPagerAdapter = FriendsPagerAdapter(supportFragmentManager, this)
         friends_view_pager.adapter = viewPagerAdapter
         friends_tabs.setupWithViewPager(friends_view_pager)
 
-        presenter.loadFriends()
-    }
+        viewModel.allFriends.observe(this, Observer {
+            getCurrentFragment().adapter?.replaceUsers(it)
+        })
 
-    override fun onStop() {
-        presenter.unbind()
-        super.onStop()
+        viewModel.fetchFriends()
     }
 
     private fun sync() {}
+
     private fun getCurrentFragment(): FriendsFragment {
         val position = friends_view_pager.currentItem
         return viewPagerAdapter.getItem(position)

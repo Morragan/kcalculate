@@ -7,7 +7,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
-import com.example.dietapp.models.MergedFriend
+import com.example.dietapp.models.entity.Friend
 import java.util.*
 
 class FriendsAdapter(
@@ -16,7 +16,7 @@ class FriendsAdapter(
     private val blockedOnClickListener: BlockedOnClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    fun replaceUsers(users: List<MergedFriend>) {
+    fun replaceUsers(users: List<Friend>) {
         DietApp.friends.clear()
         DietApp.filteredFriends.clear()
         DietApp.friends.addAll(users)
@@ -26,12 +26,12 @@ class FriendsAdapter(
 
     override fun getFilter() = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList = mutableListOf<MergedFriend>()
+            val filteredList = mutableListOf<Friend>()
             if (constraint.isNullOrBlank())
                 filteredList.addAll(DietApp.friends)
             else {
                 val pattern = constraint.toString().toLowerCase(Locale.getDefault()).trim()
-                for (item: MergedFriend in DietApp.friends) {
+                for (item: Friend in DietApp.friends) {
                     if (item.nickname.toLowerCase(Locale.getDefault()).contains(pattern))
                         filteredList.add(item)
                 }
@@ -44,7 +44,7 @@ class FriendsAdapter(
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             DietApp.filteredFriends.clear()
             @Suppress("UNCHECKED_CAST")
-            DietApp.filteredFriends.addAll(results?.values as Collection<MergedFriend>)
+            DietApp.filteredFriends.addAll(results?.values as Collection<Friend>)
             this@FriendsAdapter.notifyDataSetChanged()
         }
     }

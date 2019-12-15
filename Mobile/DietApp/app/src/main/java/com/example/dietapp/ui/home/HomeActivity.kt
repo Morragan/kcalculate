@@ -2,22 +2,22 @@ package com.example.dietapp.ui.home
 
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ui.credits.CreditsActivity
 import com.example.dietapp.ui.friends.FriendsActivity
 import com.example.dietapp.ui.goals.GoalsActivity
 import com.example.dietapp.ui.login.LoginActivity
-import com.example.dietapp.ui.nointernet.NoInternetActivity
 import com.example.dietapp.ui.profile.ProfileActivity
 import com.example.dietapp.ui.recordmeal.RecordMealActivity
 import com.example.dietapp.utils.DietDrawerBuilder
-import com.example.dietapp.utils.Methods
 import com.example.dietapp.utils.ProgressBarAnimator
+import com.example.dietapp.viewmodels.ViewModelFactory
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -25,124 +25,18 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_home.*
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 
-class HomeActivity : AppCompatActivity(), HomeView {
+class HomeActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var presenter: HomePresenter
+    lateinit var viewModelFactory: ViewModelFactory
 
+    private lateinit var viewModel: HomeViewModel
     private lateinit var drawer: Drawer
     private lateinit var profileDrawerItem: ProfileDrawerItem
     private lateinit var accountHeader: AccountHeader
-
-    override fun showConnectionError() {
-        startActivityForResult(Intent(this, NoInternetActivity::class.java), -1)
-    }
-
-    override fun logout() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
-
-    override fun changeDay(date: Date) {
-        when {
-            Methods.datesAreTheSameDay(date, Date()) -> home_text_day.setText(R.string.today)
-            Methods.datesAreTheSameDay(
-                date,
-                Methods.offsetDate(Date(), -1)
-            ) -> home_text_day.setText(
-                R.string.yesterday
-            )
-            else -> {
-                val formatter = SimpleDateFormat("EEE, d MMM yy", Locale.getDefault())
-                home_text_day.text = formatter.format(date)
-            }
-        }
-    }
-
-    override fun updateProfile(name: String, email: String, avatarLink: Uri) {
-        profileDrawerItem = profileDrawerItem.withName(name).withEmail(email)
-        accountHeader.updateProfile(profileDrawerItem)
-    }
-
-    override fun updateKcalProgress(
-        progress: Float,
-        goal: Int,
-        eaten: Int,
-        left: Int,
-        progressBarColorId: Int
-    ) {
-        runOnUiThread {
-            home_cpb.setProgressWithAnimation(progress, 800)
-            home_text_goal.text = goal.toString()
-            home_text_eaten.text = eaten.toString()
-            home_text_left.text = left.toString()
-            home_cpb.progressBarColor = getColor(progressBarColorId)
-        }
-    }
-
-    override fun updateCarbsProgress(
-        progress: Int,
-        goal: Int,
-        eaten: Int,
-        left: Int,
-        progressBarColorId: Int
-    ) {
-        runOnUiThread {
-            home_progress_bar_carbs.isIndeterminate = false
-            ProgressBarAnimator(home_progress_bar_carbs, 1200).setProgress(progress)
-            home_text_carbs_goal.text = goal.toString()
-            home_text_carbs_eaten.text = eaten.toString()
-            home_text_carbs_left.text = left.toString()
-            home_progress_bar_carbs.progressDrawable.setColorFilter(
-                getColor(progressBarColorId),
-                PorterDuff.Mode.SRC_IN
-            )
-        }
-    }
-
-    override fun updateFatProgress(
-        progress: Int,
-        goal: Int,
-        eaten: Int,
-        left: Int,
-        progressBarColorId: Int
-    ) {
-        runOnUiThread {
-            home_progress_bar_fats.isIndeterminate = false
-            ProgressBarAnimator(home_progress_bar_fats, 1200).setProgress(progress)
-            home_text_fats_goal.text = goal.toString()
-            home_text_fats_eaten.text = eaten.toString()
-            home_text_fats_left.text = left.toString()
-            home_progress_bar_fats.progressDrawable.setColorFilter(
-                getColor(progressBarColorId),
-                PorterDuff.Mode.SRC_IN
-            )
-        }
-    }
-
-    override fun updateProteinProgress(
-        progress: Int,
-        goal: Int,
-        eaten: Int,
-        left: Int,
-        progressBarColorId: Int
-    ) {
-        runOnUiThread {
-            home_progress_bar_proteins.isIndeterminate = false
-            ProgressBarAnimator(home_progress_bar_proteins, 1200).setProgress(progress)
-            home_text_proteins_goal.text = goal.toString()
-            home_text_proteins_eaten.text = eaten.toString()
-            home_text_proteins_left.text = left.toString()
-            home_progress_bar_proteins.progressDrawable.setColorFilter(
-                getColor(progressBarColorId),
-                PorterDuff.Mode.SRC_IN
-            )
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,8 +44,8 @@ class HomeActivity : AppCompatActivity(), HomeView {
 
         setSupportActionBar(home_toolbar)
 
-        val activityComponent = (application as DietApp).appComponent.newActivityComponent()
-        activityComponent.inject(this)
+        (application as DietApp).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
         profileDrawerItem = ProfileDrawerItem().withName("Name").withIdentifier(0)
 
@@ -208,11 +102,11 @@ class HomeActivity : AppCompatActivity(), HomeView {
         }
 
         home_button_day_back.setOnClickListener {
-            presenter.onDateButtonBackward()
+            viewModel.onDateButtonBackward()
         }
 
         home_button_day_forward.setOnClickListener {
-            presenter.onDateButtonForward()
+            viewModel.onDateButtonForward()
         }
 
         home_app_bar.setOnMenuItemClickListener {
@@ -222,18 +116,67 @@ class HomeActivity : AppCompatActivity(), HomeView {
 
             return@setOnMenuItemClickListener true
         }
+
+        // region ViewModel observers setup
+        viewModel.selectedDateString.observe(this, Observer {
+            home_text_day.text = it
+        })
+
+        viewModel.selectedDateMealsSummary.observe(this, Observer {
+            if (it == null) {
+                return@Observer
+            }
+            // calories
+            home_cpb.setProgressWithAnimation(it.kcalProgress, 800)
+            home_text_goal.text = it.kcalGoal.toString()
+            home_text_eaten.text = it.kcalEaten.toString()
+            home_text_left.text = it.kcalLeft.toString()
+            home_cpb.progressBarColor = getColor(it.kcalProgressColorId)
+
+            // carbs
+            home_progress_bar_carbs.isIndeterminate = false
+            ProgressBarAnimator(home_progress_bar_carbs, 1200).setProgress(it.carbsProgress)
+            home_text_carbs_goal.text = it.carbsGoal.toString()
+            home_text_carbs_eaten.text = it.carbsEaten.toString()
+            home_text_carbs_left.text = it.carbsLeft.toString()
+            home_progress_bar_carbs.progressDrawable.setColorFilter(
+                getColor(it.carbsProgressColorId),
+                PorterDuff.Mode.SRC_IN
+            )
+
+            // fats
+            home_progress_bar_fats.isIndeterminate = false
+            ProgressBarAnimator(home_progress_bar_fats, 1200).setProgress(it.fatProgress)
+            home_text_fats_goal.text = it.fatGoal.toString()
+            home_text_fats_eaten.text = it.fatEaten.toString()
+            home_text_fats_left.text = it.fatLeft.toString()
+            home_progress_bar_fats.progressDrawable.setColorFilter(
+                getColor(it.fatProgressColorId),
+                PorterDuff.Mode.SRC_IN
+            )
+
+            // proteins
+            home_progress_bar_proteins.isIndeterminate = false
+            ProgressBarAnimator(home_progress_bar_proteins, 1200).setProgress(it.proteinProgress)
+            home_text_proteins_goal.text = it.proteinGoal.toString()
+            home_text_proteins_eaten.text = it.proteinEaten.toString()
+            home_text_proteins_left.text = it.proteinLeft.toString()
+            home_progress_bar_proteins.progressDrawable.setColorFilter(
+                getColor(it.proteinProgressColorId),
+                PorterDuff.Mode.SRC_IN
+            )
+        })
+
+        viewModel.user.observe(this, Observer {
+            profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email)
+            accountHeader.updateProfile(profileDrawerItem)
+        })
+        // endregion
     }
 
     override fun onStart() {
         super.onStart()
-        presenter.bind(this)
-
-        presenter.loadData()
-    }
-
-    override fun onStop() {
-        presenter.unbind()
-        super.onStop()
+        viewModel.fetchMealEntries()
     }
 
     private fun sync() {}

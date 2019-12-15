@@ -4,29 +4,33 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
-import android.transition.Explode
-import android.transition.Slide
 import android.view.View
-import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
+import com.example.dietapp.models.dto.LoginDTO
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.register.RegisterActivity
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
+import com.example.dietapp.utils.removeToken
+import com.example.dietapp.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), LoginView {
+class LoginActivity : AppCompatActivity() {
     @Inject
-    lateinit var presenter: LoginPresenter
+    lateinit var viewModelFactory: ViewModelFactory
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    override fun showErrorMessage(message: String) {
+    lateinit var viewModel: LoginViewModel
+
+    private fun showErrorMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.error),
@@ -37,7 +41,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         }, 1000)
     }
 
-    override fun startHomeActivity() {
+    private fun startHomeActivity() {
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.success),
             Converters.drawableToBitmap(getDrawable(R.drawable.ic_done_white)!!)
@@ -45,12 +49,12 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         Handler().postDelayed({
             login_button_login.revertAnimation()
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
         }, 1000)
-
-        startActivity(Intent(this, HomeActivity::class.java))
     }
 
-    override fun showConnectionFailure() {
+    private fun showConnectionFailure() {
         login_text_connection_failure.visibility = View.VISIBLE
 
         login_button_login.doneLoadingAnimation(
@@ -67,19 +71,15 @@ class LoginActivity : AppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val activityComponent = (application as DietApp).appComponent.newActivityComponent()
-        activityComponent.inject(this)
+        (application as DietApp).appComponent.inject(this)
 
-        with(sharedPreferences.edit()) {
-            remove(Constants.sharedPreferencesKeyAccessToken)
-            remove(Constants.sharedPreferencesKeyRefreshToken)
-            remove(Constants.sharedPreferencesKeyTokenExpiration)
-            apply()
-        }
+        viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
-        val nickname = intent.getStringExtra(Constants.intentKeyRegisterToLoginNickname)
-        if (nickname != null) {
-            login_input_nickname.setText(nickname)
+        sharedPreferences.removeToken()
+
+        val savedNickname = intent.getStringExtra(Constants.intentKeyRegisterToLoginNickname)
+        if (savedNickname != null) {
+            login_input_nickname.setText(savedNickname)
         }
 
         login_button_login.setOnClickListener {
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
             val nickname = login_input_nickname.text.toString()
             val password = login_input_password.text.toString()
-            presenter.onLoginButtonClick(nickname, password)
+            viewModel.login(LoginDTO(nickname, password))
 
             login_button_login.startAnimation()
         }
@@ -95,16 +95,12 @@ class LoginActivity : AppCompatActivity(), LoginView {
         login_link_register.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.bind(this)
-    }
-
-    override fun onStop() {
-        presenter.unbind()
-        super.onStop()
+        // region LiveData observers setup
+        viewModel.isLoggedIn.observe(this, Observer { loggedIn ->
+            if(loggedIn) startHomeActivity()
+        })
+        // endregion
     }
 
     private fun validateForm(): Boolean {

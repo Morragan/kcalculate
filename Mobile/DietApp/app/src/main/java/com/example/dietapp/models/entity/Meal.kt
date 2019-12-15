@@ -1,0 +1,15 @@
+package com.example.dietapp.models.entity
+
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.dietapp.models.Nutrients
+
+@Entity(tableName = "meal")
+data class Meal(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    val name: String,
+    @Embedded val nutrients: Nutrients,
+    @ColumnInfo(name = "is_loading") var isLoading: Boolean = false
+)

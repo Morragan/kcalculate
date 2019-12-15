@@ -3,10 +3,10 @@ package com.example.dietapp
 import android.app.Application
 import com.example.dietapp.di.component.AppComponent
 import com.example.dietapp.di.component.DaggerAppComponent
-import com.example.dietapp.models.MealDTO
-import com.example.dietapp.models.MealEntryDTO
-import com.example.dietapp.models.MergedFriend
-import com.example.dietapp.models.UserDTO
+import com.example.dietapp.models.dto.MealDTO
+import com.example.dietapp.models.dto.MealEntryDTO
+import com.example.dietapp.models.entity.Friend
+import com.example.dietapp.models.dto.UserDTO
 
 class DietApp : Application() {
     lateinit var appComponent: AppComponent
@@ -18,8 +18,8 @@ class DietApp : Application() {
         var meals: MutableList<MealDTO> = mutableListOf()
         var filteredMeals: MutableList<MealDTO> = mutableListOf()
         var user: UserDTO? = null
-        var friends: MutableList<MergedFriend> = mutableListOf()
-        var filteredFriends: MutableList<MergedFriend> = mutableListOf()
+        var friends: MutableList<Friend> = mutableListOf()
+        var filteredFriends: MutableList<Friend> = mutableListOf()
 
     }
 

@@ -4,10 +4,10 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ui.login.LoginActivity
@@ -16,13 +16,15 @@ import com.example.dietapp.ui.register.fragments.RegisterQuizFragment
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
 import com.example.dietapp.utils.Enums
+import com.example.dietapp.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.fragment_register_result.*
 import javax.inject.Inject
 
-class RegisterActivity : AppCompatActivity(), RegisterView {
+class RegisterActivity : AppCompatActivity() {
     @Inject
-    lateinit var presenter: RegisterPresenter
+    lateinit var viewModelFactory: ViewModelFactory
+
+    lateinit var viewModel: RegisterViewModel
 
     lateinit var email: String
     lateinit var nickname: String
@@ -43,64 +45,51 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
     var fatLimit: Int = 0
     var proteinLimit: Int = 0
 
-    override fun showCalorieLimit(
-        calorieLimit: Int,
-        carbsLimit: Int,
-        fatLimit: Int,
-        proteinLimit: Int
-    ) {
-        this.calorieLimit = calorieLimit
-        this.carbsLimit = carbsLimit
-        this.fatLimit = fatLimit
-        this.proteinLimit = proteinLimit
-        register_view_pager.currentItem = register_view_pager.adapter!!.count - 1
-    }
+//    override fun showConnectionFailure() {
+//        register_text_connection_failure.visibility = View.VISIBLE
+//        register_button_register.doneLoadingAnimation(
+//            ContextCompat.getColor(this, R.color.error),
+//            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
+//        )
+//        Handler().postDelayed({
+//            register_button_register.revertAnimation()
+//        }, 1000)
+//    }
 
-    override fun showConnectionFailure() {
-        register_text_connection_failure.visibility = View.VISIBLE
-        register_button_register.doneLoadingAnimation(
-            ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
-        )
-        Handler().postDelayed({
-            register_button_register.revertAnimation()
-        }, 1000)
-    }
+//    override fun showErrorMessage(message: String) {
+//        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+//        register_text_connection_failure.visibility = View.GONE
+//        register_button_register.doneLoadingAnimation(
+//            ContextCompat.getColor(this, R.color.error),
+//            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
+//        )
+//        Handler().postDelayed({
+//            register_button_register.revertAnimation()
+//        }, 1000)
+//    }
 
-    override fun showErrorMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        register_text_connection_failure.visibility = View.GONE
-        register_button_register.doneLoadingAnimation(
-            ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
-        )
-        Handler().postDelayed({
-            register_button_register.revertAnimation()
-        }, 1000)
-    }
-
-    override fun startLoginActivity() {
+    private fun startLoginActivity() {
         register_button_register.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.success),
             Converters.drawableToBitmap(getDrawable(R.drawable.ic_done_white)!!)
         )
 
-        Handler().postDelayed({
-            register_button_register.revertAnimation()
-        }, 1000)
-
-
         val intent = Intent(this, LoginActivity::class.java)
         intent.putExtra(Constants.intentKeyRegisterToLoginNickname, nickname)
-        startActivity(intent)
+
+        Handler().postDelayed({
+            register_button_register.revertAnimation()
+            startActivity(intent)
+        }, 1000)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val activityComponent = (application as DietApp).appComponent.newActivityComponent()
-        activityComponent.inject(this)
+        (application as DietApp).appComponent.inject(this)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(RegisterViewModel::class.java)
 
         val builder = AlertDialog.Builder(this)
         builder.setMessage(R.string.register_dialog_message)
@@ -111,7 +100,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
                 register_view_pager.currentItem = register_view_pager.adapter!!.count - 1
             }
 
-        register_view_pager.adapter = RegisterPagerAdapter(supportFragmentManager)
+        register_view_pager.adapter = RegisterPagerAdapter(supportFragmentManager, viewModel)
 
         register_button_proceed.setOnClickListener {
             val position = register_view_pager.currentItem
@@ -124,7 +113,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
                 builder.show()
 
             if (fragment is RegisterQuizFragment) {
-                presenter.calculateCalorieLimit(
+                viewModel.calculateCalorieLimit(
                     heightCm,
                     weightKg,
                     gender,
@@ -139,7 +128,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
 
         register_button_register.setOnClickListener {
             register_button_register.startAnimation()
-            presenter.onRegisterButtonClick(
+            viewModel.register(
                 email,
                 nickname,
                 password,
@@ -147,20 +136,18 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
                 calorieLimit
             )
         }
+
+        // region LiveData observers setup
+
+        viewModel.isRegistered.observe(this, Observer { isRegistered ->
+            if (isRegistered) startLoginActivity()
+        })
+
+        // endregion
     }
 
     override fun onBackPressed() {
         if (register_view_pager.currentItem == 0) super.onBackPressed()
         else register_view_pager.currentItem--
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.bind(this)
-    }
-
-    override fun onStop() {
-        presenter.unbind()
-        super.onStop()
     }
 }

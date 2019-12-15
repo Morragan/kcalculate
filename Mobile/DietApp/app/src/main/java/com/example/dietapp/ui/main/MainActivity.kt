@@ -1,52 +1,47 @@
 package com.example.dietapp.ui.main
 
-import android.app.ActivityOptions
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.transition.Explode
-import android.transition.Slide
-import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
-import com.example.dietapp.ui.nointernet.NoInternetActivity
+import com.example.dietapp.utils.getToken
+import com.example.dietapp.viewmodels.ViewModelFactory
+import kotlinx.coroutines.Job
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var presenter: MainPresenter
+    lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
-    override fun showConnectionError() {
-        startActivity(Intent(this, NoInternetActivity::class.java))
-    }
-
-    override fun login() {
-        startActivity(Intent(this, HomeActivity::class.java))
-    }
-
-    override fun logout() {
-        startActivity(Intent(this, LoginActivity::class.java))
-
-    }
+    lateinit var viewModel: MainViewModel
+    lateinit var checkLoggedInJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        (application as DietApp).appComponent.newActivityComponent().inject(this)
+        (application as DietApp).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+        val token = sharedPreferences.getToken()
+        if (token.isExpired()) logout()
+        else login()
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.bind(this)
-        presenter.checkUserLoggedIn()
+    private fun login() {
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 
-    override fun onStop() {
-        presenter.unbind()
-        super.onStop()
+    private fun logout() {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
+
 }

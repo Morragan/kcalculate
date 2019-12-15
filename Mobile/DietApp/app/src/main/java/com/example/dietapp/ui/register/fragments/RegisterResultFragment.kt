@@ -8,12 +8,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.example.dietapp.R
 import com.example.dietapp.ui.register.RegisterActivity
+import com.example.dietapp.ui.register.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register_result.*
 
 class RegisterResultFragment : RegisterFragment() {
     override fun validate(activity: RegisterActivity) = true
 
     override fun passData(activity: RegisterActivity) {}
+
+    companion object {
+        @JvmStatic
+        fun newInstance(_viewModel: RegisterViewModel) =
+            RegisterResultFragment().apply {
+                viewModel = _viewModel
+            }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -7,14 +7,24 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.example.dietapp.R
 import com.example.dietapp.ui.register.RegisterActivity
-import kotlinx.android.synthetic.main.fragment_register_basics.*
+import com.example.dietapp.ui.register.RegisterViewModel
 
 class RegisterBasicsFragment : RegisterFragment() {
+
+    companion object {
+        @JvmStatic
+        fun newInstance(_viewModel: RegisterViewModel) =
+            RegisterBasicsFragment().apply {
+                viewModel = _viewModel
+            }
+    }
+
     override fun passData(activity: RegisterActivity) {
         val registerInputEmail = activity.findViewById<EditText>(R.id.register_input_email)
         val registerInputNickname = activity.findViewById<EditText>(R.id.register_input_nickname)
         val registerInputPassword = activity.findViewById<EditText>(R.id.register_input_password)
-        val registerInputAvatarLink = activity.findViewById<EditText>(R.id.register_input_avatar_link)
+        val registerInputAvatarLink =
+            activity.findViewById<EditText>(R.id.register_input_avatar_link)
 
         activity.email = registerInputEmail.text.toString()
         activity.nickname = registerInputNickname.text.toString()
@@ -56,4 +66,11 @@ class RegisterBasicsFragment : RegisterFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_register_basics, container, false)
     }
+    // TODO: Data binding
+    data class Data(
+        var email: String,
+        var nickname: String,
+        var password: String,
+        var avatarImageLink: String? = null
+    )
 }

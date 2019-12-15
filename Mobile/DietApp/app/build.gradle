@@ -23,6 +23,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -44,11 +47,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
-    // rx
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+//
+//    // rx
+//    implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
+//    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+//    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
 
     // dependency injection
     implementation "com.google.dagger:dagger:$dagger2_version"
@@ -66,7 +69,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'br.com.simplepass:loading-button-android:2.1.5'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation "com.mikepenz:materialdrawer:7.0.0-rc08"
@@ -88,6 +91,19 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+
+    // lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$arch_lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$arch_lifecycle_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_version"
+
+    // ViewModel Kotlin support
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$arch_lifecycle_version"
+
+    // coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    // databinding
+    kapt 'com.android.databinding:compiler:3.1.4'
 }

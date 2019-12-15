@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.dietapp.R
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.register.RegisterActivity
+import com.example.dietapp.ui.register.RegisterViewModel
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -18,6 +19,16 @@ import com.facebook.login.LoginResult
 import kotlinx.android.synthetic.main.fragment_register_method.*
 
 class RegisterMethodFragment : RegisterFragment() {
+
+    companion object {
+        @JvmStatic
+        fun newInstance(_viewModel: RegisterViewModel) =
+            RegisterMethodFragment().apply {
+                viewModel = _viewModel
+            }
+    }
+
+
     override fun passData(activity: RegisterActivity) {}
 
     override fun validate(activity: RegisterActivity) = true

@@ -6,7 +6,11 @@ import com.example.dietapp.R
 import com.example.dietapp.ui.recordmeal.fragments.RecordMealAllMealsFragment
 import com.example.dietapp.ui.recordmeal.fragments.RecordMealMyMealsFragment
 
-class RecordMealPagerAdapter(fm: FragmentManager, private val activity: RecordMealActivity) :
+class RecordMealPagerAdapter(
+    fm: FragmentManager,
+    private val activity: RecordMealActivity,
+    viewModel: RecordMealViewModel
+) :
     FragmentPagerAdapter(
         fm,
         BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
@@ -17,9 +21,9 @@ class RecordMealPagerAdapter(fm: FragmentManager, private val activity: RecordMe
 
     private val fragments = listOf(
         RecordMealMyMealsFragment.newInstance(
-            RecordMealAdapter(activity, activity)
+            RecordMealAdapter(activity, activity), viewModel
         ), RecordMealAllMealsFragment.newInstance(
-            RecordMealAdapter(activity, activity)
+            RecordMealAdapter(activity, activity), viewModel
         )
     )
 

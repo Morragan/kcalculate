@@ -1,55 +1,34 @@
 package com.example.dietapp.ui.createmeal
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.models.Nutrients
-import com.example.dietapp.ui.login.LoginActivity
-import com.example.dietapp.ui.nointernet.NoInternetActivity
+import com.example.dietapp.models.dto.CreateMealDTO
 import com.example.dietapp.utils.Converters
+import com.example.dietapp.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_create_meal.*
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class CreateMealActivity : AppCompatActivity(), CreateMealView {
+class CreateMealActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var presenter: CreateMealPresenter
+    lateinit var viewModelFactory: ViewModelFactory
 
-    override fun showConnectionError() {
-        startActivityForResult(Intent(this, NoInternetActivity::class.java), -1)
-    }
-
-    override fun logout() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
-
-    override fun onSuccess() {
-        setResult(Activity.RESULT_OK)
-        finish()
-    }
-
-    override fun showError() {
-        create_meal_button_create.doneLoadingAnimation(
-            ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
-        )
-
-        Handler().postDelayed({
-            login_button_login.revertAnimation()
-        }, 1000)
-    }
+    lateinit var viewModel: CreateMealViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_meal)
 
-        (application as DietApp).appComponent.newActivityComponent().inject(this)
+        (application as DietApp).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CreateMealViewModel::class.java)
 
         create_meal_button_create.setOnClickListener {
             if (!validate()) return@setOnClickListener
@@ -61,20 +40,22 @@ class CreateMealActivity : AppCompatActivity(), CreateMealView {
                 create_meal_input_protein.text.toString().toInt(),
                 create_meal_input_kcal.text.toString().toInt()
             )
-            presenter.addMeal(name, nutrients)
-
-            create_meal_button_create.startAnimation()
+            viewModel.createMeal(CreateMealDTO(name, nutrients))
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.bind(this)
-    }
+        viewModel.isLoading.observe(this, Observer { isLoading ->
+            if (isLoading) create_meal_button_create.startAnimation()
+            else {
+                create_meal_button_create.doneLoadingAnimation(
+                    ContextCompat.getColor(this, R.color.error),
+                    Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
+                )
 
-    override fun onStop() {
-        presenter.unbind()
-        super.onStop()
+                Handler().postDelayed({
+                    login_button_login.revertAnimation()
+                }, 1000)
+            }
+        })
     }
 
     private fun validate(): Boolean {

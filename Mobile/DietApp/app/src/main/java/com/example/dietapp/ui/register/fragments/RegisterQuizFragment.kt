@@ -8,12 +8,20 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import com.example.dietapp.R
 import com.example.dietapp.ui.register.RegisterActivity
+import com.example.dietapp.ui.register.RegisterViewModel
 import com.example.dietapp.utils.Enums
 
 class RegisterQuizFragment : RegisterFragment() {
+
+    companion object {
+        @JvmStatic
+        fun newInstance(_viewModel: RegisterViewModel) =
+            RegisterQuizFragment().apply {
+                viewModel = _viewModel
+            }
+    }
+
     override fun passData(activity: RegisterActivity) {
-
-
         val weightGoal = when {
             activity.findViewById<RadioButton>(R.id.register_radio_button_goal_lose_weight).isChecked -> Enums.WeightGoal.Lose
             activity.findViewById<RadioButton>(R.id.register_radio_button_goal_maintain_weight).isChecked -> Enums.WeightGoal.Maintain

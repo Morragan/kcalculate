@@ -12,10 +12,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-import com.example.dietapp.DietApp
 import com.example.dietapp.R
-import com.example.dietapp.models.MealDTO
-import com.example.dietapp.models.RecordMealDTO
+import com.example.dietapp.models.dto.RecordMealDTO
+import com.example.dietapp.models.entity.Meal
 import java.util.*
 
 class RecordMealAdapter(
@@ -27,22 +26,26 @@ class RecordMealAdapter(
     private var expandedPosition = -1
     lateinit var recyclerView: RecyclerView
 
-    fun replaceMeals(meals: List<MealDTO>) {
-        DietApp.meals.clear()
-        DietApp.filteredMeals.clear()
-        DietApp.meals.addAll(meals)
-        DietApp.filteredMeals.addAll(meals)
-        notifyDataSetChanged()
+    private val meals = mutableListOf<Meal>()
+    private val filteredMeals = mutableListOf<Meal>()
+
+    fun replaceMeals(newMeals: List<Meal>) {
+        meals.clear()
+        meals.addAll(newMeals)
+        filteredMeals.clear()
+        filteredMeals.addAll(newMeals)
+        filter.filter("")
+        notifyDataSetChanged() //replace with diffutil
     }
 
     override fun getFilter() = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList = mutableListOf<MealDTO>()
+            val filteredList = mutableListOf<Meal>()
             if (constraint.isNullOrBlank())
-                filteredList.addAll(DietApp.meals)
+                filteredList.addAll(meals)
             else {
                 val pattern = constraint.toString().toLowerCase(Locale.getDefault()).trim()
-                for (item: MealDTO in DietApp.meals) {
+                for (item: Meal in meals) {
                     if (item.name.toLowerCase(Locale.getDefault()).contains(pattern))
                         filteredList.add(item)
                 }
@@ -53,9 +56,9 @@ class RecordMealAdapter(
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            DietApp.filteredMeals.clear()
+            filteredMeals.clear()
             @Suppress("UNCHECKED_CAST")
-            DietApp.filteredMeals.addAll(results?.values as Collection<MealDTO>)
+            filteredMeals.addAll(results?.values as Collection<Meal>)
             this@RecordMealAdapter.notifyDataSetChanged()
         }
     }
@@ -71,11 +74,11 @@ class RecordMealAdapter(
     }
 
     override fun getItemCount(): Int {
-        return DietApp.filteredMeals.size
+        return filteredMeals.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val meal = DietApp.filteredMeals[position]
+        val meal = filteredMeals[position]
 
         holder.addMealButton.setOnClickListener {
             // validate
@@ -86,7 +89,11 @@ class RecordMealAdapter(
             }
 
             val mealEntry =
-                RecordMealDTO(meal.name, meal.nutrients, holder.weight.text.toString().toInt())
+                RecordMealDTO(
+                    meal.name,
+                    meal.nutrients,
+                    holder.weight.text.toString().toInt()
+                )
             addMealOnClickListener.onAddMealClick(mealEntry)
             holder.addMealButton.startAnimation()
         }

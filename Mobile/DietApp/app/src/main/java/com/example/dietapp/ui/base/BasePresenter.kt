@@ -3,11 +3,11 @@ package com.example.dietapp.ui.base
 abstract class BasePresenter<V> {
     protected var mvpView: V? = null
 
-    fun bind(mvpView: V?){
+    fun bind(mvpView: V?) {
         this.mvpView = mvpView
     }
 
-    fun unbind(){
+    fun unbind() {
         this.mvpView = null
     }
 }

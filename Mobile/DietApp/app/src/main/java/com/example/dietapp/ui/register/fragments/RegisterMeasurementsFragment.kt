@@ -11,6 +11,7 @@ import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import com.example.dietapp.R
 import com.example.dietapp.ui.register.RegisterActivity
+import com.example.dietapp.ui.register.RegisterViewModel
 import com.example.dietapp.utils.Enums
 import kotlinx.android.synthetic.main.fragment_register_measurements.*
 
@@ -18,6 +19,14 @@ import kotlinx.android.synthetic.main.fragment_register_measurements.*
  * A simple [Fragment] subclass.
  */
 class RegisterMeasurementsFragment : RegisterFragment() {
+
+    companion object {
+        @JvmStatic
+        fun newInstance(_viewModel: RegisterViewModel) =
+            RegisterMeasurementsFragment().apply {
+                viewModel = _viewModel
+            }
+    }
 
     private var heightUnit = Enums.HeightUnit.Centimeters
     private var weightUnit = Enums.WeightUnit.Kilograms

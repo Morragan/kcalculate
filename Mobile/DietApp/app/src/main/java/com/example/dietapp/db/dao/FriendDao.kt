@@ -1,12 +1,23 @@
 package com.example.dietapp.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Query
-import com.example.dietapp.models.MergedFriend
+import androidx.room.*
+import com.example.dietapp.models.entity.Friend
 
 @Dao
 interface FriendDao {
-    @Query("select * from friends order by id asc")
-    fun getFriends(): LiveData<List<MergedFriend>>
+    @Query("select * from friend order by nickname asc")
+    fun getAll(): LiveData<MutableList<Friend>>
+
+    @Insert
+    suspend fun insert(friend: Friend)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(friends: List<Friend>)
+
+    @Delete
+    suspend fun delete(friend: Friend)
+
+    @Query("delete from friend")
+    suspend fun deleteAll()
 }
