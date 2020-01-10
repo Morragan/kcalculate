@@ -10,7 +10,7 @@ import com.example.dietapp.R
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.utils.getToken
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
 import kotlinx.coroutines.Job
 import javax.inject.Inject
 
@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
     lateinit var viewModel: MainViewModel
-    lateinit var checkLoggedInJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +29,11 @@ class MainActivity : AppCompatActivity() {
 
         (application as DietApp).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         val token = sharedPreferences.getToken()
         if (token.isExpired()) logout()

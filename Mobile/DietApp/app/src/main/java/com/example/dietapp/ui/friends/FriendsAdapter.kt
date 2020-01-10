@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.models.entity.Friend
 import java.util.*
@@ -13,14 +12,18 @@ import java.util.*
 class FriendsAdapter(
     private val acceptedOnClickListener: AcceptedOnClickListener,
     private val pendingOnClickListener: PendingOnClickListener,
-    private val blockedOnClickListener: BlockedOnClickListener
+    private val blockedOnClickListener: BlockedOnClickListener,
+    private val userFoundOnClickListener: UserFoundOnClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
+    private val friends = mutableListOf<Friend>()
+    private val filteredFriends = mutableListOf<Friend>()
+
     fun replaceUsers(users: List<Friend>) {
-        DietApp.friends.clear()
-        DietApp.filteredFriends.clear()
-        DietApp.friends.addAll(users)
-        DietApp.filteredFriends.addAll(users)
+        friends.clear()
+        filteredFriends.clear()
+        friends.addAll(users)
+        filteredFriends.addAll(users)
         notifyDataSetChanged()
     }
 
@@ -28,10 +31,10 @@ class FriendsAdapter(
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filteredList = mutableListOf<Friend>()
             if (constraint.isNullOrBlank())
-                filteredList.addAll(DietApp.friends)
+                filteredList.addAll(friends)
             else {
                 val pattern = constraint.toString().toLowerCase(Locale.getDefault()).trim()
-                for (item: Friend in DietApp.friends) {
+                for (item: Friend in friends) {
                     if (item.nickname.toLowerCase(Locale.getDefault()).contains(pattern))
                         filteredList.add(item)
                 }
@@ -42,9 +45,9 @@ class FriendsAdapter(
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            DietApp.filteredFriends.clear()
+            filteredFriends.clear()
             @Suppress("UNCHECKED_CAST")
-            DietApp.filteredFriends.addAll(results?.values as Collection<Friend>)
+            filteredFriends.addAll(results?.values as Collection<Friend>)
             this@FriendsAdapter.notifyDataSetChanged()
         }
     }
@@ -66,29 +69,34 @@ class FriendsAdapter(
                     .inflate(R.layout.item_friend_pending, parent, false)
                 return PendingViewHolder(view)
             }
-            else -> {
+            3 -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_user_blocked, parent, false)
                 return BlockedViewHolder(view)
+            }
+            else ->{
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_user_found, parent, false)
+                return UserFoundViewHolder(view)
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return DietApp.filteredFriends.size
+        return filteredFriends.size
     }
 
     override fun onBindViewHolder(_holder: RecyclerView.ViewHolder, position: Int) {
-        val friend = DietApp.filteredFriends[position]
+        val friend = filteredFriends[position]
         when (_holder.itemViewType) {
             0 -> {
                 val holder = _holder as AcceptedViewHolder
                 holder.nickname.text = friend.nickname
-                holder.unfriendButton.setOnClickListener{
-                    acceptedOnClickListener.onUnfriendClick(friend.id)
+                holder.unfriendButton.setOnClickListener {
+                    acceptedOnClickListener.onUnfriendClick(friend)
                 }
                 holder.blockButton.setOnClickListener {
-                    acceptedOnClickListener.onBlockClick(friend.id)
+                    acceptedOnClickListener.onBlockClick(friend)
                 }
             }
             1 -> {
@@ -99,24 +107,34 @@ class FriendsAdapter(
                 val holder = _holder as PendingViewHolder
                 holder.nickname.text = friend.nickname
                 holder.acceptButton.setOnClickListener {
-                    pendingOnClickListener.onAcceptClick(friend.id)
+                    pendingOnClickListener.onAcceptClick(friend)
                 }
                 holder.rejectButton.setOnClickListener {
-                    pendingOnClickListener.onRejectClick(friend.id)
+                    pendingOnClickListener.onRejectClick(friend)
                 }
             }
             3 -> {
                 val holder = _holder as BlockedViewHolder
                 holder.nickname.text = friend.nickname
                 holder.unblockButton.setOnClickListener {
-                    blockedOnClickListener.onUnblockClick(friend.id)
+                    blockedOnClickListener.onUnblockClick(friend)
+                }
+            }
+            4 -> {
+                val holder = _holder as UserFoundViewHolder
+                holder.nickname.text = friend.nickname
+                holder.befriendButton.setOnClickListener {
+                    userFoundOnClickListener.onBefriendClick(friend)
+                }
+                holder.blockButton.setOnClickListener {
+                    userFoundOnClickListener.onBlockClick(friend)
                 }
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val friend = DietApp.filteredFriends[position]
+        val friend = filteredFriends[position]
         return when {
             // Accepted
             friend.status == 2 -> 0
@@ -124,6 +142,8 @@ class FriendsAdapter(
             friend.status == 1 && friend.isUserRequester -> 1
             // Pending
             friend.status == 1 && !friend.isUserRequester -> 2
+            // Found
+            friend.status == 0 -> 4
             // Blocked
             else -> 3
         }
@@ -149,7 +169,7 @@ class FriendsAdapter(
 
     class PendingViewHolder(rootItemView: View) : RecyclerView.ViewHolder(rootItemView) {
         internal val nickname =
-            rootItemView.findViewById<TextView>(R.id.friends_list_item_sent_nickname)
+            rootItemView.findViewById<TextView>(R.id.friends_list_item_pending_nickname)
         internal val image =
             rootItemView.findViewById<ImageView>(R.id.friends_list_item_pending_image)
         internal val acceptButton =
@@ -167,17 +187,33 @@ class FriendsAdapter(
             rootItemView.findViewById<Button>(R.id.friends_list_item_blocked_button_unblock)
     }
 
+    class UserFoundViewHolder(rootItemView: View) : RecyclerView.ViewHolder(rootItemView){
+        internal val nickname =
+            rootItemView.findViewById<TextView>(R.id.friends_list_item_found_nickname)
+        internal val image =
+            rootItemView.findViewById<ImageView>(R.id.friends_list_item_found_image)
+        internal val befriendButton =
+            rootItemView.findViewById<Button>(R.id.friends_list_item_found_button_befriend)
+        internal val blockButton =
+            rootItemView.findViewById<Button>(R.id.friends_list_item_found_button_block)
+    }
+
     interface AcceptedOnClickListener {
-        fun onUnfriendClick(friendId: Int)
-        fun onBlockClick(userId: Int)
+        fun onUnfriendClick(friend: Friend)
+        fun onBlockClick(user: Friend)
     }
 
     interface PendingOnClickListener {
-        fun onAcceptClick(friendId: Int)
-        fun onRejectClick(friendId: Int)
+        fun onAcceptClick(friend: Friend)
+        fun onRejectClick(friend: Friend)
     }
 
     interface BlockedOnClickListener {
-        fun onUnblockClick(userId: Int)
+        fun onUnblockClick(user: Friend)
+    }
+
+    interface UserFoundOnClickListener{
+        fun onBefriendClick(user: Friend)
+        fun onBlockClick(user: Friend)
     }
 }

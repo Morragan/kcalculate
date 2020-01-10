@@ -18,7 +18,7 @@ import com.example.dietapp.ui.register.RegisterActivity
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
 import com.example.dietapp.utils.removeToken
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -99,6 +99,9 @@ class LoginActivity : AppCompatActivity() {
         // region LiveData observers setup
         viewModel.isLoggedIn.observe(this, Observer { loggedIn ->
             if(loggedIn) startHomeActivity()
+        })
+        viewModel.hasInternetConnection.observe(this, Observer { hasInternetConnection ->
+            if(!hasInternetConnection) showConnectionFailure()
         })
         // endregion
     }

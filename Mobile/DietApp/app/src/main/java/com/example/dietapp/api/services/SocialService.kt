@@ -23,5 +23,5 @@ interface SocialService {
     suspend fun blockUser(@Field("userID") userID: Int): Response<FriendsDTO>
 
     @GET("social/search")
-    suspend fun searchPeople(@Query("nickname") nickname: String): List<UserFoundDTO>
+    suspend fun searchPeople(@Query("nickname") nickname: String): Response<List<UserFoundDTO>>
 }

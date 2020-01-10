@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
@@ -14,7 +15,8 @@ import com.example.dietapp.ui.createmeal.CreateMealActivity
 import com.example.dietapp.ui.recordmeal.fragments.RecordMealFragment
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.hideKeyboard
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
+import com.example.dietapp.ui.login.LoginActivity
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_record_meal.*
@@ -80,6 +82,18 @@ class RecordMealActivity : AppCompatActivity(), RecordMealAdapter.AddMealOnClick
         record_meal_link_scan_barcode.setOnClickListener(scanBarcodeOnClickListener)
 
         viewModel.fetchMeals()
+
+        // region
+        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+
+            if (!isLoggedIn) {
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+            }
+        })
+        // endregion
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

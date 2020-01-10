@@ -26,7 +26,7 @@ namespace DietApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<UserViewModel>> List()
         {
-            var users = await userService.List();
+            var users = await userService.List().ConfigureAwait(false);
             var userViewModels = mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(users);
             return userViewModels;
         }

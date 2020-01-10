@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.friends.fragments.FriendsFriendsFragment">
+    tools:context=".ui.friends.fragments.FriendsFragment">
 
     <ProgressBar
         android:id="@+id/friends_placeholder_friends"

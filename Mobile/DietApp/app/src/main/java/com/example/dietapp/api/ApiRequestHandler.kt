@@ -12,15 +12,13 @@ class ApiRequestHandler @Inject constructor() {
         val response = request.invoke()
         return if (response.isSuccessful)
             ApiResponse(data = response.body(), isSuccessful = true)
-        else {
-            val exception = when (response.code()) {
+        else
+            throw when (response.code()) {
                 401 -> NotAuthorizedException()
                 500 -> InternalServerErrorException()
                 400 -> BadRequestException()
                 else -> ApiException()
             }
-            ApiResponse(exception)
-        }
     }
 
     suspend fun <T, P> executeRequest(
@@ -30,14 +28,12 @@ class ApiRequestHandler @Inject constructor() {
         val response = request.invoke(param)
         return if (response.isSuccessful)
             ApiResponse(data = response.body(), isSuccessful = true)
-        else {
-            val exception = when (response.code()) {
+        else
+            throw when (response.code()) {
                 401 -> NotAuthorizedException()
                 500 -> InternalServerErrorException()
                 400 -> BadRequestException()
                 else -> ApiException()
             }
-            ApiResponse(exception)
-        }
     }
 }

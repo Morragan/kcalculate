@@ -9,8 +9,8 @@ import com.example.dietapp.ui.main.MainViewModel
 import com.example.dietapp.ui.recordmeal.RecordMealViewModel
 import com.example.dietapp.ui.register.RegisterViewModel
 import com.example.dietapp.ui.friends.FriendsViewModel
-import com.example.dietapp.viewmodels.GoalsViewModel
-import com.example.dietapp.viewmodels.ProfileViewModel
+import com.example.dietapp.ui.goals.GoalsViewModel
+import com.example.dietapp.ui.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

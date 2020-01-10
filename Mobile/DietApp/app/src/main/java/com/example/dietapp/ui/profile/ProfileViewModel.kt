@@ -1,4 +1,4 @@
-package com.example.dietapp.viewmodels
+package com.example.dietapp.ui.profile
 
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject

@@ -12,13 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ui.credits.CreditsActivity
-import com.example.dietapp.ui.friends.fragments.FriendsFragment
+import com.example.dietapp.ui.friends.fragments.BaseFriendsFragment
 import com.example.dietapp.ui.goals.GoalsActivity
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.profile.ProfileActivity
 import com.example.dietapp.utils.DietDrawerBuilder
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
+import com.example.dietapp.models.entity.Friend
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -29,7 +30,8 @@ import kotlinx.android.synthetic.main.activity_friends.*
 import javax.inject.Inject
 
 class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListener,
-    FriendsAdapter.PendingOnClickListener, FriendsAdapter.BlockedOnClickListener {
+    FriendsAdapter.PendingOnClickListener, FriendsAdapter.BlockedOnClickListener,
+    FriendsAdapter.UserFoundOnClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -42,24 +44,28 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
 
     private lateinit var viewModel: FriendsViewModel
 
-    override fun onUnfriendClick(friendId: Int) {
-        viewModel.deleteUser(friendId)
+    override fun onUnfriendClick(friend: Friend) {
+        viewModel.deleteUser(friend)
     }
 
-    override fun onBlockClick(userId: Int) {
-        viewModel.blockUser(userId)
+    override fun onBlockClick(user: Friend) {
+        viewModel.blockUser(user)
     }
 
-    override fun onAcceptClick(friendId: Int) {
-        viewModel.acceptFriendRequest(friendId)
+    override fun onAcceptClick(friend: Friend) {
+        viewModel.acceptFriendRequest(friend)
     }
 
-    override fun onRejectClick(friendId: Int) {
-        viewModel.deleteUser(friendId)
+    override fun onRejectClick(friend: Friend) {
+        viewModel.deleteUser(friend)
     }
 
-    override fun onUnblockClick(userId: Int) {
-        viewModel.deleteUser(userId)
+    override fun onUnblockClick(user: Friend) {
+        viewModel.deleteUser(user)
+    }
+
+    override fun onBefriendClick(user: Friend) {
+        viewModel.sendFriendRequest(user)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +76,9 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
 
         setSupportActionBar(friends_toolbar)
 
-        profileDrawerItem = ProfileDrawerItem().withIdentifier(0).withName(DietApp.user?.nickname)
+        profileDrawerItem = ProfileDrawerItem()
+            .withIdentifier(0)
+            .withName(DietApp.user?.nickname)
             .withEmail(DietApp.user?.email)
 
         accountHeader = AccountHeaderBuilder()
@@ -138,6 +146,7 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (friends_view_pager.currentItem != 0 || newText == null) return false
+
                 getCurrentFragment().adapter?.filter?.filter(newText)
                 return false
             }
@@ -145,25 +154,51 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
 
         viewModel =
             ViewModelProvider(this, viewModelFactory).get(FriendsViewModel::class.java)
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         viewPagerAdapter = FriendsPagerAdapter(supportFragmentManager, this)
         friends_view_pager.adapter = viewPagerAdapter
         friends_tabs.setupWithViewPager(friends_view_pager)
 
+        // region
         viewModel.allFriends.observe(this, Observer {
+            if (it.isNullOrEmpty()) return@Observer
+            val pending = it.filter { friend -> friend.status == 1 }
+            val friends = it.filter { friend -> friend.status == 2 }
+            val blocked = it.filter { friend -> friend.status == 3 }
+            val friendsPagerAdapter = friends_view_pager.adapter as FriendsPagerAdapter
+            friendsPagerAdapter.fragments[0].adapter!!.replaceUsers(friends)
+            friendsPagerAdapter.fragments[2].adapter!!.replaceUsers(pending)
+            friendsPagerAdapter.fragments[3].adapter!!.replaceUsers(blocked)
+
             getCurrentFragment().adapter?.replaceUsers(it)
         })
+
+        viewModel.userSearchResults.observe(this, Observer {
+            if (it.isNullOrEmpty()) return@Observer
+            val friendsPagerAdapter = friends_view_pager.adapter as FriendsPagerAdapter
+            friendsPagerAdapter.fragments[1].adapter!!.replaceUsers(it)
+        })
+
+        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+            if (!isLoggedIn) {
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+            }
+        })
+        // endregion
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         viewModel.fetchFriends()
     }
 
     private fun sync() {}
 
-    private fun getCurrentFragment(): FriendsFragment {
+    private fun getCurrentFragment(): BaseFriendsFragment {
         val position = friends_view_pager.currentItem
         return viewPagerAdapter.getItem(position)
     }

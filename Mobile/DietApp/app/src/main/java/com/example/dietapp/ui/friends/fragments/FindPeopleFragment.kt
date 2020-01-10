@@ -7,16 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.dietapp.R
 import com.example.dietapp.ui.friends.FriendsAdapter
 
-class FriendsFragment : BaseFriendsFragment() {
+class FindPeopleFragment : BaseFriendsFragment() {
 
-    companion object{
+    companion object {
         @JvmStatic
         fun newInstance(_adapter: FriendsAdapter) =
-            FriendsFragment().apply {
+            FindPeopleFragment().apply {
                 adapter = _adapter
             }
     }
@@ -26,8 +25,8 @@ class FriendsFragment : BaseFriendsFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_friends_friends, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.friends_recycler_view_friends)
+        val view = inflater.inflate(R.layout.fragment_friends_people, container, false)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.friends_recycler_view_people)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
         return view

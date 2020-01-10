@@ -29,7 +29,6 @@ class MealsRepository @Inject constructor(
             mealDao.deleteAll()
             mealDao.insertAll(meals)
         }
-        mealsResponse.exception?.let { throw it }
     }
 
     suspend fun addMeal(meal: CreateMealDTO) {
@@ -42,7 +41,6 @@ class MealsRepository @Inject constructor(
             mealDao.deleteAll()
             mealDao.insertAll(meals)
         }
-        mealsResponse.exception?.let { throw it }
     }
 
     suspend fun find3rdPartyMeals(query: String): Meal {

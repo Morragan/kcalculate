@@ -97,6 +97,31 @@ fun SharedPreferences.getUser() = User(
     getBoolean(Constants.sharedPreferencesKeyUserIsPrivate, false)
 )
 
+fun SharedPreferences.removeUser(){
+    with(this.edit()){
+        remove(Constants.sharedPreferencesKeyUserId)
+        remove(Constants.sharedPreferencesKeyUserNickname)
+        remove(Constants.sharedPreferencesKeyUserEmail)
+        remove(Constants.sharedPreferencesKeyUserAvatarLink)
+        remove(Constants.sharedPreferencesKeyUserJoinDate)
+        remove(Constants.sharedPreferencesKeyUserPoints)
+        remove(Constants.sharedPreferencesKeyUserIsEmailConfirmed)
+        remove(Constants.sharedPreferencesKeyUserCalorieLimit)
+        remove(Constants.sharedPreferencesKeyUserCalorieLimitLower)
+        remove(Constants.sharedPreferencesKeyUserCalorieLimitUpper)
+        remove(Constants.sharedPreferencesKeyUserCarbsLimit)
+        remove(Constants.sharedPreferencesKeyUserCarbsLimitLower)
+        remove(Constants.sharedPreferencesKeyUserCarbsLimitUpper)
+        remove(Constants.sharedPreferencesKeyUserFatLimit)
+        remove(Constants.sharedPreferencesKeyUserFatLimitLower)
+        remove(Constants.sharedPreferencesKeyUserFatLimitUpper)
+        remove(Constants.sharedPreferencesKeyUserProteinLimit)
+        remove(Constants.sharedPreferencesKeyUserProteinLimitLower)
+        remove(Constants.sharedPreferencesKeyUserProteinLimitUpper)
+        apply()
+    }
+}
+
 fun Activity.hideKeyboard() {
     val inputManager =
         getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

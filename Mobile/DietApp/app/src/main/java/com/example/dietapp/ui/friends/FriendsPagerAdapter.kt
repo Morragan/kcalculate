@@ -3,24 +3,30 @@ package com.example.dietapp.ui.friends
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.dietapp.R
-import com.example.dietapp.ui.friends.fragments.FriendsFriendsFragment
-import com.example.dietapp.ui.friends.fragments.FriendsPeopleFragment
+import com.example.dietapp.ui.friends.fragments.BlockedFragment
+import com.example.dietapp.ui.friends.fragments.FriendsFragment
+import com.example.dietapp.ui.friends.fragments.FindPeopleFragment
+import com.example.dietapp.ui.friends.fragments.PendingRequestsFragment
 
 class FriendsPagerAdapter(fm: FragmentManager, private val activity: FriendsActivity) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     companion object {
-        private const val NUM_PAGES = 2
+        private const val NUM_PAGES = 4
     }
 
-    private val fragments = listOf(
-        FriendsFriendsFragment.newInstance(FriendsAdapter(activity, activity, activity)),
-        FriendsPeopleFragment.newInstance(FriendsAdapter(activity, activity, activity))
+    val fragments = listOf(
+        FriendsFragment.newInstance(FriendsAdapter(activity, activity, activity, activity)),
+        FindPeopleFragment.newInstance(FriendsAdapter(activity, activity, activity, activity)),
+        PendingRequestsFragment.newInstance(FriendsAdapter(activity, activity, activity, activity)),
+        BlockedFragment.newInstance(FriendsAdapter(activity, activity, activity, activity))
     )
 
     override fun getPageTitle(position: Int): String = when (position) {
         0 -> activity.getString(R.string.tab_text_friends)
-        else -> activity.getString(R.string.tab_text_people)
+        1 -> activity.getString(R.string.tab_text_people)
+        2 -> activity.getString(R.string.tab_text_pending)
+        else -> activity.getString(R.string.tab_text_blocked)
     }
 
     override fun getItem(position: Int) = fragments[position]

@@ -3,18 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.friends.fragments.FindPeopleFragment">
-
-    <TextView
-        android:id="@+id/friends_placeholder_people"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/friends_placeholder_people"
-        android:gravity="center" />
+    tools:context=".ui.friends.fragments.PendingRequestsFragment">
+    
+    <ProgressBar
+        android:id="@+id/friends_placeholder_pending"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friends_recycler_view_people"
+        android:id="@+id/friends_recycler_view_pending"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
+
 </FrameLayout>

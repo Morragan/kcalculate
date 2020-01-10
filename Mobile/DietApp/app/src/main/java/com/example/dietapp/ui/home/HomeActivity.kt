@@ -17,7 +17,7 @@ import com.example.dietapp.ui.profile.ProfileActivity
 import com.example.dietapp.ui.recordmeal.RecordMealActivity
 import com.example.dietapp.utils.DietDrawerBuilder
 import com.example.dietapp.utils.ProgressBarAnimator
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -170,6 +170,16 @@ class HomeActivity : AppCompatActivity() {
         viewModel.user.observe(this, Observer {
             profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email)
             accountHeader.updateProfile(profileDrawerItem)
+        })
+
+        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+
+            if (!isLoggedIn) {
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+            }
         })
         // endregion
     }

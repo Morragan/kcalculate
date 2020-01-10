@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dietapp.R
 import com.example.dietapp.ui.friends.FriendsAdapter
 
-class FriendsFriendsFragment : FriendsFragment() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class PendingRequestsFragment : BaseFriendsFragment() {
 
-    companion object{
+    companion object {
         @JvmStatic
         fun newInstance(_adapter: FriendsAdapter) =
-            FriendsFriendsFragment().apply {
+            PendingRequestsFragment().apply {
                 adapter = _adapter
             }
     }
@@ -27,12 +30,12 @@ class FriendsFriendsFragment : FriendsFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_friends_friends, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.friends_recycler_view_friends)
+        val view = inflater.inflate(R.layout.fragment_pending_requests, container, false)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.friends_recycler_view_pending)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
+
         return view
     }
-
-
 }

@@ -16,7 +16,7 @@ import com.example.dietapp.ui.register.fragments.RegisterQuizFragment
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
 import com.example.dietapp.utils.Enums
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_register.*
 import javax.inject.Inject
 

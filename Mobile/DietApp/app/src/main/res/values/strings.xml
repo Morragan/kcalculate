@@ -131,4 +131,10 @@
     <string name="button_text_friend_unblock">Unblock</string>
     <string name="button_text_friend_unfriend">Unfriend</string>
     <string name="button_text_friend_block">Block</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_text_pending">Pending</string>
+    <string name="tab_text_blocked">Blocked</string>
+    <string name="button_text_friend_befriend">Befriend</string>
 </resources>

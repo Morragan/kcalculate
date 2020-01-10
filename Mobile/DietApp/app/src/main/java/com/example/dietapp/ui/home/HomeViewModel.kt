@@ -2,6 +2,7 @@ package com.example.dietapp.ui.home
 
 import androidx.lifecycle.*
 import com.example.dietapp.R
+import com.example.dietapp.api.exceptions.NotAuthorizedException
 import com.example.dietapp.db.repositories.AccountRepository
 import com.example.dietapp.db.repositories.MealEntriesRepository
 import com.example.dietapp.utils.Methods
@@ -19,6 +20,7 @@ class HomeViewModel @Inject constructor(
     private val selectedDate = MutableLiveData<Date>(Date())
     private val mealEntries = mealEntriesRepository.allMealEntries
     val user = accountRepository.user
+    val loggedIn = accountRepository.loggedIn
 
     val selectedDateString = Transformations.map(selectedDate) {
         when {
@@ -66,7 +68,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchMealEntries() = viewModelScope.launch {
-        mealEntriesRepository.fetchMealEntries()
+        try{
+            mealEntriesRepository.fetchMealEntries()
+        }
+        catch (e: NotAuthorizedException){
+            accountRepository.logout()
+        }
     }
 
     private fun updateDaySummary(): DaySummaryData? {

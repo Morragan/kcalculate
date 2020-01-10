@@ -8,9 +8,6 @@ class ApiObserver<T>(private val changeListener: ChangeListener<T>) : Observer<A
         apiResponse?.data?.let{
             changeListener.onSuccess(it)
         }
-        apiResponse?.exception?.let {
-            changeListener.onException(it)
-        }
     }
 
     interface ChangeListener<T>{

@@ -1,4 +1,4 @@
-package com.example.dietapp.viewmodels
+package com.example.dietapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

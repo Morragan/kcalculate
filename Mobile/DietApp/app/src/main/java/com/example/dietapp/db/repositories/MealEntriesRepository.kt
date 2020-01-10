@@ -21,7 +21,6 @@ class MealEntriesRepository @Inject constructor(
             mealEntryDao.deleteAll()
             mealEntryDao.insertAll(mealEntries)
         }
-        mealEntriesResponse.exception?.let { throw it }
     }
 
     suspend fun recordMeal(meal: RecordMealDTO) {
@@ -33,6 +32,5 @@ class MealEntriesRepository @Inject constructor(
             mealEntryDao.deleteAll()
             mealEntryDao.insertAll(mealEntries)
         }
-        mealEntriesResponse.exception?.let { throw it }
     }
 }

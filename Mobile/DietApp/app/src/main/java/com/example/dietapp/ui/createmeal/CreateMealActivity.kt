@@ -1,5 +1,6 @@
 package com.example.dietapp.ui.createmeal
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,9 @@ import com.example.dietapp.R
 import com.example.dietapp.models.Nutrients
 import com.example.dietapp.models.dto.CreateMealDTO
 import com.example.dietapp.utils.Converters
-import com.example.dietapp.viewmodels.ViewModelFactory
+import com.example.dietapp.ViewModelFactory
+import com.example.dietapp.ui.base.BaseActivity
+import com.example.dietapp.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_create_meal.*
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
@@ -43,6 +46,7 @@ class CreateMealActivity : AppCompatActivity() {
             viewModel.createMeal(CreateMealDTO(name, nutrients))
         }
 
+        // region
         viewModel.isLoading.observe(this, Observer { isLoading ->
             if (isLoading) create_meal_button_create.startAnimation()
             else {
@@ -56,6 +60,16 @@ class CreateMealActivity : AppCompatActivity() {
                 }, 1000)
             }
         })
+
+        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+            if (!isLoggedIn) {
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+            }
+        })
+        // endregion
     }
 
     private fun validate(): Boolean {
