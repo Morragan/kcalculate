@@ -6,7 +6,6 @@ namespace DietApp.ViewModels
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string ImageLink { get; set; }
         public Nutrients Nutrients { get; set; }
     }
 }

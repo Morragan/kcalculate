@@ -10,7 +10,7 @@ namespace DietApp.ViewModels
         public string Email { get; set; }
         public string AvatarLink { get; set; }
         public DateTime JoinDate { get; set; }
-        public int Points { get; set; } //TODO: przeliczać (w mapowaniu?)
+        public int Points { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public int CalorieLimit { get; set; }
         public int CalorieLimitLower { get; set; }

@@ -23,9 +23,10 @@ namespace DietApp.Mapping
                 .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.user.ID))
                 .ForMember(dest => dest.Nickname, opt => opt.MapFrom(src => src.user.Nickname))
                 .ForMember(dest => dest.AvatarLink, opt => opt.MapFrom(src => src.user.AvatarLink))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.status));
-            //TODO: dodać punkty
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.status))
+                .ForMember(dest => dest.Points, opt => opt.MapFrom(src => src.user.Points));
             CreateMap<User, SearchUserViewModel>();
+            CreateMap<PublicMeal, MealViewModel>();
         }
     }
 }

@@ -2,10 +2,10 @@
 {
     public class Nutrients
     {
-        public int CarbsGram { get; set; }
-        public int FatGram { get; set; }
-        public int ProteinGram { get; set; }
-        public int KcalPer100Gram { get; set; }
-        //TODO: Rozwinąć
+        public float Carbs { get; set; }
+        public float Fat { get; set; }
+        public float Protein { get; set; }
+        public float Fiber { get; set; }
+        public float Kcal { get; set; }
     }
 }

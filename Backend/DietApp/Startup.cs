@@ -50,16 +50,22 @@ namespace DietApp
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMealRepository, MealRepository>();
             services.AddScoped<IMealEntryRepository, MealEntryRepository>();
+            services.AddScoped<IPublicMealRepository, PublicMealRepository>();
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
+            services.AddScoped<IScoreLogRepository, ScoreLogRepository>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<Domain.Services.IAuthenticationService, Services.AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddSingleton<ITokenService, TokenService>(); //TODO: Zapisywać tokeny do bazy i zmienić na addScoped
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IMealService, MealService>();
             services.AddScoped<IMealEntryService, MealEntryService>();
             services.AddScoped<IFriendshipService, FriendshipService>();
+            services.AddScoped<IScheduledActionsService, ScheduledActionsService>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddSingleton(typeof(FatSecretAPITokenCache));
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
 

@@ -11,13 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace DietApp.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class ScheduledActionsController : Controller
     {
         readonly IScheduledActionsService scheduledActionsService;
         readonly IUserService userService;
 
-        public ScheduledActionsController(IScheduledActionsService scheduledActionsService) {
+        public ScheduledActionsController(IScheduledActionsService scheduledActionsService)
+        {
             this.scheduledActionsService = scheduledActionsService;
         }
 
@@ -26,7 +27,7 @@ namespace DietApp.Controllers
         [Route("")]
         public async Task CreateDailyUserScoreSummaries()
         {
-
+            await scheduledActionsService.CreateDailyUserScoreSummaries().ConfigureAwait(false);
         }
 
     }

@@ -48,8 +48,8 @@ namespace DietApp.Persistence.Repositories
         public async Task<User> FindByIdIncludeFriendships(int id)
         {
             return await context.Users
-                .Include(u => u.RequestedFriendships).ThenInclude(f => f.DestUser)
-                .Include(u => u.ReceivedFriendships).ThenInclude(f => f.SrcUser)
+                .Include(u => u.RequestedFriendships).ThenInclude(f => f.DestUser).ThenInclude(u => u.ScoreLogs)
+                .Include(u => u.ReceivedFriendships).ThenInclude(f => f.SrcUser).ThenInclude(u => u.ScoreLogs)
                 .SingleOrDefaultAsync(u => u.ID == id);
         }
 

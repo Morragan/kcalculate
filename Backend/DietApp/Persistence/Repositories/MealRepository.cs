@@ -23,7 +23,7 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<IEnumerable<Meal>> List(int userID)
         {
-            return await context.Meals.Where(m => m.UserID == userID).ToListAsync();
+            return await context.Meals.Where(m => m.UserID == userID).ToListAsync().ConfigureAwait(false);
         }
 
         public void Update(Meal meal)
@@ -33,7 +33,7 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<Meal> FindById(int id)
         {
-            return await context.Meals.SingleOrDefaultAsync(m => m.ID == id);
-        } 
+            return await context.Meals.SingleOrDefaultAsync(m => m.ID == id).ConfigureAwait(false);
+        }
     }
 }

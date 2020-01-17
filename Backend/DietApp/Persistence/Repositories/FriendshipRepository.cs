@@ -19,12 +19,12 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<IEnumerable<Friendship>> ListRequested(int userId)
         {
-            return await context.Friendships.Where(_friendship => _friendship.SrcUserID == userId || _friendship.DestUserID == userId).ToListAsync();
+            return await context.Friendships.Where(_friendship => _friendship.SrcUserID == userId || _friendship.DestUserID == userId).ToListAsync().ConfigureAwait(false);
         }
-        
+
         public async Task<IEnumerable<Friendship>> ListReceived(int userId)
         {
-            return await context.Friendships.Where(_friendship => _friendship.SrcUserID == userId || _friendship.DestUserID == userId).ToListAsync();
+            return await context.Friendships.Where(_friendship => _friendship.SrcUserID == userId || _friendship.DestUserID == userId).ToListAsync().ConfigureAwait(false);
         }
 
         public void Delete(Friendship friendship)

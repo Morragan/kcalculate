@@ -20,12 +20,16 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<IEnumerable<MealEntry>> List(int userId)
         {
-            return await context.MealEntries.Where(m => m.UserID == userId).ToListAsync();
+            return await context.MealEntries.Where(m => m.UserID == userId).ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<MealEntry>> ListToday(int userId)
+        public async Task<IEnumerable<MealEntry>> ListFromDay(int userId, DateTime day)
         {
-            return await context.MealEntries.Where(m => m.UserID == userId && m.Date.ToUniversalTime().Date == DateTime.Today).ToListAsync();
+            return await context.MealEntries.Where(
+                m => m.UserID == userId &&
+                m.Date.Year == day.Year &&
+                m.Date.DayOfYear == day.DayOfYear
+            ).ToListAsync().ConfigureAwait(false);
         }
     }
 }

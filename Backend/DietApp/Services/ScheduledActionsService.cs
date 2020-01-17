@@ -1,7 +1,7 @@
-﻿using DietApp.Domain.Repositories;
+﻿using DietApp.Domain.Models;
+using DietApp.Domain.Repositories;
 using DietApp.Domain.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +24,34 @@ namespace DietApp.Services
 
         public async Task CreateDailyUserScoreSummaries()
         {
-            val users = await userRepository.List().ConfigureAwait(false);
+            var users = await userRepository.List().ConfigureAwait(false);
+            var yesterday = DateTime.Now.AddDays(-1);
+            foreach (var user in users)
+            {
+                var meals = await mealEntryRepository.ListFromDay(user.ID, yesterday).ConfigureAwait(false);
+
+                int scoredPointsKcal = 0;
+                int scoredPointsCarbs = 0;
+                int scoredPointsFat = 0;
+                int scoredPointsProtein = 0;
+
+                var kcalSum = meals.Sum(meal => meal.Kcal);
+                var carbsSum = meals.Sum(meal => meal.Nutrients.Carbs);
+                var fatSum = meals.Sum(meal => meal.Nutrients.Fat);
+                var proteinSum = meals.Sum(meal => meal.Nutrients.Protein);
+
+                if (kcalSum >= user.CalorieLimitLower && kcalSum <= user.CalorieLimitUpper) scoredPointsKcal = 50;
+                if (carbsSum >= user.CarbsLimitLower && carbsSum <= user.CarbsLimitUpper) scoredPointsCarbs = 15;
+                if (fatSum >= user.FatLimitLower && fatSum <= user.FatLimitUpper) scoredPointsFat = 15;
+                if (proteinSum >= user.ProteinLimitLower && proteinSum <= user.ProteinLimitUpper) scoredPointsProtein = 15;
+
+                var userScore = new ScoreLog(user.ID, yesterday, scoredPointsKcal, scoredPointsCarbs, scoredPointsFat, scoredPointsProtein);
+
+
+                await scoreLogRepository.Add(userScore).ConfigureAwait(false);
+            }
+
+            await unitOfWork.Complete().ConfigureAwait(false);
         }
     }
 }

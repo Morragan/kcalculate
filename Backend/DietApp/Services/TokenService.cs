@@ -1,5 +1,6 @@
 ﻿using DietApp.Domain.Helpers;
 using DietApp.Domain.Models;
+using DietApp.Domain.Repositories;
 using DietApp.Domain.Services;
 using DietApp.Domain.Tokens;
 using Microsoft.Extensions.Options;
@@ -8,24 +9,27 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace DietApp.Services
 {
     public class TokenService : ITokenService
     {
-        readonly ISet<JwtRefreshToken> refreshTokens = new HashSet<JwtRefreshToken>(); //TODO: przenieść do bazy
-
+        readonly IRefreshTokenRepository refreshTokenRepository;
+        readonly IUnitOfWork unitOfWork;
         readonly SigningConfigurations signingConfigurations;
         readonly TokenClaims tokenClaims;
         readonly IPasswordHasher passwordHasher;
 
-        public TokenService(IOptions<TokenClaims> tokenOptionsSnapshot, SigningConfigurations signingConfigurations, IPasswordHasher passwordHasher)
+        public TokenService(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IOptions<TokenClaims> tokenOptionsSnapshot, SigningConfigurations signingConfigurations, IPasswordHasher passwordHasher)
         {
+            this.refreshTokenRepository = refreshTokenRepository;
+            this.unitOfWork = unitOfWork;
             this.signingConfigurations = signingConfigurations;
             this.tokenClaims = tokenOptionsSnapshot.Value;
             this.passwordHasher = passwordHasher;
         }
-        public JwtAccessToken CreateAccessToken(User user)
+        public async Task<JwtAccessToken> CreateAccessToken(User user)
         {
             //Refresh token
             var refreshToken = new JwtRefreshToken(
@@ -43,23 +47,21 @@ namespace DietApp.Services
             var jwtHandler = new JwtSecurityTokenHandler();
             var accessToken = jwtHandler.WriteToken(securityToken);
 
-            refreshTokens.Add(refreshToken); //TODO: nie trzymać tokenów w pamięci
+            await SaveRefreshTokenToDatabase(refreshToken, user.ID).ConfigureAwait(false);
 
             return new JwtAccessToken(accessToken, accessTokenExpiration.Ticks, refreshToken);
         }
 
-        public void RevokeRefreshToken(string token)
+        public async Task RevokeRefreshToken(string token)
         {
-            TakeRefreshToken(token);
+            await TakeRefreshToken(token).ConfigureAwait(false);
         }
 
-        public JwtRefreshToken TakeRefreshToken(string token)
+        public async Task<JwtRefreshToken> TakeRefreshToken(string token)
         {
             if (string.IsNullOrWhiteSpace(token)) return null;
-            var refreshToken = refreshTokens.SingleOrDefault(t => t.Token == token);
-            if (refreshToken != null)
-                refreshTokens.Remove(refreshToken);
-            return refreshToken;
+            var refreshToken = await refreshTokenRepository.GetRefreshToken(token).ConfigureAwait(false);
+            return new JwtRefreshToken(refreshToken);
         }
 
         private IEnumerable<Claim> GetClaims(User user)
@@ -72,6 +74,12 @@ namespace DietApp.Services
                 new Claim(ClaimTypes.GivenName, user.ID.ToString())
             };
             return claims;
+        }
+
+        private async Task SaveRefreshTokenToDatabase(JwtRefreshToken token, int userID)
+        {
+            var refreshToken = new RefreshToken(token, userID);
+            await refreshTokenRepository.Add(refreshToken).ConfigureAwait(false);
         }
     }
 }

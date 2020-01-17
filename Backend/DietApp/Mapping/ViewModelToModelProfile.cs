@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.ViewModels;
-using System.Collections.Generic;
+using DietApp.ViewModels.Incoming;
 
 namespace DietApp.Mapping
 {
@@ -14,6 +14,8 @@ namespace DietApp.Mapping
             CreateMap<MealViewModel, Meal>();
             CreateMap<CreateMealViewModel, Meal>();
             CreateMap<CreateMealEntryViewModel, MealEntry>();
+            CreateMap<OpenFoodFactsNutrimentsViewModel, Nutrients>();
+            CreateMap<FatSecretNutrientsViewModel, Nutrients>();
         }
     }
 }

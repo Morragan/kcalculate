@@ -10,6 +10,7 @@ namespace DietApp.Domain.Services
         Task<MealResponse> Create(Meal meal);
         Task<MealResponse> Delete(Meal meal);
         Task<MealResponse> Update(Meal meal);
-        Task<FindMealsResponse> FindByBarcode(string barcode);
+        Task<FindPublicMealsResponse> FindByBarcode(string barcode);
+        Task<FindPublicMealsResponse> FindByName(string name);
     }
 }

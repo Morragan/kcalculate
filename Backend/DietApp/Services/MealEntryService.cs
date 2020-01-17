@@ -26,14 +26,14 @@ namespace DietApp.Services
 
         public async Task<FindMealEntriesResponse> GetMealEntriesToday(int userId)
         {
-            var mealEntriesFound = await mealEntryRepository.ListToday(userId);
+            var mealEntriesFound = await mealEntryRepository.ListFromDay(userId, DateTime.Now.AddDays(-1)).ConfigureAwait(false);
             return new FindMealEntriesResponse(true, null, mealEntriesFound);
         }
 
         public async Task<RecordMealResponse> RecordMeal(MealEntry mealEntry)
         {
             mealEntry.Date = DateTime.UtcNow;
-            
+
             await mealEntryRepository.Add(mealEntry);
             await unitOfWork.Complete();
 

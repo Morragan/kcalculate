@@ -6,6 +6,7 @@ using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.Domain.Services;
 using DietApp.ViewModels;
+using DietApp.ViewModels.Outgoing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,19 +14,16 @@ namespace DietApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class MealsController : ControllerBase
     {
         readonly IMealService mealService;
-        readonly IMealEntryService mealEntryService;
         readonly IUserService userService;
         readonly IMapper mapper;
 
-        public MealsController(IMealService mealService, IMealEntryService mealEntryService, IUserService userService, IMapper mapper)
+        public MealsController(IMealService mealService, IUserService userService, IMapper mapper)
         {
             this.mapper = mapper;
             this.userService = userService;
-            this.mealEntryService = mealEntryService;
             this.mealService = mealService;
         }
         [HttpGet]
@@ -93,6 +91,26 @@ namespace DietApp.Controllers
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             return NoContent();
+        }
+
+        [HttpGet("meal-barcode/{barcode}")]
+        public async Task<IActionResult> FetchMealByBarcode([FromRoute]string barcode)
+        {
+            if (barcode == null || barcode.Length == 0) return BadRequest();
+            var response = await mealService.FindByBarcode(barcode).ConfigureAwait(false);
+            return Ok(response.PublicMealsFound);
+        }
+
+        [HttpGet("meal-name/{name}")]
+        public async Task<IActionResult> FetchMealByName([FromRoute]string name)
+        {
+            if (name == null || name.Length < 3) return BadRequest();
+
+            var response = await mealService.FindByName(name).ConfigureAwait(false);
+            if (!response.IsSuccess) return BadRequest(response.Message);
+
+            var mealsFound = mapper.Map<IEnumerable<PublicMeal>, IEnumerable<MealViewModel>>(response.PublicMealsFound);
+            return Ok(mealsFound);
         }
     }
 }

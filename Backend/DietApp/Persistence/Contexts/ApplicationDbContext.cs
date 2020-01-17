@@ -14,6 +14,7 @@ namespace DietApp.Persistence.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Meal> Meals { get; set; }
+        public DbSet<PublicMeal> PublicMeals { get; set; }
         public DbSet<ScoreLog> ScoreLogs { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<GoalInvitation> GoalInvitations { get; set; }
@@ -52,11 +53,16 @@ namespace DietApp.Persistence.Contexts
             #region Nutrients
             modelBuilder.Entity<Meal>().OwnsOne(m => m.Nutrients);
             modelBuilder.Entity<MealEntry>().OwnsOne(m => m.Nutrients);
+            modelBuilder.Entity<PublicMeal>().OwnsOne(m => m.Nutrients);
             #endregion
 
             #region Meal
-            modelBuilder.Entity<Meal>().Property(m => m.Name).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Meal>().Property(m => m.Name).IsRequired().HasMaxLength(128);
             modelBuilder.Entity<Meal>().Property(m => m.UserID).ValueGeneratedNever();
+            #endregion
+
+            #region PublicMeal
+            modelBuilder.Entity<PublicMeal>().Property(m => m.Name).IsRequired().HasMaxLength(128);
             #endregion
 
             #region Friendship
@@ -68,7 +74,10 @@ namespace DietApp.Persistence.Contexts
 
             #region ScoreLog
             modelBuilder.Entity<ScoreLog>().Property(m => m.Date).IsRequired();
-            modelBuilder.Entity<ScoreLog>().Property(m => m.ScoredPoints).IsRequired();
+            modelBuilder.Entity<ScoreLog>().Property(m => m.ScoredPointsKcal).IsRequired();
+            modelBuilder.Entity<ScoreLog>().Property(m => m.ScoredPointsCarbs).IsRequired();
+            modelBuilder.Entity<ScoreLog>().Property(m => m.ScoredPointsFat).IsRequired();
+            modelBuilder.Entity<ScoreLog>().Property(m => m.ScoredPointsProtein).IsRequired();
             #endregion
 
             #region Goal
@@ -89,6 +98,7 @@ namespace DietApp.Persistence.Contexts
                    .Build();
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.EnableSensitiveDataLogging();
             }
         }
     }

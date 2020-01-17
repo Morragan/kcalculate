@@ -4,14 +4,16 @@ using DietApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DietApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200114005656_PublicMeal")]
+    partial class PublicMeal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,8 +102,8 @@ namespace DietApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
@@ -151,8 +153,8 @@ namespace DietApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("ID");
 
@@ -341,20 +343,20 @@ namespace DietApp.Migrations
                                 .HasColumnType("int")
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<float>("Carbs")
-                                .HasColumnType("real");
+                            b1.Property<int>("CarbsGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Fat")
-                                .HasColumnType("real");
+                            b1.Property<int>("FatGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Fiber")
-                                .HasColumnType("real");
+                            b1.Property<int>("FiberGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Kcal")
-                                .HasColumnType("real");
+                            b1.Property<int>("KcalPer100Gram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Protein")
-                                .HasColumnType("real");
+                            b1.Property<int>("ProteinGram")
+                                .HasColumnType("int");
 
                             b1.HasKey("MealID");
 
@@ -380,20 +382,20 @@ namespace DietApp.Migrations
                                 .HasColumnType("int")
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<float>("Carbs")
-                                .HasColumnType("real");
+                            b1.Property<int>("CarbsGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Fat")
-                                .HasColumnType("real");
+                            b1.Property<int>("FatGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Fiber")
-                                .HasColumnType("real");
+                            b1.Property<int>("FiberGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Kcal")
-                                .HasColumnType("real");
+                            b1.Property<int>("KcalPer100Gram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Protein")
-                                .HasColumnType("real");
+                            b1.Property<int>("ProteinGram")
+                                .HasColumnType("int");
 
                             b1.HasKey("MealEntryID");
 
@@ -413,20 +415,20 @@ namespace DietApp.Migrations
                                 .HasColumnType("int")
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<float>("Carbs")
-                                .HasColumnType("real");
+                            b1.Property<int>("CarbsGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Fat")
-                                .HasColumnType("real");
+                            b1.Property<int>("FatGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Fiber")
-                                .HasColumnType("real");
+                            b1.Property<int>("FiberGram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Kcal")
-                                .HasColumnType("real");
+                            b1.Property<int>("KcalPer100Gram")
+                                .HasColumnType("int");
 
-                            b1.Property<float>("Protein")
-                                .HasColumnType("real");
+                            b1.Property<int>("ProteinGram")
+                                .HasColumnType("int");
 
                             b1.HasKey("PublicMealID");
 

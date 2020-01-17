@@ -27,24 +27,24 @@ namespace DietApp.Services
         }
         public async Task<TokenResponse> CreateAccessToken(string nickname, string password)
         {
-            var user = await userService.FindByNickname(nickname);
+            var user = await userService.FindByNickname(nickname).ConfigureAwait(false);
             if (user == null || !passwordHasher.CheckPasswordMatching(password, user.Password))
                 return new TokenResponse(false, "Invalid email and/or password", null);
 
-            var token = tokenService.CreateAccessToken(user);
+            var token = await tokenService.CreateAccessToken(user).ConfigureAwait(false);
             return new TokenResponse(true, null, token);
         }
 
         public async Task<TokenResponse> RefreshToken(string refreshToken, string userEmail)
         {
-            var token = tokenService.TakeRefreshToken(refreshToken);
+            var token = await tokenService.TakeRefreshToken(refreshToken).ConfigureAwait(false);
             if (token == null) return new TokenResponse(false, "Invalid refresh token", null);
             if (token.IsExpired()) return new TokenResponse(false, "Expired refresh token", null);
 
-            var user = await userService.FindByEmail(userEmail);
+            var user = await userService.FindByEmail(userEmail).ConfigureAwait(false);
             if (user == null) return new TokenResponse(false, "Invalid refresh token", null);
 
-            var accessToken = tokenService.CreateAccessToken(user);
+            var accessToken = await tokenService.CreateAccessToken(user).ConfigureAwait(false);
             return new TokenResponse(true, null, accessToken);
         }
 

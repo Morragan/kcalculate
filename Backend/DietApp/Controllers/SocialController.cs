@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using DietApp.Domain.Models;
@@ -8,7 +6,6 @@ using DietApp.Domain.Services;
 using DietApp.ViewModels.Incoming;
 using DietApp.ViewModels.Outgoing;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using InFriendViewModel = DietApp.ViewModels.Incoming.FriendViewModel;
 using OutFriendViewModel = DietApp.ViewModels.Outgoing.FriendViewModel;
@@ -149,6 +146,5 @@ namespace DietApp.Controllers
 
             return Ok(usersViewModel);
         }
-
     }
 }

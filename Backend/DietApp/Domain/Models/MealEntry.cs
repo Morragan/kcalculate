@@ -11,6 +11,6 @@ namespace DietApp.Domain.Models
         public string Name { get; set; }
         public Nutrients Nutrients { get; set; }
         public int WeightGram { get; set; }
-        public int Kcal { get => WeightGram * Nutrients.KcalPer100Gram / 100; } //TODO: Rozważyć czy tylko gram, czy dodać np sztuki
+        public float Kcal { get => WeightGram * Nutrients.Kcal / 100; }
     }
 }
