@@ -15,7 +15,7 @@ namespace DietApp.Persistence.Repositories
 
         public async Task Complete()
         {
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

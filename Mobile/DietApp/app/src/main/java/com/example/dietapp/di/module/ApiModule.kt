@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
@@ -123,13 +124,13 @@ object ApiModule {
             val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
             val builder = OkHttpClient.Builder()
             @Suppress("DEPRECATION")
-            builder.sslSocketFactory(sslSocketFactory)
-            builder.hostnameVerifier { _, _ -> true }
-
-            builder.addInterceptor(getInterceptor(sharedPreferences))
-            builder.authenticator(getAuthenticator(sharedPreferences, accountService))
-
-            return builder.build()
+            return builder.sslSocketFactory(sslSocketFactory)
+                .hostnameVerifier { _, _ -> true }
+                .addInterceptor(getInterceptor(sharedPreferences))
+                .authenticator(getAuthenticator(sharedPreferences, accountService))
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100,TimeUnit.SECONDS)
+                .build()
         } catch (e: Exception) {
             throw RuntimeException(e)
         }

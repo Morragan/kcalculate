@@ -3,6 +3,7 @@ package com.example.dietapp.ui.friends
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
@@ -11,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
+import com.example.dietapp.ViewModelFactory
+import com.example.dietapp.models.entity.Friend
 import com.example.dietapp.ui.credits.CreditsActivity
 import com.example.dietapp.ui.friends.fragments.BaseFriendsFragment
 import com.example.dietapp.ui.goals.GoalsActivity
@@ -18,8 +21,6 @@ import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.profile.ProfileActivity
 import com.example.dietapp.utils.DietDrawerBuilder
-import com.example.dietapp.ViewModelFactory
-import com.example.dietapp.models.entity.Friend
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -29,8 +30,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import kotlinx.android.synthetic.main.activity_friends.*
 import javax.inject.Inject
 
-class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListener,
-    FriendsAdapter.PendingOnClickListener, FriendsAdapter.BlockedOnClickListener,
+class FriendsActivity : AppCompatActivity(),
+    FriendsAdapter.AcceptedOnClickListener,
+    FriendsAdapter.PendingOnClickListener,
+    FriendsAdapter.BlockedOnClickListener,
     FriendsAdapter.UserFoundOnClickListener {
 
     @Inject
@@ -76,6 +79,7 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
 
         setSupportActionBar(friends_toolbar)
 
+        //region drawer setup
         profileDrawerItem = ProfileDrawerItem()
             .withIdentifier(0)
             .withName(DietApp.user?.nickname)
@@ -128,8 +132,33 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
             onDrawerItemClickListener
         ).build()
         drawer.setSelection(2)
+        //endregion
 
-        friends_input_search_people.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(FriendsViewModel::class.java)
+
+        viewPagerAdapter = FriendsPagerAdapter(supportFragmentManager, this, viewModel)
+        friends_view_pager.adapter = viewPagerAdapter
+        friends_tabs.setupWithViewPager(friends_view_pager)
+
+        // region LiveData observers setup
+        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+            if (!isLoggedIn) {
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+            }
+        })
+        // endregion
+
+        viewModel.fetchFriends()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        val searchView = menu!!.findItem(R.id.action_search).actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrBlank()) return true
                 if (friends_view_pager.currentItem == 1) {
@@ -151,49 +180,9 @@ class FriendsActivity : AppCompatActivity(), FriendsAdapter.AcceptedOnClickListe
                 return false
             }
         })
+        searchView.setIconifiedByDefault(false)
 
-        viewModel =
-            ViewModelProvider(this, viewModelFactory).get(FriendsViewModel::class.java)
-
-        viewPagerAdapter = FriendsPagerAdapter(supportFragmentManager, this)
-        friends_view_pager.adapter = viewPagerAdapter
-        friends_tabs.setupWithViewPager(friends_view_pager)
-
-        // region
-        viewModel.allFriends.observe(this, Observer {
-            if (it.isNullOrEmpty()) return@Observer
-            val pending = it.filter { friend -> friend.status == 1 }
-            val friends = it.filter { friend -> friend.status == 2 }
-            val blocked = it.filter { friend -> friend.status == 3 }
-            val friendsPagerAdapter = friends_view_pager.adapter as FriendsPagerAdapter
-            friendsPagerAdapter.fragments[0].adapter!!.replaceUsers(friends)
-            friendsPagerAdapter.fragments[2].adapter!!.replaceUsers(pending)
-            friendsPagerAdapter.fragments[3].adapter!!.replaceUsers(blocked)
-
-            getCurrentFragment().adapter?.replaceUsers(it)
-        })
-
-        viewModel.userSearchResults.observe(this, Observer {
-            if (it.isNullOrEmpty()) return@Observer
-            val friendsPagerAdapter = friends_view_pager.adapter as FriendsPagerAdapter
-            friendsPagerAdapter.fragments[1].adapter!!.replaceUsers(it)
-        })
-
-        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
-            if (!isLoggedIn) {
-                val intent = Intent(this, LoginActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                }
-                startActivity(intent)
-            }
-        })
-        // endregion
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        viewModel.fetchFriends()
+        return true
     }
 
     private fun sync() {}

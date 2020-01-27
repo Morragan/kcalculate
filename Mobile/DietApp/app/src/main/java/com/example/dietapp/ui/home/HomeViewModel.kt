@@ -5,7 +5,8 @@ import com.example.dietapp.R
 import com.example.dietapp.api.exceptions.NotAuthorizedException
 import com.example.dietapp.db.repositories.AccountRepository
 import com.example.dietapp.db.repositories.MealEntriesRepository
-import com.example.dietapp.utils.Methods
+import com.example.dietapp.utils.Methods.datesAreTheSameDay
+import com.example.dietapp.utils.Methods.offsetDate
 import com.example.dietapp.utils.StringResourcesProvider
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -25,14 +26,14 @@ class HomeViewModel @Inject constructor(
     val selectedDateString = Transformations.map(selectedDate) {
         when {
             // selected date is today
-            Methods.datesAreTheSameDay(
+            datesAreTheSameDay(
                 it,
                 Date()
             ) -> stringResourcesProvider.getString(R.string.today)
             // selected date is yesterday
-            Methods.datesAreTheSameDay(
+            datesAreTheSameDay(
                 it,
-                Methods.offsetDate(Date(), -1)
+                offsetDate(Date(), -1)
             ) ->
                 stringResourcesProvider.getString(R.string.yesterday)
             // selected date is some other date
@@ -56,51 +57,60 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onDateButtonBackward() {
-        selectedDate.apply {
-            value = Methods.offsetDate(value!!, -1)
-        }
+        if (user.value != null && !datesAreTheSameDay(user.value!!.joinDate, selectedDate.value!!))
+            selectedDate.apply { value = offsetDate(value!!, -1) }
     }
 
     fun onDateButtonForward() {
-        selectedDate.apply {
-            value = Methods.offsetDate(value!!, 1)
-        }
+        if (!datesAreTheSameDay(selectedDate.value!!, Date()))
+            selectedDate.apply { value = offsetDate(value!!, 1) }
     }
 
     fun fetchMealEntries() = viewModelScope.launch {
-        try{
+        try {
             mealEntriesRepository.fetchMealEntries()
-        }
-        catch (e: NotAuthorizedException){
+        } catch (e: NotAuthorizedException) {
             accountRepository.logout()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun fetchUserData() = viewModelScope.launch {
+        try {
+            accountRepository.fetchUserData()
+        } catch (e: NotAuthorizedException) {
+            accountRepository.logout()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     private fun updateDaySummary(): DaySummaryData? {
         val selectedDateEntries = mealEntries.value?.filter { entry ->
-            Methods.datesAreTheSameDay(entry.date, selectedDate.value!!)
+            datesAreTheSameDay(entry.date, selectedDate.value!!)
         } ?: return null
 
-        user.value ?: return null
+        if (user.value?.email.isNullOrBlank()) return null
 
-        val kcalEaten = selectedDateEntries.sumBy { entry -> entry.kcal }
-        val carbsEaten = selectedDateEntries.sumBy { entry -> entry.nutrients.carbsGram }
-        val fatEaten = selectedDateEntries.sumBy { entry -> entry.nutrients.fatGram }
-        val proteinEaten = selectedDateEntries.sumBy { entry -> entry.nutrients.proteinGram }
+        val kcalEaten = selectedDateEntries.sumByDouble { entry -> entry.kcal }
+        val carbsEaten = selectedDateEntries.sumByDouble { entry -> entry.nutrients.carbs }
+        val fatEaten = selectedDateEntries.sumByDouble { entry -> entry.nutrients.fat }
+        val proteinEaten = selectedDateEntries.sumByDouble { entry -> entry.nutrients.protein }
 
         val kcalProgress = kcalEaten.toFloat() / user.value!!.calorieLimit * 100f
         val carbsProgress = carbsEaten.toFloat() / user.value!!.carbsLimit * 100f
         val fatProgress = fatEaten.toFloat() / user.value!!.fatLimit * 100f
         val proteinProgress = proteinEaten.toFloat() / user.value!!.proteinLimit * 100f
 
-        val kcalLeft =
-            if (user.value!!.calorieLimit - kcalEaten < 0) 0 else user.value!!.calorieLimit - kcalEaten
-        val carbsLeft =
-            if (user.value!!.carbsLimit - carbsEaten < 0) 0 else user.value!!.carbsLimit - carbsEaten
-        val fatLeft =
-            if (user.value!!.fatLimit - fatEaten < 0) 0 else user.value!!.fatLimit - fatEaten
-        val proteinLeft =
-            if (user.value!!.proteinLimit - proteinEaten < 0) 0 else user.value!!.proteinLimit - proteinEaten
+        val kcalLeft: Double =
+            if (user.value!!.calorieLimit - kcalEaten < 0) 0.0 else user.value!!.calorieLimit - kcalEaten
+        val carbsLeft: Double =
+            if (user.value!!.carbsLimit - carbsEaten < 0) 0.0 else user.value!!.carbsLimit - carbsEaten
+        val fatLeft: Double =
+            if (user.value!!.fatLimit - fatEaten < 0) 0.0 else user.value!!.fatLimit - fatEaten
+        val proteinLeft: Double =
+            if (user.value!!.proteinLimit - proteinEaten < 0) 0.0 else user.value!!.proteinLimit - proteinEaten
 
         val kcalProgressColorId = when {
             kcalEaten < user.value!!.calorieLimitLower -> R.color.warning
@@ -125,24 +135,24 @@ class HomeViewModel @Inject constructor(
 
 
         return DaySummaryData(
-            kcalEaten,
+            kcalEaten.toInt(),
             user.value!!.calorieLimit,
-            kcalLeft,
+            kcalLeft.toInt(),
             kcalProgress,
             kcalProgressColorId,
-            carbsEaten,
+            carbsEaten.toInt(),
             user.value!!.carbsLimit,
-            carbsLeft,
+            carbsLeft.toInt(),
             carbsProgress.toInt(),
             carbsProgressColorId,
-            fatEaten,
+            fatEaten.toInt(),
             user.value!!.fatLimit,
-            fatLeft,
+            fatLeft.toInt(),
             fatProgress.toInt(),
             fatProgressColorId,
-            proteinEaten,
+            proteinEaten.toInt(),
             user.value!!.proteinLimit,
-            proteinLeft,
+            proteinLeft.toInt(),
             proteinProgress.toInt(),
             proteinProgressColorId
         )

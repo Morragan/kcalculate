@@ -47,6 +47,7 @@ class HomeActivity : AppCompatActivity() {
         (application as DietApp).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
+        //region drawer setup
         profileDrawerItem = ProfileDrawerItem().withName("Name").withIdentifier(0)
 
         accountHeader = AccountHeaderBuilder()
@@ -96,6 +97,7 @@ class HomeActivity : AppCompatActivity() {
             onDrawerItemClickListener
         ).build()
         drawer.setSelection(1)
+        // endregion
 
         home_add_fab.setOnClickListener {
             startActivity(Intent(this, RecordMealActivity::class.java))
@@ -117,6 +119,9 @@ class HomeActivity : AppCompatActivity() {
             return@setOnMenuItemClickListener true
         }
 
+        viewModel.fetchMealEntries()
+        viewModel.fetchUserData()
+
         // region ViewModel observers setup
         viewModel.selectedDateString.observe(this, Observer {
             home_text_day.text = it
@@ -132,6 +137,7 @@ class HomeActivity : AppCompatActivity() {
             home_text_eaten.text = it.kcalEaten.toString()
             home_text_left.text = it.kcalLeft.toString()
             home_cpb.progressBarColor = getColor(it.kcalProgressColorId)
+            home_text_left.setTextColor(it.kcalProgressColorId)
 
             // carbs
             home_progress_bar_carbs.isIndeterminate = false
@@ -173,7 +179,6 @@ class HomeActivity : AppCompatActivity() {
         })
 
         viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
-
             if (!isLoggedIn) {
                 val intent = Intent(this, LoginActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -182,11 +187,6 @@ class HomeActivity : AppCompatActivity() {
             }
         })
         // endregion
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.fetchMealEntries()
     }
 
     private fun sync() {}

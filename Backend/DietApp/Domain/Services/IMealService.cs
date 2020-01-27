@@ -12,5 +12,6 @@ namespace DietApp.Domain.Services
         Task<MealResponse> Update(Meal meal);
         Task<FindPublicMealsResponse> FindByBarcode(string barcode);
         Task<FindPublicMealsResponse> FindByName(string name);
+        Task<MealResponse> CreatePublic(PublicMeal meal, int userId);
     }
 }

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -19,6 +18,7 @@ import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.Converters
 import com.example.dietapp.utils.removeToken
 import com.example.dietapp.ViewModelFactory
+import com.example.dietapp.utils.ButtonState.*
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -30,18 +30,17 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var viewModel: LoginViewModel
 
-    private fun showErrorMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    private fun showLoginFailed() {
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.error),
             Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
         )
         Handler().postDelayed({
             login_button_login.revertAnimation()
-        }, 1000)
+        }, 600)
     }
 
-    private fun startHomeActivity() {
+    private fun showLoginSuccess() {
         login_button_login.doneLoadingAnimation(
             ContextCompat.getColor(this, R.color.success),
             Converters.drawableToBitmap(getDrawable(R.drawable.ic_done_white)!!)
@@ -49,22 +48,12 @@ class LoginActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             login_button_login.revertAnimation()
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
         }, 1000)
     }
 
     private fun showConnectionFailure() {
         login_text_connection_failure.visibility = View.VISIBLE
-
-        login_button_login.doneLoadingAnimation(
-            ContextCompat.getColor(this, R.color.error),
-            Converters.drawableToBitmap(getDrawable(R.drawable.ic_error_white)!!)
-        )
-
-        Handler().postDelayed({
-            login_button_login.revertAnimation()
-        }, 1000)
+        viewModel.loginButtonState.value = FAIL
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +77,6 @@ class LoginActivity : AppCompatActivity() {
             val nickname = login_input_nickname.text.toString()
             val password = login_input_password.text.toString()
             viewModel.login(LoginDTO(nickname, password))
-
-            login_button_login.startAnimation()
         }
 
         login_link_register.setOnClickListener {
@@ -98,10 +85,22 @@ class LoginActivity : AppCompatActivity() {
 
         // region LiveData observers setup
         viewModel.isLoggedIn.observe(this, Observer { loggedIn ->
-            if(loggedIn) startHomeActivity()
+            if(loggedIn) {
+                viewModel.loginButtonState.value = SUCCESS
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }
         })
         viewModel.hasInternetConnection.observe(this, Observer { hasInternetConnection ->
             if(!hasInternetConnection) showConnectionFailure()
+        })
+        viewModel.loginButtonState.observe(this, Observer{
+            @Suppress("NON_EXHAUSTIVE_WHEN")
+            when(it){
+                LOADING -> login_button_login.startAnimation()
+                FAIL -> showLoginFailed()
+                SUCCESS -> showLoginSuccess()
+            }
         })
         // endregion
     }

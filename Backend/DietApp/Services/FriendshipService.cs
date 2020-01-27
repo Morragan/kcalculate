@@ -23,13 +23,17 @@ namespace DietApp.Services
 
         public async Task<FriendshipResponse> Create(Friendship friendship)
         {
-            var existingFriendship = await friendshipRepository.Find(friendship.SrcUserID, friendship.DestUserID);
-            if (existingFriendship != null) return new FriendshipResponse(false, "Friendship already exists");
-            if (existingFriendship.Status == FriendshipStatus.Blocked) return new FriendshipResponse(false, "User doesn't exist");
-            var friend = userRepository.FindById(friendship.DestUserID);
+            var existingFriendship = await friendshipRepository.Find(friendship.SrcUserID, friendship.DestUserID).ConfigureAwait(false);
+            if (existingFriendship != null)
+            {
+                if (existingFriendship.Status == FriendshipStatus.Blocked) return new FriendshipResponse(false, "User doesn't exist");
+                else return new FriendshipResponse(false, "Friendship already exists");
+            }
+
+            var friend = await userRepository.FindById(friendship.DestUserID).ConfigureAwait(false);
             if (friend == null) return new FriendshipResponse(false, "User doesn't exist");
 
-            await friendshipRepository.Add(friendship).ConfigureAwait(false);
+            friendshipRepository.Add(friendship);
             await unitOfWork.Complete().ConfigureAwait(false);
             return new FriendshipResponse(true, null);
         }
@@ -67,6 +71,7 @@ namespace DietApp.Services
             if (existingFriendship.SrcUserID == userId) return new FriendshipResponse(false, "Friend request already exists");
 
             existingFriendship.Status = FriendshipStatus.Accepted;
+            existingFriendship.StartDate = DateTime.UtcNow;
             friendshipRepository.Update(existingFriendship);
             await unitOfWork.Complete().ConfigureAwait(false);
 
@@ -76,23 +81,22 @@ namespace DietApp.Services
         public async Task<FriendshipResponse> BlockUser(int userId, int blockedUserId)
         {
             var existingFriendship = await friendshipRepository.Find(userId, blockedUserId).ConfigureAwait(false);
-            if (existingFriendship == null)
-            {
-                var friendship = new Friendship()
-                {
-                    SrcUserID = userId,
-                    DestUserID = blockedUserId,
-                    Status = FriendshipStatus.Blocked,
-                    StartDate = DateTime.Now
-                };
-                await friendshipRepository.Add(friendship).ConfigureAwait(false);
-            }
-            else
-            {
-                existingFriendship.Status = FriendshipStatus.Accepted;
-                friendshipRepository.Update(existingFriendship);
-            }
+            if (existingFriendship != null)
+                friendshipRepository.Delete(existingFriendship);
+            // Changing primary keys, so must save
             await unitOfWork.Complete().ConfigureAwait(false);
+
+            var friendship = new Friendship()
+            {
+                SrcUserID = userId,
+                DestUserID = blockedUserId,
+                Status = FriendshipStatus.Blocked,
+                StartDate = DateTime.Now
+            };
+
+            friendshipRepository.Add(friendship);
+            await unitOfWork.Complete().ConfigureAwait(false);
+
             return new FriendshipResponse(true, null);
         }
 

@@ -12,9 +12,9 @@ namespace DietApp.Persistence.Repositories
     {
         public FriendshipRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task Add(Friendship friendship)
+        public void Add(Friendship friendship)
         {
-            await context.AddAsync(friendship);
+            context.Friendships.Add(friendship);
         }
 
         public async Task<IEnumerable<Friendship>> ListRequested(int userId)
@@ -40,7 +40,7 @@ namespace DietApp.Persistence.Repositories
         public async Task<Friendship> Find(int srcUserId, int destUserId)
         {
             return await context.Friendships.SingleOrDefaultAsync(friendship => friendship.SrcUserID == srcUserId && friendship.DestUserID == destUserId ||
-            friendship.DestUserID == srcUserId && friendship.SrcUserID == destUserId);
+            friendship.DestUserID == srcUserId && friendship.SrcUserID == destUserId).ConfigureAwait(false);
         }
     }
 }

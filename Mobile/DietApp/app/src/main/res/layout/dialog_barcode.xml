@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/record_meal_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="6dp"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_label_carbs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_carbs_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/record_meal_dialog_label_fats"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_title" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_label_fats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_fat_title"
+        app:layout_constraintLeft_toRightOf="@id/record_meal_dialog_label_carbs"
+        app:layout_constraintRight_toLeftOf="@id/record_meal_dialog_label_protein"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_title" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_label_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_protein_title"
+        app:layout_constraintLeft_toRightOf="@id/record_meal_dialog_label_fats"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_title" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_carbs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/record_meal_dialog_label_carbs"
+        app:layout_constraintRight_toRightOf="@id/record_meal_dialog_label_carbs"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_label_carbs" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_fats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/record_meal_dialog_label_fats"
+        app:layout_constraintRight_toRightOf="@id/record_meal_dialog_label_fats"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_label_fats" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/record_meal_dialog_label_protein"
+        app:layout_constraintRight_toRightOf="@id/record_meal_dialog_label_protein"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_label_protein" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_label_kcalper100"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/text_kcalper100_title"
+        app:layout_constraintBottom_toTopOf="@id/record_meal_dialog_kcalper100"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/record_meal_dialog_input_meal_weight"
+        app:layout_constraintTop_toTopOf="@id/record_meal_dialog_input_meal_weight" />
+
+    <TextView
+        android:id="@+id/record_meal_dialog_kcalper100"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/record_meal_dialog_input_meal_weight"
+        app:layout_constraintLeft_toLeftOf="@id/record_meal_dialog_label_kcalper100"
+        app:layout_constraintRight_toRightOf="@id/record_meal_dialog_label_kcalper100"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_label_kcalper100" />
+
+    <EditText
+        android:id="@+id/record_meal_dialog_input_meal_weight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_meal_weight"
+        android:inputType="numberDecimal"
+        app:layout_constraintLeft_toRightOf="@id/record_meal_dialog_label_kcalper100"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/record_meal_dialog_carbs" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

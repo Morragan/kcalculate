@@ -9,7 +9,7 @@ import com.example.dietapp.R
 import com.example.dietapp.models.entity.Friend
 import java.util.*
 
-class FriendsAdapter(
+class FriendsAdapter( //TODO: Fix
     private val acceptedOnClickListener: AcceptedOnClickListener,
     private val pendingOnClickListener: PendingOnClickListener,
     private val blockedOnClickListener: BlockedOnClickListener,

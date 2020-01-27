@@ -6,7 +6,7 @@ namespace DietApp.Domain.Repositories
 {
     public interface IFriendshipRepository
     {
-        Task Add(Friendship friendship);
+        void Add(Friendship friendship);
         void Delete(Friendship friendship);
         void Update(Friendship friendship);
         Task<IEnumerable<Friendship>> ListRequested(int userId);

@@ -12,5 +12,6 @@ namespace DietApp.Domain.Repositories
         Task<PublicMeal> GetCachedByBarcode(string barcode);
         Task Cache(PublicMeal publicMeal);
         Task Cache(IEnumerable<PublicMeal> publicMeals);
+        Task<bool> ContainsBarcode(string barcode);
     }
 }

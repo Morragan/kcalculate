@@ -27,6 +27,7 @@ namespace DietApp.Domain.Models
         public int ProteinLimitLower { get; set; }
         public int ProteinLimitUpper { get; set; }
         public bool IsPrivate { get; set; }
+        public int Streak { get; set; }
         public int Points => ScoreLogs.Sum(score => score.ScoredPointsKcal + score.ScoredPointsCarbs + score.ScoredPointsFat + score.ScoredPointsProtein);
         public IEnumerable<MealEntry> MealsHistory { get; set; }
         public IEnumerable<Meal> SavedMeals { get; set; }

@@ -11,7 +11,7 @@ namespace DietApp.Domain.Services
         Task<User> FindByEmail(string email);
         Task<User> FindById(int id);
         Task<User> FindByNickname(string nickname);
-        IEnumerable<User> FindByNicknameContains(string nickname);
+        Task<IEnumerable<User>> SearchUsers(string nickname, int userId);
         IEnumerable<User> FindByIdRange(IEnumerable<int> ids);
         Task<User> FindByIdIncludeFriendships(int id);
         int GetCurrentUserId(HttpContext httpContext);

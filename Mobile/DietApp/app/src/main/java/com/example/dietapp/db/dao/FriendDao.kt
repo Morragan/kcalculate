@@ -7,7 +7,7 @@ import com.example.dietapp.models.entity.Friend
 @Dao
 interface FriendDao {
     @Query("select * from friend order by nickname asc")
-    fun getAll(): LiveData<MutableList<Friend>>
+    fun getAll(): LiveData<List<Friend>>
 
     @Insert
     suspend fun insert(friend: Friend)

@@ -11,6 +11,5 @@ data class Friend(
     @ColumnInfo(name = "avatar_link") val avatarLink: String?,
     val points: Int,
     val status: Int,
-    @ColumnInfo(name = "is_user_requester") val isUserRequester: Boolean,
-    @ColumnInfo(name="is_loading") var isLoading: Boolean
+    @ColumnInfo(name = "is_user_requester") val isUserRequester: Boolean
 )

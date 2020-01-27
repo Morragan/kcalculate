@@ -26,15 +26,20 @@ namespace DietApp.Persistence.Repositories
             if (_user == null) return;
 
             _user.CalorieLimitLower = user.CalorieLimitLower;
+            _user.CalorieLimit = user.CalorieLimit;
             _user.CalorieLimitUpper = user.CalorieLimitUpper;
             _user.CarbsLimitLower = user.CarbsLimitLower;
+            _user.CarbsLimit = user.CarbsLimit;
             _user.CarbsLimitUpper = user.CarbsLimitUpper;
             _user.FatLimitLower = user.FatLimitLower;
+            _user.FatLimit = user.FatLimit;
             _user.FatLimitUpper = user.FatLimitUpper;
             _user.ProteinLimitLower = user.ProteinLimitLower;
+            _user.ProteinLimit = user.ProteinLimit;
             _user.ProteinLimitUpper = user.ProteinLimitUpper;
             _user.IsEmailConfirmed = user.IsEmailConfirmed;
             _user.IsPrivate = user.IsPrivate;
+            _user.Streak = user.Streak;
             _user.Password = user.Password;
 
             context.Users.Update(_user);
@@ -42,7 +47,7 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<User> FindById(int id)
         {
-            return await context.Users.SingleOrDefaultAsync(u => u.ID == id);
+            return await context.Users.Include(u => u.ScoreLogs).SingleOrDefaultAsync(u => u.ID == id).ConfigureAwait(false);
         }
 
         public async Task<User> FindByIdIncludeFriendships(int id)

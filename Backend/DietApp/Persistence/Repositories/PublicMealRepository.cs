@@ -72,6 +72,8 @@ namespace DietApp.Persistence.Repositories
 
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             var productData = JObject.Parse(responseBody)["product"];
+            if (productData == null) return null;
+
             string mealName = productData["product_name"].ToObject<string>();
             var nutrientsViewModel = productData["nutriments"].ToObject<OpenFoodFactsNutrimentsViewModel>();
             var nutrients = mapper.Map<OpenFoodFactsNutrimentsViewModel, Nutrients>(nutrientsViewModel);
@@ -86,7 +88,7 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<PublicMeal> GetCachedByBarcode(string barcode)
         {
-            return await context.PublicMeals.SingleAsync(m => m.Barcode == barcode).ConfigureAwait(false);
+            return await context.PublicMeals.SingleOrDefaultAsync(m => m.Barcode == barcode).ConfigureAwait(false);
         }
 
         public async Task Cache(PublicMeal publicMeal)
@@ -153,6 +155,11 @@ namespace DietApp.Persistence.Repositories
             var accessToken = tokenData["access_token"].ToString();
             var expiration = tokenData["expires_in"].ToObject<long>();
             fatSecretAPITokenCache.Save(accessToken, expiration);
+        }
+
+        public async Task<bool> ContainsBarcode(string barcode)
+        {
+            return await context.PublicMeals.AnyAsync(meal => meal.Barcode == barcode).ConfigureAwait(false);
         }
     }
 }

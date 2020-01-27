@@ -3,11 +3,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.Domain.Services;
-using DietApp.ViewModels.Incoming;
 using DietApp.ViewModels.Outgoing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using InFriendViewModel = DietApp.ViewModels.Incoming.FriendViewModel;
 using OutFriendViewModel = DietApp.ViewModels.Outgoing.FriendViewModel;
 
 namespace DietApp.Controllers
@@ -45,15 +43,14 @@ namespace DietApp.Controllers
         }
 
         [HttpPost]
-        [Route("friends")]
-        public async Task<IActionResult> RequestFriend(InFriendViewModel viewModel)
+        [Route("friends/{friend_id}")]
+        public async Task<IActionResult> RequestFriend([FromRoute(Name = "friend_id")] int friendId)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
             var userId = userService.GetCurrentUserId(HttpContext);
             var friendship = new Friendship()
             {
                 SrcUserID = userId,
-                DestUserID = viewModel.FriendID,
+                DestUserID = friendId,
                 Status = FriendshipStatus.Pending
             };
             var response = await friendshipService.Create(friendship).ConfigureAwait(false);
@@ -72,13 +69,11 @@ namespace DietApp.Controllers
         }
 
         [HttpPut]
-        [Route("accept-friend")]
-        public async Task<IActionResult> AcceptFriend(InFriendViewModel viewModel)
+        [Route("accept-friend/{friend_id}")]
+        public async Task<IActionResult> AcceptFriend([FromRoute(Name = "friend_id")] int friendId)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await friendshipService.AcceptFriend(userId, viewModel.FriendID).ConfigureAwait(false);
+            var response = await friendshipService.AcceptFriend(userId, friendId).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
@@ -94,11 +89,11 @@ namespace DietApp.Controllers
         }
 
         [HttpDelete]
-        [Route("friends")]
-        public async Task<IActionResult> DeleteFriend(InFriendViewModel viewModel)
+        [Route("friends/{friend_id}")]
+        public async Task<IActionResult> DeleteFriend([FromRoute(Name = "friend_id")] int friendId)
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await friendshipService.Delete(userId, viewModel.FriendID).ConfigureAwait(false);
+            var response = await friendshipService.Delete(userId, friendId).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
@@ -114,13 +109,11 @@ namespace DietApp.Controllers
         }
 
         [HttpPost]
-        [Route("block-user")]
-        public async Task<IActionResult> BlockUser(BlockUserViewModel viewModel)
+        [Route("block-user/{user_id}")]
+        public async Task<IActionResult> BlockUser([FromRoute(Name = "user_id")] int blockedUserId)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             var userId = userService.GetCurrentUserId(HttpContext);
-            var response = await friendshipService.BlockUser(userId, viewModel.UserID).ConfigureAwait(false);
+            var response = await friendshipService.BlockUser(userId, blockedUserId).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
@@ -137,11 +130,13 @@ namespace DietApp.Controllers
 
         [HttpGet]
         [Route("search")]
-        public IActionResult SearchPeople(string nickname)
+        public async Task<IActionResult> SearchPeople(string nickname)
         {
             if (nickname == null || nickname.Length == 0) return BadRequest(ModelState);
 
-            var users = userService.FindByNicknameContains(nickname);
+            var userId = userService.GetCurrentUserId(HttpContext);
+
+            var users = await userService.SearchUsers(nickname, userId).ConfigureAwait(false);
             var usersViewModel = mapper.Map<IEnumerable<User>, IEnumerable<SearchUserViewModel>>(users);
 
             return Ok(usersViewModel);

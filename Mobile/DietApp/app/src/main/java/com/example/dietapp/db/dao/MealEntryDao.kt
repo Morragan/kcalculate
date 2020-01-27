@@ -9,14 +9,14 @@ import com.example.dietapp.models.entity.MealEntry
 @Dao
 interface MealEntryDao {
     @Query("select * from meal_entry order by date asc")
-    fun getAll(): LiveData<MutableList<MealEntry>>
+    fun getAll(): LiveData<List<MealEntry>>
 
     @Insert
-    fun insert(mealEntry: MealEntry)
+    suspend fun insert(mealEntry: MealEntry)
 
     @Insert
-    fun insertAll(mealEntries: List<MealEntry>)
+    suspend fun insertAll(mealEntries: List<MealEntry>)
 
     @Query("delete from meal_entry")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

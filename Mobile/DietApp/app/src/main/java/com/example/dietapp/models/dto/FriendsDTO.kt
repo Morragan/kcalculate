@@ -13,8 +13,7 @@ data class FriendsDTO(val requestedFriends: List<FriendDTO>, val receivedFriends
                 friend.avatarLink,
                 friend.points,
                 friend.status,
-                isUserRequester = true,
-                isLoading = false
+                isUserRequester = true
             )
         }
         val received = receivedFriends.map { friend ->
@@ -24,8 +23,7 @@ data class FriendsDTO(val requestedFriends: List<FriendDTO>, val receivedFriends
                 friend.avatarLink,
                 friend.points,
                 friend.status,
-                isUserRequester = false,
-                isLoading = false
+                isUserRequester = false
             )
         }
 

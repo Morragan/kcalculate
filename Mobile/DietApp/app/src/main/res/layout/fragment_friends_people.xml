@@ -5,12 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.friends.fragments.FindPeopleFragment">
 
+    <ProgressBar
+        android:id="@+id/friends_placeholder_people_loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <TextView
-        android:id="@+id/friends_placeholder_people"
+        android:id="@+id/friends_placeholder_people_default"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/friends_placeholder_people"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="@string/friends_placeholder_people_default" />
+
+    <TextView
+        android:id="@+id/friends_placeholder_people_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/friends_placeholder_people_empty"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friends_recycler_view_people"

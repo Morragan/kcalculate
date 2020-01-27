@@ -16,6 +16,7 @@ namespace DietApp.Mapping
             CreateMap<CreateMealEntryViewModel, MealEntry>();
             CreateMap<OpenFoodFactsNutrimentsViewModel, Nutrients>();
             CreateMap<FatSecretNutrientsViewModel, Nutrients>();
+            CreateMap<CreatePublicMealViewModel, PublicMeal>();
         }
     }
 }

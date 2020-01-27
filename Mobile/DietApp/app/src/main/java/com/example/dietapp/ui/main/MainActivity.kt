@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
@@ -30,14 +31,18 @@ class MainActivity : AppCompatActivity() {
         (application as DietApp).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
+        viewModel.userLoggedIn.observe(this, Observer{
+            if(it) login()
+            else logout()
+        })
     }
 
     override fun onResume() {
         super.onResume()
 
         val token = sharedPreferences.getToken()
-        if (token.isExpired()) logout()
-        else login()
+        if (token.isExpired()) viewModel.checkUserLoggedIn()
+        else (login())
     }
 
     private fun login() {

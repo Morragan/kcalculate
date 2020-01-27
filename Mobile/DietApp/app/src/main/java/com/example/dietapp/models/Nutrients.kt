@@ -1,8 +1,10 @@
 package com.example.dietapp.models
 
+import androidx.room.ColumnInfo
+
 data class Nutrients(
-    val carbsGram: Int,
-    val fatGram: Int,
-    val proteinGram: Int,
-    val kcalPer100Gram: Int
+    val carbs: Double,
+    val fat: Double,
+    val protein: Double,
+    @ColumnInfo(name = "kcal_100") val kcal: Double
 )

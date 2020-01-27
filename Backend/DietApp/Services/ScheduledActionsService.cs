@@ -40,14 +40,22 @@ namespace DietApp.Services
                 var fatSum = meals.Sum(meal => meal.Nutrients.Fat);
                 var proteinSum = meals.Sum(meal => meal.Nutrients.Protein);
 
-                if (kcalSum >= user.CalorieLimitLower && kcalSum <= user.CalorieLimitUpper) scoredPointsKcal = 50;
+                if (kcalSum >= user.CalorieLimitLower && kcalSum <= user.CalorieLimitUpper)
+                {
+                    scoredPointsKcal = 50;
+                    user.Streak++;
+                }
+                else
+                {
+                    user.Streak = 0;
+                }
                 if (carbsSum >= user.CarbsLimitLower && carbsSum <= user.CarbsLimitUpper) scoredPointsCarbs = 15;
                 if (fatSum >= user.FatLimitLower && fatSum <= user.FatLimitUpper) scoredPointsFat = 15;
                 if (proteinSum >= user.ProteinLimitLower && proteinSum <= user.ProteinLimitUpper) scoredPointsProtein = 15;
 
                 var userScore = new ScoreLog(user.ID, yesterday, scoredPointsKcal, scoredPointsCarbs, scoredPointsFat, scoredPointsProtein);
 
-
+                await userRepository.Update(user).ConfigureAwait(false);
                 await scoreLogRepository.Add(userScore).ConfigureAwait(false);
             }
 

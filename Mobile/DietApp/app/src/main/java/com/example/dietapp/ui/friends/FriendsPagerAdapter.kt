@@ -4,11 +4,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.dietapp.R
 import com.example.dietapp.ui.friends.fragments.BlockedFragment
-import com.example.dietapp.ui.friends.fragments.FriendsFragment
 import com.example.dietapp.ui.friends.fragments.FindPeopleFragment
+import com.example.dietapp.ui.friends.fragments.FriendsFragment
 import com.example.dietapp.ui.friends.fragments.PendingRequestsFragment
 
-class FriendsPagerAdapter(fm: FragmentManager, private val activity: FriendsActivity) :
+class FriendsPagerAdapter(
+    fm: FragmentManager,
+    private val activity: FriendsActivity,
+    viewModel: FriendsViewModel
+) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     companion object {
@@ -16,10 +20,22 @@ class FriendsPagerAdapter(fm: FragmentManager, private val activity: FriendsActi
     }
 
     val fragments = listOf(
-        FriendsFragment.newInstance(FriendsAdapter(activity, activity, activity, activity)),
-        FindPeopleFragment.newInstance(FriendsAdapter(activity, activity, activity, activity)),
-        PendingRequestsFragment.newInstance(FriendsAdapter(activity, activity, activity, activity)),
-        BlockedFragment.newInstance(FriendsAdapter(activity, activity, activity, activity))
+        FriendsFragment.newInstance(
+            FriendsAdapter(activity, activity, activity, activity),
+            viewModel
+        ),
+        FindPeopleFragment.newInstance(
+            FriendsAdapter(activity, activity, activity, activity),
+            viewModel
+        ),
+        PendingRequestsFragment.newInstance(
+            FriendsAdapter(activity, activity, activity, activity),
+            viewModel
+        ),
+        BlockedFragment.newInstance(
+            FriendsAdapter(activity, activity, activity, activity),
+            viewModel
+        )
     )
 
     override fun getPageTitle(position: Int): String = when (position) {

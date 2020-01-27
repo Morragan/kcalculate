@@ -12,6 +12,22 @@
         android:gravity="center"
         android:text="@string/record_meal_placeholder"/>
 
+    <ProgressBar
+        android:id="@+id/record_meal_placeholder_all_meals_loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/record_meal_placeholder_all_meals_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/record_meal_placeholder_all_meals_empty"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/record_meal_recycler_view_all_meals"
         android:layout_width="match_parent"

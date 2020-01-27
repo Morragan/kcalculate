@@ -291,6 +291,9 @@ namespace DietApp.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
+                    b.Property<int>("Streak")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.ToTable("Users");

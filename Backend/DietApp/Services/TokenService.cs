@@ -34,14 +34,14 @@ namespace DietApp.Services
             //Refresh token
             var refreshToken = new JwtRefreshToken(
                 token: passwordHasher.HashPassword(Guid.NewGuid().ToString()),
-                expiration: DateTime.UtcNow.AddSeconds(tokenClaims.RefreshTokenExpiration).Ticks);
+                expiration: DateTimeOffset.UtcNow.AddSeconds(tokenClaims.RefreshTokenExpiration).ToUnixTimeMilliseconds());
             //Access token
-            var accessTokenExpiration = DateTime.UtcNow.AddSeconds(tokenClaims.AccessTokenExpiration);
+            var accessTokenExpiration = DateTimeOffset.UtcNow.AddSeconds(tokenClaims.AccessTokenExpiration);
             var securityToken = new JwtSecurityToken(
                 issuer: tokenClaims.Issuer,
                 audience: tokenClaims.Audience,
                 claims: GetClaims(user),
-                expires: accessTokenExpiration,
+                expires: accessTokenExpiration.DateTime,
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingConfigurations.SigningCredentials);
             var jwtHandler = new JwtSecurityTokenHandler();
@@ -49,7 +49,7 @@ namespace DietApp.Services
 
             await SaveRefreshTokenToDatabase(refreshToken, user.ID).ConfigureAwait(false);
 
-            return new JwtAccessToken(accessToken, accessTokenExpiration.Ticks, refreshToken);
+            return new JwtAccessToken(accessToken, accessTokenExpiration.ToUnixTimeMilliseconds(), refreshToken);
         }
 
         public async Task RevokeRefreshToken(string token)
@@ -80,6 +80,7 @@ namespace DietApp.Services
         {
             var refreshToken = new RefreshToken(token, userID);
             await refreshTokenRepository.Add(refreshToken).ConfigureAwait(false);
+            await unitOfWork.Complete().ConfigureAwait(false);
         }
     }
 }

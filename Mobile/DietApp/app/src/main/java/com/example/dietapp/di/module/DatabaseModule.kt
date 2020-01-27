@@ -26,7 +26,7 @@ object DatabaseModule {
                 application.applicationContext,
                 DietDatabase::class.java,
                 "diet_database"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
             dietDbInstance = instance
             return instance
         }

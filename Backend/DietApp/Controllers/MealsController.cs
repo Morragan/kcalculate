@@ -6,7 +6,7 @@ using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.Domain.Services;
 using DietApp.ViewModels;
-using DietApp.ViewModels.Outgoing;
+using DietApp.ViewModels.Incoming;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +14,7 @@ namespace DietApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MealsController : ControllerBase
     {
         readonly IMealService mealService;
@@ -93,12 +94,34 @@ namespace DietApp.Controllers
             return NoContent();
         }
 
+        [HttpPost("public")]
+        public async Task<IActionResult> AddPublicMeal([FromBody] CreatePublicMealViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var publicMeal = mapper.Map<CreatePublicMealViewModel, PublicMeal>(viewModel);
+            var userId = userService.GetCurrentUserId(HttpContext);
+
+            var response = await mealService.CreatePublic(publicMeal, userId).ConfigureAwait(false);
+            if (!response.IsSuccess) return BadRequest(response.Message);
+
+            var userMealsResponse = await mealService.GetUserMeals(userId).ConfigureAwait(false);
+            if (!userMealsResponse.IsSuccess) return BadRequest(userMealsResponse.Message);
+
+            var userMealsViewModel = mapper.Map<IEnumerable<Meal>, IEnumerable<MealViewModel>>(userMealsResponse.MealsFound);
+            return Ok(userMealsViewModel);
+        }
+
         [HttpGet("meal-barcode/{barcode}")]
         public async Task<IActionResult> FetchMealByBarcode([FromRoute]string barcode)
         {
             if (barcode == null || barcode.Length == 0) return BadRequest();
+
             var response = await mealService.FindByBarcode(barcode).ConfigureAwait(false);
-            return Ok(response.PublicMealsFound);
+            if (!response.IsSuccess) return BadRequest(response.Message);
+
+            var mealFound = mapper.Map<PublicMeal, MealViewModel>(response.PublicMealsFound.First());
+            return Ok(mealFound);
         }
 
         [HttpGet("meal-name/{name}")]

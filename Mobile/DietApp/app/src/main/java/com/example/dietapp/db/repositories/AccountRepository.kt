@@ -26,8 +26,7 @@ class AccountRepository @Inject constructor(
     }
 
     suspend fun login(credentials: LoginDTO) {
-        val res = accountService.login(credentials)
-        val loginResponse = ApiResponse(data = res.body(), isSuccessful = true)
+        val loginResponse = apiRequestHandler.executeRequest(accountService::login, credentials)
         loginResponse.data?.let {
             sharedPreferences.saveToken(it)
             loggedIn.postValue(true)
@@ -46,14 +45,19 @@ class AccountRepository @Inject constructor(
             loggedIn.value = false
             return
         }
-        val loggedInResponse = apiRequestHandler.executeRequest(accountService::pingAPI)
-        loggedIn.value = loggedInResponse.isSuccessful
+        apiRequestHandler.executeRequest(accountService::pingAPI)
+        loggedIn.value = true
     }
 
     suspend fun fetchUserData() {
         val userResponse = apiRequestHandler.executeRequest(accountService::getUserData)
-        userResponse.data?.let { sharedPreferences.saveUser(it) }
+        userResponse.data?.let {
+            val storedUser = sharedPreferences.getUser()
+            val receivedUser = it.toUser()
+            if(receivedUser != storedUser){
+                sharedPreferences.saveUser(it)
+                user.postValue(receivedUser)
+            }
+        }
     }
-
-    fun getUserData() = sharedPreferences.getUser()
 }

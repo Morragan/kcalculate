@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.dietapp.R
 import com.example.dietapp.ui.recordmeal.fragments.RecordMealAllMealsFragment
-import com.example.dietapp.ui.recordmeal.fragments.RecordMealMyMealsFragment
+import com.example.dietapp.ui.recordmeal.fragments.RecordMealUserMealsFragment
 
 class RecordMealPagerAdapter(
     fm: FragmentManager,
@@ -20,7 +20,7 @@ class RecordMealPagerAdapter(
     }
 
     private val fragments = listOf(
-        RecordMealMyMealsFragment.newInstance(
+        RecordMealUserMealsFragment.newInstance(
             RecordMealAdapter(activity, activity), viewModel
         ), RecordMealAllMealsFragment.newInstance(
             RecordMealAdapter(activity, activity), viewModel

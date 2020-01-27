@@ -9,18 +9,17 @@ interface SocialService {
     @GET("social/friends")
     suspend fun getFriends(): Response<FriendsDTO>
 
-    @FormUrlEncoded
-    @POST("social/friends")
-    suspend fun requestFriend(@Field("friendID") friendID: Int): Response<FriendsDTO>
+    @POST("social/friends/{friend_id}")
+    suspend fun requestFriend(@Path("friend_id", encoded = true) friendID: Int): Response<FriendsDTO>
 
-    @PUT("social/accept-friend")
-    suspend fun acceptFriend(@Field("friendID") friendID: Int): Response<FriendsDTO>
+    @PUT("social/accept-friend/{friend_id}")
+    suspend fun acceptFriend(@Path("friend_id", encoded = true) friendID: Int): Response<FriendsDTO>
 
-    @DELETE("social/friends")
-    suspend fun deleteFriend(@Field("friendID") friendID: Int): Response<FriendsDTO>
+    @DELETE("social/friends/{friend_id}")
+    suspend fun deleteFriend(@Path("friend_id", encoded = true) friendID: Int): Response<FriendsDTO>
 
-    @POST("social/block-user")
-    suspend fun blockUser(@Field("userID") userID: Int): Response<FriendsDTO>
+    @POST("social/block-user/{user_id}")
+    suspend fun blockUser(@Path("user_id", encoded = true) userID: Int): Response<FriendsDTO>
 
     @GET("social/search")
     suspend fun searchPeople(@Query("nickname") nickname: String): Response<List<UserFoundDTO>>

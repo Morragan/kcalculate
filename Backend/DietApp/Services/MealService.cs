@@ -3,7 +3,6 @@ using DietApp.Domain.Repositories;
 using DietApp.Domain.Responses;
 using DietApp.Domain.Services;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -64,7 +63,7 @@ namespace DietApp.Services
         public async Task<FindPublicMealsResponse> FindByName(string name)
         {
             var cacheResponse = await publicMealRepository.GetCachedByName(name).ConfigureAwait(false);
-            if (cacheResponse.Count() > 0) return new FindPublicMealsResponse(true, null, cacheResponse);
+            if (cacheResponse.Any()) return new FindPublicMealsResponse(true, null, cacheResponse);
 
             try
             {
@@ -97,6 +96,17 @@ namespace DietApp.Services
             }
 
             mealRepository.Update(meal);
+            await unitOfWork.Complete().ConfigureAwait(false);
+
+            return new MealResponse(true, null);
+        }
+
+        public async Task<MealResponse> CreatePublic(PublicMeal publicMeal, int userId)
+        {
+            if (!await publicMealRepository.ContainsBarcode(publicMeal.Barcode).ConfigureAwait(false))
+                await publicMealRepository.Cache(publicMeal).ConfigureAwait(false);
+
+            await mealRepository.Add(new Meal(publicMeal, userId)).ConfigureAwait(false);
             await unitOfWork.Complete().ConfigureAwait(false);
 
             return new MealResponse(true, null);

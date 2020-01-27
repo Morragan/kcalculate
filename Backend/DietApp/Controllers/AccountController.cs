@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.Domain.Services;
@@ -9,7 +6,6 @@ using DietApp.Domain.Tokens;
 using DietApp.ViewModels;
 using DietApp.ViewModels.Incoming;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DietApp.Controllers
@@ -40,7 +36,7 @@ namespace DietApp.Controllers
 
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            return NoContent();
+            return Ok();
         }
         [HttpPost]
         [Route("login")]
@@ -77,7 +73,7 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             authenticationService.RevokeRefreshToken(viewModel.Token);
-            return NoContent();
+            return Ok();
         }
         [HttpGet]
         [Authorize]

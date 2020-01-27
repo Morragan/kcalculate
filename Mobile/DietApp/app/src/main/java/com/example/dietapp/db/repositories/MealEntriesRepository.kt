@@ -24,7 +24,6 @@ class MealEntriesRepository @Inject constructor(
     }
 
     suspend fun recordMeal(meal: RecordMealDTO) {
-        //TODO: if I do meal history, temporarily save item with isLoading
         val mealEntriesResponse =
             apiRequestHandler.executeRequest(mealEntriesService::recordMeal, meal)
         mealEntriesResponse.data?.let {

@@ -26,6 +26,7 @@ class ApiRequestHandler @Inject constructor() {
         param: P
     ): ApiResponse<T> {
         val response = request.invoke(param)
+
         return if (response.isSuccessful)
             ApiResponse(data = response.body(), isSuccessful = true)
         else

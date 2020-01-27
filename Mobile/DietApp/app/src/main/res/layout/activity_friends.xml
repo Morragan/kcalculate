@@ -14,16 +14,6 @@
         android:background="@color/primary"
         android:elevation="4dp"/>
 
-    <SearchView
-        android:id="@+id/friends_input_search_people"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/input_box_shape"
-        android:hint="@string/hint_find_people"
-        android:inputType="textAutoComplete"
-        android:textColor="#000"
-        android:textColorHint="#a88" />
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/friends_tabs"
         android:layout_width="match_parent"

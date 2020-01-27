@@ -12,7 +12,7 @@ import com.example.dietapp.models.entity.MealEntry
 
 @Database(
     entities = [Friend::class, Meal::class, MealEntry::class],
-    version = 1,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(DataConverter::class)

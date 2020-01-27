@@ -12,17 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dietapp.R
 import com.example.dietapp.ui.recordmeal.RecordMealAdapter
 import com.example.dietapp.ui.recordmeal.RecordMealViewModel
+import com.example.dietapp.utils.ViewState.*
 import kotlinx.android.synthetic.main.fragment_record_meal_my_meals.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class RecordMealMyMealsFragment : RecordMealFragment() {
+class RecordMealUserMealsFragment : RecordMealFragment() {
 
     companion object {
         @JvmStatic
         fun newInstance(_adapter: RecordMealAdapter, _viewModel: RecordMealViewModel) =
-            RecordMealMyMealsFragment().apply {
+            RecordMealUserMealsFragment().apply {
                 adapter = _adapter
                 viewModel = _viewModel
             }
@@ -48,11 +49,33 @@ class RecordMealMyMealsFragment : RecordMealFragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
 
-        viewModel.userMeals.observe(viewLifecycleOwner, Observer { meals ->
-            adapter.replaceMeals(meals)
-            if (!meals.isNullOrEmpty()) {
-                record_meal_recycler_view_my_meals.visibility = View.VISIBLE
-                record_meal_placeholder_my_meals.visibility = View.GONE
+        viewModel.userMeals.observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) {
+                viewModel.userMealsFragmentViewState.value = EMPTY
+            } else {
+                adapter.replaceMeals(it)
+                viewModel.userMealsFragmentViewState.value = ITEMS
+            }
+        })
+
+        viewModel.userMealsFragmentViewState.observe(viewLifecycleOwner, Observer {
+            @Suppress("NON_EXHAUSTIVE_WHEN")
+            when (it) {
+                LOADING -> {
+                    record_meal_recycler_view_my_meals.visibility = View.GONE
+                    record_meal_placeholder_my_meals_loading.visibility = View.VISIBLE
+                    record_meal_placeholder_my_meals_empty.visibility = View.GONE
+                }
+                EMPTY -> {
+                    record_meal_recycler_view_my_meals.visibility = View.GONE
+                    record_meal_placeholder_my_meals_loading.visibility = View.GONE
+                    record_meal_placeholder_my_meals_empty.visibility = View.VISIBLE
+                }
+                ITEMS -> {
+                    record_meal_recycler_view_my_meals.visibility = View.VISIBLE
+                    record_meal_placeholder_my_meals_loading.visibility = View.GONE
+                    record_meal_placeholder_my_meals_empty.visibility = View.GONE
+                }
             }
         })
 

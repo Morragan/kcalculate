@@ -5,10 +5,7 @@ import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
@@ -95,23 +92,20 @@ class RecordMealAdapter(
                     holder.weight.text.toString().toInt()
                 )
             addMealOnClickListener.onAddMealClick(mealEntry)
-            holder.addMealButton.startAnimation()
         }
 
         val isExpanded = position == expandedPosition
         holder.details.visibility = if (isExpanded) View.VISIBLE else View.GONE
-        holder.itemView.isActivated = isExpanded
         holder.title.setOnClickListener {
             expandedPosition = if (isExpanded) -1 else position
-            TransitionManager.beginDelayedTransition(recyclerView)
-            notifyDataSetChanged()
+            notifyItemChanged(position)
         }
 
         holder.title.text = meal.name
-        holder.carbs.text = meal.nutrients.carbsGram.toString()
-        holder.fats.text = meal.nutrients.fatGram.toString()
-        holder.protein.text = meal.nutrients.proteinGram.toString()
-        holder.kcalPer100.text = meal.nutrients.kcalPer100Gram.toString()
+        holder.carbs.text = meal.nutrients.carbs.toString()
+        holder.fats.text = meal.nutrients.fat.toString()
+        holder.protein.text = meal.nutrients.protein.toString()
+        holder.kcalPer100.text = meal.nutrients.kcal.toString()
     }
 
 
@@ -119,7 +113,7 @@ class RecordMealAdapter(
         RecyclerView.ViewHolder(rootItemView) {
 
         internal val addMealButton =
-            rootItemView.findViewById<CircularProgressButton>(R.id.record_meal_list_item_button_add_meal)
+            rootItemView.findViewById<Button>(R.id.record_meal_list_item_button_add_meal)
         internal val title = rootItemView.findViewById<TextView>(R.id.record_meal_list_item_title)
         internal val details =
             rootItemView.findViewById<ConstraintLayout>(R.id.record_meal_list_item_details)

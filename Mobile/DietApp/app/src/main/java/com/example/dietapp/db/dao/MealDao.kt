@@ -11,7 +11,7 @@ import com.example.dietapp.models.entity.Meal
 @Dao
 interface MealDao{
     @Query("select * from meal order by name asc")
-    fun getAll(): LiveData<MutableList<Meal>>
+    fun getAll(): LiveData<List<Meal>>
 
     @Insert
     suspend fun insert(meal: Meal)

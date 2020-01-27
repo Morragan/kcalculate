@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dietapp.R
 import com.example.dietapp.ui.recordmeal.RecordMealAdapter
 import com.example.dietapp.ui.recordmeal.RecordMealViewModel
+import com.example.dietapp.utils.ViewState.*
 import kotlinx.android.synthetic.main.fragment_record_meal_all_meals.*
 
 class RecordMealAllMealsFragment : RecordMealFragment() {
@@ -25,6 +26,7 @@ class RecordMealAllMealsFragment : RecordMealFragment() {
     }
 
     override fun onQuerySubmit(query: String) {
+        viewModel.allMealsFragmentViewState.value = LOADING
         viewModel.find3rdPartyMeals(query)
     }
 
@@ -43,14 +45,45 @@ class RecordMealAllMealsFragment : RecordMealFragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
 
-        viewModel.found3rdPartyMeals.observe(viewLifecycleOwner, Observer { meals ->
-            adapter.replaceMeals(meals)
-            if (!meals.isNullOrEmpty()) {
-                record_meal_recycler_view_all_meals.visibility = View.VISIBLE
-                record_meal_placeholder_all_meals.visibility = View.GONE
+        viewModel.found3rdPartyMeals.observe(viewLifecycleOwner, Observer {
+            if(it.isEmpty()){
+                viewModel.allMealsFragmentViewState.value = EMPTY
+            }
+            else{
+                adapter.replaceMeals(it)
+                viewModel.allMealsFragmentViewState.value = ITEMS
             }
         })
 
+        viewModel.allMealsFragmentViewState.observe(viewLifecycleOwner, Observer {
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+            when(it){
+                DEFAULT -> {
+                    record_meal_recycler_view_all_meals.visibility = View.GONE
+                    record_meal_placeholder_all_meals.visibility = View.VISIBLE
+                    record_meal_placeholder_all_meals_empty.visibility = View.GONE
+                    record_meal_placeholder_all_meals_loading.visibility = View.GONE
+                }
+                LOADING ->{
+                    record_meal_recycler_view_all_meals.visibility = View.GONE
+                    record_meal_placeholder_all_meals.visibility = View.GONE
+                    record_meal_placeholder_all_meals_empty.visibility = View.GONE
+                    record_meal_placeholder_all_meals_loading.visibility = View.VISIBLE
+                }
+                EMPTY ->{
+                    record_meal_recycler_view_all_meals.visibility = View.GONE
+                    record_meal_placeholder_all_meals.visibility = View.GONE
+                    record_meal_placeholder_all_meals_empty.visibility = View.VISIBLE
+                    record_meal_placeholder_all_meals_loading.visibility = View.GONE
+                }
+                ITEMS ->{
+                    record_meal_recycler_view_all_meals.visibility = View.VISIBLE
+                    record_meal_placeholder_all_meals.visibility = View.GONE
+                    record_meal_placeholder_all_meals_empty.visibility = View.GONE
+                    record_meal_placeholder_all_meals_loading.visibility = View.GONE
+                }
+            }
+        })
         return view
     }
 }

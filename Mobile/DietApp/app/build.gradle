@@ -47,11 +47,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-//
-//    // rx
-//    implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
-//    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-//    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
 
     // dependency injection
     implementation "com.google.dagger:dagger:$dagger2_version"
@@ -73,6 +68,8 @@ dependencies {
     implementation 'br.com.simplepass:loading-button-android:2.1.5'
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation "com.mikepenz:materialdrawer:7.0.0-rc08"
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+    implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 
     // 3rd party login
     implementation 'com.facebook.android:facebook-login:5.5.1'

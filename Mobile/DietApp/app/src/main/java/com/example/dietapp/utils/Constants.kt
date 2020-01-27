@@ -32,6 +32,7 @@ object Constants {
     // Intent keys
     const val intentKeyRegisterToLoginNickname =
         "com.example.dietapp.utils.constants.intentkeyregistertologinnickname"
+    const val intentKeyRecordMealToCreateMealBarcode = "com.example.dietapp.utils.constants.intentkeyrecordmealtocreatemealincludebarcode"
 
     // Activity request codes
     const val requestCodeCreateMeal = 100

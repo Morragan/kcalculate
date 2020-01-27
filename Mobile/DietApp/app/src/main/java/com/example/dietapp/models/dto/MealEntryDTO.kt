@@ -10,7 +10,7 @@ data class MealEntryDTO(
     val date: Date,
     val nutrients: Nutrients,
     val weightGram: Int,
-    val kcal: Int
+    val kcal: Double
 ) {
     fun toMealEntry() = MealEntry(id, name, date, nutrients, weightGram, kcal)
 }

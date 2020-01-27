@@ -121,8 +121,9 @@ namespace DietApp
             }
             app.UseCors(options =>
             {
-                options.WithOrigins("https://localhost:3000").AllowAnyMethod().AllowAnyHeader();
-                options.WithOrigins("https://192.168.8.105").AllowAnyMethod().AllowAnyHeader();
+                options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                //options.WithOrigins("https://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                //options.WithOrigins("https://192.168.8.105").AllowAnyMethod().AllowAnyHeader();
             });
             app.UseHttpsRedirection();
 

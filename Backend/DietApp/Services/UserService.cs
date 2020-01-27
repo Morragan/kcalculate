@@ -15,12 +15,14 @@ namespace DietApp.Services
     public class UserService : IUserService
     {
         readonly IUserRepository userRepository;
+        readonly IFriendshipService friendshipService;
         readonly IUnitOfWork unitOfWork;
         readonly IPasswordHasher passwordHasher;
 
-        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
+        public UserService(IUserRepository userRepository, IFriendshipService friendshipService, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
         {
             this.userRepository = userRepository;
+            this.friendshipService = friendshipService;
             this.unitOfWork = unitOfWork;
             this.passwordHasher = passwordHasher;
         }
@@ -89,9 +91,13 @@ namespace DietApp.Services
             return await userRepository.FindByIdIncludeFriendships(id).ConfigureAwait(false);
         }
 
-        public IEnumerable<User> FindByNicknameContains(string nickname)
+        public async Task<IEnumerable<User>> SearchUsers(string nickname, int userId)
         {
-            return userRepository.FindByNicknameContains(nickname).Where(user => !user.IsPrivate);
+            var (requestedFriends, receivedFriends) = await friendshipService.GetUserFriends(userId).ConfigureAwait(false);
+            var friends = new List<(User, FriendshipStatus)>(requestedFriends);
+            friends.AddRange(receivedFriends);
+
+            return userRepository.FindByNicknameContains(nickname).Where(user => !user.IsPrivate && !friends.Any(friend => friend.Item1.ID == user.ID));
         }
     }
 }

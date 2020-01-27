@@ -1,11 +1,7 @@
 ﻿using DietApp.Domain.Models;
 using DietApp.Domain.Repositories;
-using DietApp.Domain.Responses;
 using DietApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DietApp.Persistence.Repositories

@@ -6,10 +6,18 @@
     tools:context=".ui.friends.fragments.PendingRequestsFragment">
     
     <ProgressBar
-        android:id="@+id/friends_placeholder_pending"
+        android:id="@+id/friends_placeholder_pending_loading"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/friends_placeholder_pending_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/friends_placeholder_pending_empty"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friends_recycler_view_pending"

@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_description_activity_very_low" />
+                android:text="@string/calculate_goals_description_activity_very_low" />
 
             <RadioButton
                 android:id="@+id/register_radio_button_activity_level_low"
@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_description_activity_low" />
+                android:text="@string/calculate_goals_description_activity_low" />
 
             <RadioButton
                 android:id="@+id/register_radio_button_activity_level_moderate"
@@ -86,7 +86,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_description_activity_moderate" />
+                android:text="@string/calculate_goals_description_activity_moderate" />
 
             <RadioButton
                 android:id="@+id/register_radio_button_activity_level_high"
@@ -97,7 +97,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_description_activity_high" />
+                android:text="@string/calculate_goals_description_activity_high" />
 
             <RadioButton
                 android:id="@+id/register_radio_button_activity_level_very_high"
@@ -108,7 +108,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register_description_activity_very_high" />
+                android:text="@string/calculate_goals_description_activity_very_high" />
         </RadioGroup>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
