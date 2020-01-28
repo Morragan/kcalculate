@@ -56,6 +56,41 @@ namespace DietApp.Services
             return new UpdateUserResponse(true, null, user);
         }
 
+        public async Task<UpdateUserResponse> UpdatePrivacy(int userId, bool isPrivate)
+        {
+            var existingUser = await userRepository.FindById(userId).ConfigureAwait(false);
+            if (existingUser == null) return new UpdateUserResponse(false, "User does not exist", null);
+            existingUser.IsPrivate = isPrivate;
+
+            await userRepository.Update(existingUser).ConfigureAwait(false);
+            await unitOfWork.Complete().ConfigureAwait(false);
+
+            return new UpdateUserResponse(true, null, existingUser);
+        }
+
+        public async Task<UpdateUserResponse> UpdateNutrientGoals(int userId, int calorieLimitLower, int calorieLimit, int calorieLimitUpper, int carbsLimitLower, int carbsLimit, int carbsLimitUpper, int fatLimitLower, int fatLimit, int fatLimitUpper, int proteinLimitLower, int proteinLimit, int proteinLimitUpper)
+        {
+            var existingUser = await userRepository.FindById(userId).ConfigureAwait(false);
+            if (existingUser == null) return new UpdateUserResponse(false, "User does not exist", null);
+            existingUser.CalorieLimitLower = calorieLimitLower;
+            existingUser.CalorieLimit = calorieLimit;
+            existingUser.CalorieLimitUpper = calorieLimitUpper;
+            existingUser.CarbsLimitLower = carbsLimitLower;
+            existingUser.CarbsLimit = carbsLimit;
+            existingUser.CarbsLimitUpper = carbsLimitUpper;
+            existingUser.FatLimitLower = fatLimitLower;
+            existingUser.FatLimit = fatLimit;
+            existingUser.FatLimitUpper = fatLimitUpper;
+            existingUser.ProteinLimitLower = proteinLimitLower;
+            existingUser.ProteinLimit = proteinLimit;
+            existingUser.ProteinLimitUpper = proteinLimitUpper;
+
+            await userRepository.Update(existingUser).ConfigureAwait(false);
+            await unitOfWork.Complete().ConfigureAwait(false);
+
+            return new UpdateUserResponse(true, null, existingUser);
+        }
+
         public async Task<User> FindById(int id)
         {
             return await userRepository.FindById(id).ConfigureAwait(false);
@@ -97,7 +132,10 @@ namespace DietApp.Services
             var friends = new List<(User, FriendshipStatus)>(requestedFriends);
             friends.AddRange(receivedFriends);
 
-            return userRepository.FindByNicknameContains(nickname).Where(user => !user.IsPrivate && !friends.Any(friend => friend.Item1.ID == user.ID));
+            return userRepository.FindByNicknameContains(nickname).Where(user =>
+                user.ID != userId &&
+                !user.IsPrivate &&
+                !friends.Any(friend => friend.Item1.ID == user.ID));
         }
     }
 }

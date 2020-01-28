@@ -2,15 +2,16 @@ package com.example.dietapp.di.module
 
 import androidx.lifecycle.ViewModel
 import com.example.dietapp.di.injectionkeys.ViewModelKey
+import com.example.dietapp.ui.calculatenutrientgoals.CalculateNutrientGoalsViewModel
 import com.example.dietapp.ui.createmeal.CreateMealViewModel
+import com.example.dietapp.ui.friends.FriendsViewModel
+import com.example.dietapp.ui.goals.GoalsViewModel
 import com.example.dietapp.ui.home.HomeViewModel
 import com.example.dietapp.ui.login.LoginViewModel
 import com.example.dietapp.ui.main.MainViewModel
+import com.example.dietapp.ui.profile.ProfileViewModel
 import com.example.dietapp.ui.recordmeal.RecordMealViewModel
 import com.example.dietapp.ui.register.RegisterViewModel
-import com.example.dietapp.ui.friends.FriendsViewModel
-import com.example.dietapp.ui.goals.GoalsViewModel
-import com.example.dietapp.ui.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -61,4 +62,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun provideMainViewModel(mainViewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CalculateNutrientGoalsViewModel::class)
+    abstract fun provideCalculateNutrientGoalsViewModel(calculateNutrientGoalsViewModel: CalculateNutrientGoalsViewModel): ViewModel
 }

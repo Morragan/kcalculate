@@ -32,8 +32,8 @@ class CreditsActivity : AppCompatActivity() {
 
         setSupportActionBar(credits_toolbar)
 
-        profileDrawerItem = ProfileDrawerItem().withIdentifier(0).withName(DietApp.user?.nickname)
-            .withEmail(DietApp.user?.email)
+        profileDrawerItem = ProfileDrawerItem().withIdentifier(0).withName("name")
+            .withEmail("email")
 
         accountHeader = AccountHeaderBuilder()
             .withActivity(this)

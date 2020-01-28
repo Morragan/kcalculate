@@ -82,8 +82,6 @@ class FriendsActivity : AppCompatActivity(),
         //region drawer setup
         profileDrawerItem = ProfileDrawerItem()
             .withIdentifier(0)
-            .withName(DietApp.user?.nickname)
-            .withEmail(DietApp.user?.email)
 
         accountHeader = AccountHeaderBuilder()
             .withActivity(this)
@@ -142,6 +140,13 @@ class FriendsActivity : AppCompatActivity(),
         friends_tabs.setupWithViewPager(friends_view_pager)
 
         // region LiveData observers setup
+        viewModel.user.observe(this, Observer {
+            profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email).apply {
+                if (!it.avatarLink.isBlank()) withIcon(it.avatarLink)
+            }
+            accountHeader.updateProfile(profileDrawerItem)
+        })
+
         viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
             if (!isLoggedIn) {
                 val intent = Intent(this, LoginActivity::class.java).apply {

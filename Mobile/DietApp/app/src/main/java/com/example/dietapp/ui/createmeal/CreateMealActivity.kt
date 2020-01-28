@@ -28,7 +28,7 @@ class CreateMealActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     lateinit var viewModel: CreateMealViewModel
-    var barcode: String? = null
+    private var barcode: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -30,6 +30,7 @@ object Constants {
     const val sharedPreferencesKeyUserIsPrivate = "com.example.dietapp.utils.constants.preferenceuserisprivate"
 
     // Intent keys
+    const val intentKeyCalculateNutrientGoalsResult = "com.example.dietapp.utils.constants.intentkeycalculatenutrientgoalsresult"
     const val intentKeyRegisterToLoginNickname =
         "com.example.dietapp.utils.constants.intentkeyregistertologinnickname"
     const val intentKeyRecordMealToCreateMealBarcode = "com.example.dietapp.utils.constants.intentkeyrecordmealtocreatemealincludebarcode"
@@ -38,4 +39,5 @@ object Constants {
     const val requestCodeCreateMeal = 100
     const val requestCodeScanBarcode = 49374
     const val requestCodeNoInternet = 99
+    const val requestCodeCalculateGoals = 98
 }

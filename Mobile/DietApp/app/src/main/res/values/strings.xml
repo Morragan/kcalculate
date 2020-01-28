@@ -47,11 +47,11 @@
     <string name="error_height_input">Enter your height</string>
     <string name="button_text_register">Register</string>
     <string name="error_weight_input">Enter your weight</string>
-    <string name="register_dialog_message">Now we will help you calculate your recommended daily nutrients intake. If you don\'t want this app to calculate it for you, you can skip the process and set it yourself by clicking \"SKIP\"</string>
-    <string name="register_dialog_positive_button">Don\'t skip</string>
-    <string name="register_dialog_negative_button">Skip</string>
+    <string name="calculate_goals_dialog_message">Now the app will help you calculate your recommended daily nutrients intake. If you don\'t want this app to calculate it for you, you can skip the process and set it yourself by clicking \"SKIP\"</string>
+    <string name="calculate_goals_dialog_positive_button">Don\'t skip</string>
+    <string name="calculate_goals_dialog_negative_button">Skip</string>
     <string name="error_gender_button">Select your biological gender</string>
-    <string name="register_label_nutrients_limit">Your recommended nutrients limit</string>
+    <string name="calculate_goals_label_nutrients_limit">Your recommended nutrients limit</string>
     <string name="text_calorie_level_description">If you disagree with this estimate, feel free to correct it</string>
     <string name="button_text_go_back">GO BACK</string>
     <string name="hint_find_food">Enter food\'s name</string>
@@ -120,10 +120,10 @@
     <string name="calculate_goals_description_activity_moderate">alala</string>
     <string name="calculate_goals_description_activity_high">kakaka</string>
     <string name="calculate_goals_description_activity_very_high">susuasd</string>
-    <string name="register_label_calorie_limit">Kcal</string>
-    <string name="register_label_carbs_limit">Carbs</string>
-    <string name="register_label_fat_limit">Fat</string>
-    <string name="register_label_protein_limit">Protein</string>
+    <string name="calculate_goals_label_calorie_limit">Kcal</string>
+    <string name="calculate_goals_label_carbs_limit">Carbs</string>
+    <string name="calculate_goals_label_fat_limit">Fat</string>
+    <string name="calculate_goals_label_protein_limit">Protein</string>
     <string name="description_user_avatar">User\'s avatar</string>
     <string name="button_text_friend_invitation_accept">Accept</string>
     <string name="button_text_friend_invitation_reject">Reject</string>
@@ -161,4 +161,9 @@
     <string name="profile_button_text_make_public">MAKE MY ACCOUNT PUBLIC</string>
     <string name="profile_limits">%1$d kcal | Carbs: %2$d | Fat: %3$d | Protein: %4$d</string>
     <string name="profile_text_level_points">%1$d/%2$d</string>
+    <string name="calculate_goals_label_read_rows">Read rows as lower limit / goal / upper limit</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_text_try_again">TRY AGAIN</string>
 </resources>

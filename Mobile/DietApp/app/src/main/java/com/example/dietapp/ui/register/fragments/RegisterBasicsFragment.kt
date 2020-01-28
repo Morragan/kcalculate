@@ -26,10 +26,10 @@ class RegisterBasicsFragment : RegisterFragment() {
         val registerInputAvatarLink =
             activity.findViewById<EditText>(R.id.register_input_avatar_link)
 
-        activity.email = registerInputEmail.text.toString()
-        activity.nickname = registerInputNickname.text.toString()
-        activity.password = registerInputPassword.text.toString()
-        activity.avatarLink = registerInputAvatarLink.text.toString()
+        viewModel.email = registerInputEmail.text.toString()
+        viewModel.nickname = registerInputNickname.text.toString()
+        viewModel.password = registerInputPassword.text.toString()
+        viewModel.avatarLink = registerInputAvatarLink.text.toString()
     }
 
     override fun validate(activity: RegisterActivity): Boolean {

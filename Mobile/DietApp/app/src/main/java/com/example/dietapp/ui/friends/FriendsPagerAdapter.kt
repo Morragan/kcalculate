@@ -21,19 +21,19 @@ class FriendsPagerAdapter(
 
     val fragments = listOf(
         FriendsFragment.newInstance(
-            FriendsAdapter(activity, activity, activity, activity),
+            FriendsAdapter(activity, activity, activity, activity, activity),
             viewModel
         ),
         FindPeopleFragment.newInstance(
-            FriendsAdapter(activity, activity, activity, activity),
+            FriendsAdapter(activity, activity, activity, activity, activity),
             viewModel
         ),
         PendingRequestsFragment.newInstance(
-            FriendsAdapter(activity, activity, activity, activity),
+            FriendsAdapter(activity, activity, activity, activity, activity),
             viewModel
         ),
         BlockedFragment.newInstance(
-            FriendsAdapter(activity, activity, activity, activity),
+            FriendsAdapter(activity, activity, activity, activity, activity),
             viewModel
         )
     )

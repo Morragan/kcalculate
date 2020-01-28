@@ -1,15 +1,18 @@
 package com.example.dietapp.ui.friends
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.dietapp.R
 import com.example.dietapp.models.entity.Friend
 import java.util.*
 
 class FriendsAdapter( //TODO: Fix
+    private val context: Context,
     private val acceptedOnClickListener: AcceptedOnClickListener,
     private val pendingOnClickListener: PendingOnClickListener,
     private val blockedOnClickListener: BlockedOnClickListener,
@@ -74,7 +77,7 @@ class FriendsAdapter( //TODO: Fix
                     .inflate(R.layout.item_user_blocked, parent, false)
                 return BlockedViewHolder(view)
             }
-            else ->{
+            else -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_user_found, parent, false)
                 return UserFoundViewHolder(view)
@@ -91,6 +94,8 @@ class FriendsAdapter( //TODO: Fix
         when (_holder.itemViewType) {
             0 -> {
                 val holder = _holder as AcceptedViewHolder
+                if (!friend.avatarLink.isNullOrBlank())
+                    Glide.with(context).load(friend.avatarLink).into(holder.image)
                 holder.nickname.text = friend.nickname
                 holder.unfriendButton.setOnClickListener {
                     acceptedOnClickListener.onUnfriendClick(friend)
@@ -101,10 +106,14 @@ class FriendsAdapter( //TODO: Fix
             }
             1 -> {
                 val holder = _holder as SentViewHolder
+                if (!friend.avatarLink.isNullOrBlank())
+                    Glide.with(context).load(friend.avatarLink).into(holder.image)
                 holder.nickname.text = friend.nickname
             }
             2 -> {
                 val holder = _holder as PendingViewHolder
+                if (!friend.avatarLink.isNullOrBlank())
+                    Glide.with(context).load(friend.avatarLink).into(holder.image)
                 holder.nickname.text = friend.nickname
                 holder.acceptButton.setOnClickListener {
                     pendingOnClickListener.onAcceptClick(friend)
@@ -115,6 +124,8 @@ class FriendsAdapter( //TODO: Fix
             }
             3 -> {
                 val holder = _holder as BlockedViewHolder
+                if (!friend.avatarLink.isNullOrBlank())
+                    Glide.with(context).load(friend.avatarLink).into(holder.image)
                 holder.nickname.text = friend.nickname
                 holder.unblockButton.setOnClickListener {
                     blockedOnClickListener.onUnblockClick(friend)
@@ -122,6 +133,8 @@ class FriendsAdapter( //TODO: Fix
             }
             4 -> {
                 val holder = _holder as UserFoundViewHolder
+                if (!friend.avatarLink.isNullOrBlank())
+                    Glide.with(context).load(friend.avatarLink).into(holder.image)
                 holder.nickname.text = friend.nickname
                 holder.befriendButton.setOnClickListener {
                     userFoundOnClickListener.onBefriendClick(friend)
@@ -187,7 +200,7 @@ class FriendsAdapter( //TODO: Fix
             rootItemView.findViewById<Button>(R.id.friends_list_item_blocked_button_unblock)
     }
 
-    class UserFoundViewHolder(rootItemView: View) : RecyclerView.ViewHolder(rootItemView){
+    class UserFoundViewHolder(rootItemView: View) : RecyclerView.ViewHolder(rootItemView) {
         internal val nickname =
             rootItemView.findViewById<TextView>(R.id.friends_list_item_found_nickname)
         internal val image =
@@ -212,7 +225,7 @@ class FriendsAdapter( //TODO: Fix
         fun onUnblockClick(user: Friend)
     }
 
-    interface UserFoundOnClickListener{
+    interface UserFoundOnClickListener {
         fun onBefriendClick(user: Friend)
         fun onBlockClick(user: Friend)
     }

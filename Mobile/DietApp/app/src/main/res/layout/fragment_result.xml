@@ -1,142 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.calculatenutrientgoals.fragments.ResultFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/register_label_nutrients_limit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:text="@string/register_label_nutrients_limit"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/register_label_calorie_limit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/register_input_calorie_limit"
-        android:text="@string/register_label_calorie_limit"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/register_input_calorie_limit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/register_input_calorie_limit"
-        app:layout_constraintTop_toBottomOf="@id/register_label_nutrients_limit" />
+        <variable
+            name="viewModel"
+            type="com.example.dietapp.ui.calculatenutrientgoals.CalculateNutrientGoalsViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/register_input_calorie_limit"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@id/register_input_carbs_limit"
-        app:layout_constraintLeft_toRightOf="@id/register_label_calorie_limit"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_label_nutrients_limit" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.calculatenutrientgoals.fragments.ResultFragment">
 
-    <TextView
-        android:id="@+id/register_label_carbs_limit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/register_input_carbs_limit"
-        android:text="@string/register_label_carbs_limit"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/register_input_carbs_limit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/register_input_carbs_limit"
-        app:layout_constraintTop_toBottomOf="@id/register_input_calorie_limit" />
+        <TextView
+            android:id="@+id/calculate_goals_label_nutrients_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:text="@string/calculate_goals_label_nutrients_limit"
+            android:textColor="@color/textBlack"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/register_input_carbs_limit"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@id/register_input_fat_limit"
-        app:layout_constraintLeft_toRightOf="@id/register_label_carbs_limit"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_input_calorie_limit" />
+        <TextView
+            android:id="@+id/calculate_goals_description_nutrients_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="@string/calculate_goals_label_read_rows"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_label_nutrients_limit" />
 
-    <TextView
-        android:id="@+id/register_label_fat_limit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/register_input_fat_limit"
-        android:text="@string/register_label_fat_limit"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/register_input_fat_limit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/register_input_fat_limit"
-        app:layout_constraintTop_toBottomOf="@id/register_input_carbs_limit" />
+        <TextView
+            android:id="@+id/calculate_goals_label_calorie_limit"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/calculate_goals_input_calorie_limit_lower"
+            android:text="@string/calculate_goals_label_calorie_limit"
+            android:textColor="@color/textBlack"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/calculate_goals_input_calorie_limit_lower"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_calorie_limit_lower"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_description_nutrients_limit" />
 
-    <EditText
-        android:id="@+id/register_input_fat_limit"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@id/register_input_protein_limit"
-        app:layout_constraintLeft_toRightOf="@id/register_label_fat_limit"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_input_carbs_limit" />
+        <EditText
+            android:id="@+id/calculate_goals_input_calorie_limit_lower"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.kcalLow}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_carbs_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_label_calorie_limit"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_calorie_limit_goal"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_description_nutrients_limit" />
 
-    <TextView
-        android:id="@+id/register_label_protein_limit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/register_input_protein_limit"
-        android:text="@string/register_label_protein_limit"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/register_input_protein_limit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/register_input_protein_limit"
-        app:layout_constraintTop_toBottomOf="@id/register_input_fat_limit" />
+        <EditText
+            android:id="@+id/calculate_goals_input_calorie_limit_goal"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.kcalGoal}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_carbs_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_calorie_limit_lower"
+            app:layout_constraintRight_toRightOf="@id/calculate_goals_input_calorie_limit_upper"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_description_nutrients_limit" />
 
-    <EditText
-        android:id="@+id/register_input_protein_limit"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:gravity="center_horizontal"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@id/register_text_result_description"
-        app:layout_constraintLeft_toRightOf="@id/register_label_protein_limit"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_input_fat_limit" />
+        <EditText
+            android:id="@+id/calculate_goals_input_calorie_limit_upper"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.kcalUpper}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_carbs_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_calorie_limit_goal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_description_nutrients_limit" />
 
-    <TextView
-        android:id="@+id/register_text_result_description"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:gravity="center_horizontal"
-        android:text="@string/text_calorie_level_description"
-        app:layout_constraintBottom_toTopOf="@id/register_text_connection_failure"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:id="@+id/calculate_goals_label_carbs_limit"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/calculate_goals_input_carbs_limit_lower"
+            android:text="@string/calculate_goals_label_carbs_limit"
+            android:textColor="@color/textBlack"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/calculate_goals_input_carbs_limit_lower"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_carbs_limit_lower"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_calorie_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_carbs_limit_lower"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.carbsLow}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_fat_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_label_carbs_limit"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_carbs_limit_goal"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_calorie_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_carbs_limit_goal"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.carbsGoal}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_fat_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_carbs_limit_lower"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_carbs_limit_upper"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_calorie_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_carbs_limit_upper"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.carbsUpper}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_fat_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_carbs_limit_goal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_calorie_limit_lower" />
+
+        <TextView
+            android:id="@+id/calculate_goals_label_fat_limit"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/calculate_goals_input_fat_limit_lower"
+            android:text="@string/calculate_goals_label_fat_limit"
+            android:textColor="@color/textBlack"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/calculate_goals_input_fat_limit_lower"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_fat_limit_lower"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_carbs_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_fat_limit_lower"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.fatLow}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_protein_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_label_fat_limit"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_fat_limit_goal"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_carbs_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_fat_limit_goal"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.fatGoal}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_protein_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_fat_limit_lower"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_fat_limit_upper"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_carbs_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_fat_limit_upper"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.fatUpper}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_input_protein_limit_lower"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_fat_limit_goal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_carbs_limit_lower" />
+
+        <TextView
+            android:id="@+id/calculate_goals_label_protein_limit"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/calculate_goals_input_protein_limit_lower"
+            android:text="@string/calculate_goals_label_protein_limit"
+            android:textColor="@color/textBlack"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/calculate_goals_input_protein_limit_lower"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_protein_limit_lower"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_fat_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_protein_limit_lower"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.proteinLow}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_text_result_description"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_label_protein_limit"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_protein_limit_goal"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_fat_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_protein_limit_goal"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.proteinGoal}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_text_result_description"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_protein_limit_lower"
+            app:layout_constraintRight_toLeftOf="@id/calculate_goals_input_protein_limit_upper"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_fat_limit_lower" />
+
+        <EditText
+            android:id="@+id/calculate_goals_input_protein_limit_upper"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:gravity="center_horizontal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@={viewModel.proteinUpper}"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_text_result_description"
+            app:layout_constraintLeft_toRightOf="@id/calculate_goals_input_protein_limit_goal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calculate_goals_input_fat_limit_lower" />
+
+        <TextView
+            android:id="@+id/calculate_goals_text_result_description"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center_horizontal"
+            android:text="@string/text_calorie_level_description"
+            app:layout_constraintBottom_toTopOf="@id/calculate_goals_text_connection_failure"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
 
-    <TextView
-        android:id="@+id/register_text_connection_failure"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:gravity="center"
-        android:text="@string/text_connection_failure"
-        android:textColor="@color/error"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:id="@+id/calculate_goals_text_connection_failure"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:gravity="center"
+            android:text="@string/text_connection_failure"
+            android:textColor="@color/error"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

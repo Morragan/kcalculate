@@ -15,5 +15,6 @@ namespace DietApp.Domain.Repositories
         Task<User> FindByEmail(string email);
         Task<User> FindByNickname(string nickname);
         IEnumerable<User> FindByNicknameContains(string nickname);
+        void UpdatePrivacy(int userId, bool isPrivate);
     }
 }

@@ -79,5 +79,12 @@ namespace DietApp.Persistence.Repositories
         {
             return context.Users.Where(user => user.Nickname.Contains(nickname));
         }
+
+        public void UpdatePrivacy(int userId, bool isPrivate)
+        {
+            var user = new User() { ID = userId, IsPrivate = isPrivate };
+            context.Users.Attach(user);
+            context.Entry(user).Property(u => u.IsPrivate).IsModified = true;
+        }
     }
 }

@@ -174,7 +174,9 @@ class HomeActivity : AppCompatActivity() {
         })
 
         viewModel.user.observe(this, Observer {
-            profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email)
+            profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email).apply {
+                if(!it.avatarLink.isBlank()) withIcon(it.avatarLink)
+            }
             accountHeader.updateProfile(profileDrawerItem)
         })
 

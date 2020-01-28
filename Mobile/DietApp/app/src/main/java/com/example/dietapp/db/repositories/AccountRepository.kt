@@ -3,12 +3,13 @@ package com.example.dietapp.db.repositories
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.example.dietapp.api.ApiRequestHandler
-import com.example.dietapp.api.ApiResponse
 import com.example.dietapp.api.services.AccountService
+import com.example.dietapp.models.dto.ChangeAccountPrivacyDTO
 import com.example.dietapp.models.dto.LoginDTO
+import com.example.dietapp.models.dto.NutrientGoalsDTO
 import com.example.dietapp.models.dto.RegisterDTO
-import com.example.dietapp.models.dto.TokenDTO
 import com.example.dietapp.models.entity.User
+import com.example.dietapp.ui.calculatenutrientgoals.NutrientGoalsData
 import com.example.dietapp.utils.*
 import javax.inject.Inject
 
@@ -33,7 +34,7 @@ class AccountRepository @Inject constructor(
         }
     }
 
-    fun logout(){
+    fun logout() {
         sharedPreferences.removeUser()
         sharedPreferences.removeToken()
         loggedIn.value = false
@@ -54,7 +55,36 @@ class AccountRepository @Inject constructor(
         userResponse.data?.let {
             val storedUser = sharedPreferences.getUser()
             val receivedUser = it.toUser()
-            if(receivedUser != storedUser){
+            if (receivedUser != storedUser) {
+                sharedPreferences.saveUser(it)
+                user.postValue(receivedUser)
+            }
+        }
+    }
+
+    suspend fun changeAccountIsPrivate(isPrivate: Boolean) {
+        val userResponse = apiRequestHandler.executeRequest(
+            accountService::changeAccountIsPrivate,
+            ChangeAccountPrivacyDTO(isPrivate)
+        )
+        userResponse.data?.let {
+            val storedUser = sharedPreferences.getUser()
+            val receivedUser = it.toUser()
+            if (receivedUser != storedUser) {
+                sharedPreferences.saveUser(it)
+                user.postValue(receivedUser)
+            }
+        }
+    }
+
+    suspend fun updateNutrientGoals(nutrientGoals: NutrientGoalsData) {
+        val dto = NutrientGoalsDTO(nutrientGoals)
+        val userResponse =
+            apiRequestHandler.executeRequest(accountService::changeUserNutrientGoals, dto)
+        userResponse.data?.let {
+            val storedUser = sharedPreferences.getUser()
+            val receivedUser = it.toUser()
+            if (receivedUser != storedUser) {
                 sharedPreferences.saveUser(it)
                 user.postValue(receivedUser)
             }

@@ -1,12 +1,12 @@
 package com.example.dietapp.api.services
 
-import com.example.dietapp.models.dto.LoginDTO
-import com.example.dietapp.models.dto.RegisterDTO
-import com.example.dietapp.models.dto.TokenDTO
-import com.example.dietapp.models.dto.UserDTO
+import com.example.dietapp.models.dto.*
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface AccountService {
     @GET("account/check-logged-in")
@@ -19,19 +19,17 @@ interface AccountService {
     suspend fun register(@Body userData: RegisterDTO): Response<Unit>
 
     @POST("account/refresh-token")
-    @FormUrlEncoded
-    suspend fun refreshToken(
-        @Field("accessToken") accessToken: String,
-        @Field("refreshToken") refreshToken: String
-    ): Response<TokenDTO>
+    suspend fun refreshToken(@Body tokensDTO: RefreshTokenDTO): Response<TokenDTO>
 
     @POST("account/refresh-token")
-    @FormUrlEncoded
-    fun refreshTokenCall(
-        @Field("accessToken") accessToken: String,
-        @Field("refreshToken") refreshToken: String
-    ): Call<TokenDTO>
+    fun refreshTokenCall(@Body tokensDTO: RefreshTokenDTO): Call<TokenDTO>
 
     @GET("account")
     suspend fun getUserData(): Response<UserDTO>
+
+    @PUT("account/privacy")
+    suspend fun changeAccountIsPrivate(@Body isPrivateDTO: ChangeAccountPrivacyDTO): Response<UserDTO>
+
+    @PUT
+    suspend fun changeUserNutrientGoals(@Body nutrientGoalsDTO: NutrientGoalsDTO): Response<UserDTO>
 }

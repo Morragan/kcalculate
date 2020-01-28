@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
+
     <Button
         android:id="@+id/register_button_proceed"
         android:layout_width="match_parent"
@@ -21,15 +22,5 @@
         android:layout_marginBottom="10dp"
         android:elevation="4dp"
         android:text="@string/button_text_proceed"/>
-    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-        android:id="@+id/register_button_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="4dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/round_button_shape"
-        android:text="@string/button_text_register"
-        android:visibility="gone"/>
+
 </LinearLayout>

@@ -16,19 +16,6 @@ import com.example.dietapp.ui.login.LoginActivity
 class DietApp : Application() {
     lateinit var appComponent: AppComponent
 
-    //TODO: If possible, move state to Room, replace fields with observables, DO NOT leave as it is
-    companion object {
-
-        var meals: MutableList<MealDTO> = mutableListOf()
-        var filteredMeals: MutableList<MealDTO> = mutableListOf()
-        var user: UserDTO? = null
-
-    }
-
-    init {
-        filteredMeals.addAll(meals)
-    }
-
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.factory().create(this)

@@ -5,6 +5,7 @@ import com.example.dietapp.api.services.AccountService
 import com.example.dietapp.api.services.MealEntriesService
 import com.example.dietapp.api.services.MealsService
 import com.example.dietapp.api.services.SocialService
+import com.example.dietapp.models.dto.RefreshTokenDTO
 import com.example.dietapp.models.dto.TokenDTO
 import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.getToken
@@ -42,7 +43,7 @@ object ApiModule {
         Authenticator { _, response ->
             val token = sharedPreferences.getToken()
             val refreshResponse =
-                accountService.get().refreshTokenCall(token.accessToken, token.refreshToken)
+                accountService.get().refreshTokenCall(RefreshTokenDTO(token.accessToken, token.refreshToken))
                     .execute()
 
             if (refreshResponse.body() == null)

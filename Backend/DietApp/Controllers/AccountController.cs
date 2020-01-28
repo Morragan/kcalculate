@@ -103,20 +103,48 @@ namespace DietApp.Controllers
         }
 
         [HttpPut]
-        [Route("account-privacy")]
+        [Route("privacy")]
         [Authorize]
         public async Task<IActionResult> ChangeAccountPrivacy([FromBody] ChangeAccountPrivacyViewModel viewModel)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var userId = userService.GetCurrentUserId(HttpContext);
-            var user = await userService.FindById(userId).ConfigureAwait(false);
-            user.IsPrivate = viewModel.IsPrivate;
 
-            var response = await userService.Update(user).ConfigureAwait(false);
+            var response = await userService.UpdatePrivacy(userId, viewModel.IsPrivate).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            var userViewModel = mapper.Map<User, UserViewModel>(user);
+            var userViewModel = mapper.Map<User, UserViewModel>(response.User);
+            return Ok(userViewModel);
+        }
+
+        [HttpPut]
+        [Route("nutrient-goals")]
+        [Authorize]
+        public async Task<IActionResult> ChangeUserNutrientGoals([FromBody] ChangeUserNutrientGoalsViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var userId = userService.GetCurrentUserId(HttpContext);
+
+            var response = await userService.UpdateNutrientGoals(
+                userId,
+                viewModel.CalorieLimitLower,
+                viewModel.CalorieLimit,
+                viewModel.CalorieLimitUpper,
+                viewModel.CarbsLimitLower,
+                viewModel.CarbsLimit,
+                viewModel.CarbsLimitUpper,
+                viewModel.FatLimitLower,
+                viewModel.FatLimit,
+                viewModel.FatLimitUpper,
+                viewModel.ProteinLimitLower,
+                viewModel.ProteinLimit,
+                viewModel.ProteinLimitUpper
+            ).ConfigureAwait(false);
+            if (!response.IsSuccess) return BadRequest(response.Message);
+
+            var userViewModel = mapper.Map<User, UserViewModel>(response.User);
             return Ok(userViewModel);
         }
 

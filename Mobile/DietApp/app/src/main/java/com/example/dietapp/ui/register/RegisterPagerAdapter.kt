@@ -2,27 +2,26 @@ package com.example.dietapp.ui.register
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.example.dietapp.ui.register.fragments.*
+import com.example.dietapp.ui.register.fragments.RegisterBasicsFragment
+import com.example.dietapp.ui.register.fragments.RegisterLoadingFragment
+import com.example.dietapp.ui.register.fragments.RegisterMethodFragment
 
 class RegisterPagerAdapter(
     fragmentManager: FragmentManager,
-    private val viewModel: RegisterViewModel
+    viewModel: RegisterViewModel
 ) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     companion object {
-        private const val FRAGMENTS_COUNT = 5
+        private const val FRAGMENTS_COUNT = 3
     }
 
-    override fun getItem(position: Int) = when (position) {
-        0 -> RegisterMethodFragment.newInstance(viewModel)
-        1 -> RegisterBasicsFragment.newInstance(viewModel)
-        2 -> RegisterMeasurementsFragment.newInstance(viewModel)
-        3 -> RegisterQuizFragment.newInstance(viewModel)
-        else -> RegisterResultFragment.newInstance(viewModel)
+    val fragments = listOf(
+        RegisterMethodFragment.newInstance(viewModel),
+        RegisterBasicsFragment.newInstance(viewModel),
+        RegisterLoadingFragment.newInstance(viewModel)
+    )
 
-
-//        4->RegisterFatPercentageFragment()
-    }
+    override fun getItem(position: Int) = fragments[position]
 
     override fun getCount() = FRAGMENTS_COUNT
 }

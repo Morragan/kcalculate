@@ -43,8 +43,14 @@ class RecordMealUserMealsFragment : RecordMealFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_record_meal_my_meals, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.record_meal_recycler_view_my_meals)
+        return inflater.inflate(R.layout.fragment_record_meal_my_meals, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        val recyclerView =
+            view!!.findViewById<RecyclerView>(R.id.record_meal_recycler_view_my_meals)
 //        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
@@ -78,7 +84,5 @@ class RecordMealUserMealsFragment : RecordMealFragment() {
                 }
             }
         })
-
-        return view
     }
 }

@@ -1,12 +1,11 @@
 package com.example.dietapp.di.component
 
 import android.app.Application
-import com.example.dietapp.db.repositories.AccountRepository
 import com.example.dietapp.di.module.ApiModule
 import com.example.dietapp.di.module.AppModule
 import com.example.dietapp.di.module.DatabaseModule
 import com.example.dietapp.di.module.ViewModelModule
-import com.example.dietapp.ui.base.BaseActivity
+import com.example.dietapp.ui.calculatenutrientgoals.CalculateNutrientGoalsActivity
 import com.example.dietapp.ui.createmeal.CreateMealActivity
 import com.example.dietapp.ui.friends.FriendsActivity
 import com.example.dietapp.ui.home.HomeActivity
@@ -30,6 +29,7 @@ interface AppComponent {
     fun inject(target: CreateMealActivity)
     fun inject(target: FriendsActivity)
     fun inject(target: ProfileActivity)
+    fun inject(target: CalculateNutrientGoalsActivity)
 
     @Component.Factory
     interface Factory {

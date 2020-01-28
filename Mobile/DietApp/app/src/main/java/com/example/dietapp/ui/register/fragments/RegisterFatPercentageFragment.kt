@@ -34,7 +34,7 @@ class RegisterFatPercentageFragment : RegisterFragment() {
             register_radio_button_fat_class5.isChecked -> Enums.BodyFatPercentage.Class5
             else -> Enums.BodyFatPercentage.Class6
         }
-        activity.fatPercentage = fatPercentage
+        //activity.fatPercentage = fatPercentage
     }
 
     override fun validate(activity: RegisterActivity) = true

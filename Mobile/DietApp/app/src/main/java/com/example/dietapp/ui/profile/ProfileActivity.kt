@@ -1,20 +1,26 @@
 package com.example.dietapp.ui.profile
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.dietapp.DietApp
 import com.example.dietapp.R
 import com.example.dietapp.ViewModelFactory
+import com.example.dietapp.ui.calculatenutrientgoals.CalculateNutrientGoalsActivity
+import com.example.dietapp.ui.calculatenutrientgoals.NutrientGoalsData
 import com.example.dietapp.ui.credits.CreditsActivity
 import com.example.dietapp.ui.friends.FriendsActivity
 import com.example.dietapp.ui.goals.GoalsActivity
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
+import com.example.dietapp.utils.Constants
 import com.example.dietapp.utils.DietDrawerBuilder
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
@@ -22,6 +28,7 @@ import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import kotlinx.android.synthetic.main.activity_profile.*
+import pl.droidsonroids.gif.GifImageView
 import javax.inject.Inject
 
 class ProfileActivity : AppCompatActivity() {
@@ -34,6 +41,16 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var drawer: Drawer
     private lateinit var profileDrawerItem: ProfileDrawerItem
     private lateinit var accountHeader: AccountHeader
+
+    private val loadingDialog by lazy {
+        val loadingGif = GifImageView(this).apply {
+            setImageResource(R.mipmap.gif_loading)
+        }
+        AlertDialog.Builder(this)
+            .setView(loadingGif)
+            .setCancelable(false)
+            .create()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,11 +96,29 @@ class ProfileActivity : AppCompatActivity() {
         ).build()
         // endregion
 
+        profile_button_privacy.setOnClickListener {
+            viewModel.isLoadingDialogVisible.value = true
+            viewModel.toggleAccountIsPrivate().invokeOnCompletion {
+                viewModel.isLoadingDialogVisible.postValue(false)
+            }
+        }
+
+        profile_button_recalculate_limits.setOnClickListener {
+            startActivityForResult(
+                Intent(this, CalculateNutrientGoalsActivity::class.java),
+                Constants.requestCodeCalculateGoals
+            )
+        }
+
         //region livedata observers setup
         viewModel.user.observe(this, Observer {
-            profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email)
+            profileDrawerItem = profileDrawerItem.withName(it.nickname).withEmail(it.email).apply {
+                if(!it.avatarLink.isBlank()) withIcon(it.avatarLink)
+            }
             accountHeader.updateProfile(profileDrawerItem)
 
+            if(!it.avatarLink.isBlank())
+                Glide.with(this).load(it.avatarLink).into(profile_avatar)
             profile_name.text = it.nickname
             profile_email.text = it.email
             profile_streak.text = "0"
@@ -124,6 +159,11 @@ class ProfileActivity : AppCompatActivity() {
                 else getString(R.string.profile_button_text_make_private)
         })
 
+        viewModel.isLoadingDialogVisible.observe(this, Observer {
+            if (it) loadingDialog.show()
+            else loadingDialog.dismiss()
+        })
+
         viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
             if (!isLoggedIn) {
                 val intent = Intent(this, LoginActivity::class.java).apply {
@@ -133,6 +173,22 @@ class ProfileActivity : AppCompatActivity() {
             }
         })
         //endregion
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            Constants.requestCodeCalculateGoals -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val nutrientGoals =
+                        data!!.getParcelableExtra<NutrientGoalsData>(Constants.intentKeyCalculateNutrientGoalsResult)
+                    viewModel.isLoadingDialogVisible.value = true
+                    viewModel.updateNutrientGoals(nutrientGoals).invokeOnCompletion {
+                        viewModel.isLoadingDialogVisible.value = false
+                    }
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     private fun sync() {

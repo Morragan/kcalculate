@@ -29,6 +29,7 @@ class FriendsViewModel @Inject constructor(
         Transformations.map(allFriends) { it.filter { friend -> friend.status == 3 } }
     val userSearchResults = friendsRepository.searchResults
     val loggedIn = accountRepository.loggedIn
+    val user = accountRepository.user
     val pendingFragmentViewState = MutableLiveData<ViewState>()
     val friendsFragmentViewState = MutableLiveData<ViewState>()
     val blockedFragmentViewState = MutableLiveData<ViewState>()
