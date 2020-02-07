@@ -15,6 +15,5 @@ namespace DietApp.Domain.Tokens
             Token = token;
             Expiration = expiration;
         }
-        public bool IsExpired() => DateTime.UtcNow.Ticks > Expiration;
     }
 }

@@ -8,34 +8,38 @@ import "react-datepicker/dist/react-datepicker.css";
 import { areDatesTheSameDay } from "../../constants";
 
 const StyledBaseDatePicker = styled(BaseDatePicker)`
-  height: 8vh;
+  height: 50px;
   width: 70vw;
   border-style: solid;
-  border-color: #4cbb17;
+  border-color: #ffa33f;
   border-width: 2.5px 0px;
   text-align: center;
   display: inline-block;
 `;
 
 const StyledButton = styled(Button)`
-  height: 8vh;
+  height: 50px;
   width: 4.2vw;
   min-width: 50px;
-  background: #4cbb17;
-  border-color: #4cbb17;
+  background: #ffa33f;
+  border-color: #ffa33f;
   display: inline-block;
   outline: none;
   &&:hover {
-    background: #5dcc28;
-    border-color: #5dcc28;
+    background: #ffb44f;
+    border-color: #ffb44f;
   }
   &&:active {
-    background: #4cbb17;
-    border-color: #4cbb17;
+    background: #ffa33f;
+    border-color: #ffa33f;
   }
   &&:focus {
-    background: #3baa06;
-    border-color: #3baa06;
+    background: #ee922e !important;
+    border-color: #ee922e !important;
+  }
+  &&:disabled {
+    background: #c99155;
+    border-color: #c99155;
   }
 `;
 
@@ -56,7 +60,7 @@ const StyledInputGroup = styled(InputGroup)`
   width: 100%;
   font-size: 32px;
   input {
-    color: #54585c;
+    color: #ffa33f;
   }
   justify-content: center;
   margin-top: 10px;
@@ -98,6 +102,10 @@ class DatePicker extends Component {
               onClick={this.goOneDayBackward}
               userjoindate={this.props.userJoinDate}
               selecteddate={this.props.selectedDate}
+              disabled={areDatesTheSameDay(
+                this.props.selectedDate,
+                this.props.userJoinDate
+              )}
             >
               ◁
             </StyledButtonBackward>

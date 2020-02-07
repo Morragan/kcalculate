@@ -20,17 +20,9 @@ class App extends Component {
   componentDidMount() {
     if (this.props.isUserLoggedIn) {
       getUserData()
-        .then(response => {
-          if (!response.ok) throw response;
-          return response.json();
-        })
         .then(data => this.props.saveUserData(data))
         .catch(reason => console.error("getUserData", reason));
       getFriends()
-        .then(response => {
-          if (!response.ok) throw response;
-          return response.json();
-        })
         .then(data => {
           console.log("FRIENDS", data);
           this.props.saveFriends(data);

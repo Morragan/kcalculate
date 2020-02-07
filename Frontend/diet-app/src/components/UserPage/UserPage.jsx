@@ -11,7 +11,7 @@ import { getMealsHistory } from "../../api/MealsHistoryAPI";
 
 const PageContainer = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr 3fr;
+  grid-template-columns: 2.75fr 1fr 3fr;
   justify-content: space-between;
 `;
 
@@ -37,10 +37,6 @@ class UserPage extends Component {
     if (!this.props.isUserLoggedIn) return;
     this.props.setNavbarMode(navbarModes.LOGGED_IN);
     getMealsHistory()
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
       .then(data => this.props.saveMealEntries(data))
       .catch(reason => console.error("user page", reason));
     this.percentage =
@@ -98,7 +94,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

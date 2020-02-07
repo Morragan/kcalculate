@@ -56,10 +56,7 @@ namespace DietApp.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var principal = authenticationService.GetPrincipalFromToken(viewModel.AccessToken, false);
-            var email = principal.Identity.Name;
-
-            var response = await authenticationService.RefreshToken(viewModel.RefreshToken, email).ConfigureAwait(false);
+            var response = await authenticationService.RefreshToken(viewModel.RefreshToken).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
             var tokenResponse = mapper.Map<JwtAccessToken, AccessTokenViewModel>(response.Token);

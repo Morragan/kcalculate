@@ -16,16 +16,42 @@ import { setAddMealModalVisibility } from "../../actions/UIActions";
 const StyledNavbar = styled(Navbar)`
   position: sticky;
   top: 0;
-  background-color: #4cbb17; /* Kelly */
+  background-color: #ffa33f;
   color: white;
+  padding: 0;
+  & > .navbar-brand {
+    padding: 0;
+  }
 `;
+/*background-color: #4cbb17; /* Kelly */
+// {
+//   /* <color name="colorPrimary">#ffa33f</color>
+//     <color name="colorPrimaryDark">#f78914</color>
+//     <color name="colorPrimaryLight">#ffd66f</color>
+//     <color name="colorAccent">#ffb34f</color> */
+// }
 
 const StyledNavLink = styled(Nav.Link)`
-  color: #e0eee0 !important;
+  color: #fafffa !important;
+  font-weight: 600;
   &:hover {
     color: white !important;
     text-shadow: 0px 0px 1px white;
   }
+`;
+
+const LogoBackground = styled.div`
+  padding: 6px 24px;
+  -moz-border-radius: 50% / 250px;
+  -webkit-border-radius: 40% / 250px;
+  border-radius: 50% / 250px;
+  background-color: rgba(255, 214, 111, 1);
+  z-index: 100;
+  position: relative;
+
+  -webkit-box-shadow: 0px 0px 28px 3px rgba(255, 214, 111, 1);
+  -moz-box-shadow: 0px 0px 28px 3px rgba(255, 214, 111, 1);
+  box-shadow: 0px 0px 28px 3px rgba(255, 214, 111, 1);
 `;
 
 class DietNavbar extends Component {
@@ -43,23 +69,23 @@ class DietNavbar extends Component {
         return (
           <>
             <StyledNavLink onClick={this.props.showAddMealModal}>
-              Dodaj wpis
+              Add meal
             </StyledNavLink>
             <LinkContainer to="/profile">
-              <StyledNavLink>Profil</StyledNavLink>
+              <StyledNavLink>Profile</StyledNavLink>
             </LinkContainer>
 
-            <StyledNavLink onClick={this.logout}>Wyloguj się</StyledNavLink>
+            <StyledNavLink onClick={this.logout}>Log out</StyledNavLink>
           </>
         );
       case navbarModes.LOGGED_OUT:
         return (
           <>
             <LinkContainer to="/login">
-              <StyledNavLink>Zaloguj się</StyledNavLink>
+              <StyledNavLink>Log in</StyledNavLink>
             </LinkContainer>
             <LinkContainer to="/register">
-              <StyledNavLink>Zarejestruj się</StyledNavLink>
+              <StyledNavLink>Sign up</StyledNavLink>
             </LinkContainer>
           </>
         );
@@ -76,8 +102,9 @@ class DietNavbar extends Component {
       <StyledNavbar variant="dark" fixed="top">
         <LinkContainer to="/">
           <Navbar.Brand>
-            <Image src="logo" />
-            DietApp
+            <LogoBackground>
+              <Image src="navlogo.png" />
+            </LogoBackground>
           </Navbar.Brand>
         </LinkContainer>
         <Navbar.Collapse>
@@ -103,7 +130,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DietNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(DietNavbar);

@@ -78,11 +78,8 @@ class AddMealModal extends Component {
   };
 
   componentDidMount() {
+    if (!this.props.isUserLoggedIn) return;
     getUserMeals()
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
       .then(data => this.props.saveUserMeals(data))
       .catch(reason => console.error("modal", reason));
   }
@@ -126,13 +123,9 @@ class AddMealModal extends Component {
         kcalPer100Gram: this.state.kcalPer100Gram
       }
     })
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
       .then(mealEntries => {
         this.props.saveMealEntries(mealEntries);
-        toast.success("Pomyślnie zarejestrowano spożycie posiłku");
+        toast.success("Meal successfully registered!");
       })
       .catch(reason => console.error("save entry", reason));
   };
@@ -149,13 +142,9 @@ class AddMealModal extends Component {
         kcalPer100Gram: this.state.kcalPer100Gram
       }
     })
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
       .then(userMeals => {
         this.props.saveUserMeals(userMeals);
-        toast.success("Pomyślnie dodano posiłek");
+        toast.success("Meal successfully added");
       })
       .catch(reason => console.error("save meal", reason));
   };
@@ -171,7 +160,7 @@ class AddMealModal extends Component {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Zapisz spożycie posiłku / Dodaj własny posiłek
+            Register a meal
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -187,29 +176,29 @@ class AddMealModal extends Component {
                   <Form.Control
                     required
                     type="text"
-                    placeholder="Podaj nazwę posiłku"
+                    placeholder="Meal's name"
                     value={this.state.name}
                     name="name"
                     onChange={this.handleChange}
                   />
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Link do zdjęcia (opcjonalne)</Form.Label>
+                  <Form.Label>Avatar link (optional)</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Wklej link do zdjęcia posiłku"
+                    placeholder="Paste your avatar url"
                     value={this.state.imageLink}
                     name="imageLink"
                     onChange={this.handleChange}
                   />
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Waga</Form.Label>
+                  <Form.Label>Weight</Form.Label>
                   <InputGroup>
                     <Form.Control
                       required
                       type="number"
-                      placeholder="Podaj wagę posiłku w gramach"
+                      placeholder="Weight in grammes"
                       value={this.state.weightGram}
                       name="weightGram"
                       onChange={this.handleChange}
@@ -409,7 +398,8 @@ class AddMealModal extends Component {
 const mapStateToProps = state => {
   return {
     visibility: state.UI.addMealModalVisibility,
-    meals: state.meals.meals
+    meals: state.meals.meals,
+    isUserLoggedIn: state.account.isUserLoggedIn
   };
 };
 
@@ -422,7 +412,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddMealModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddMealModal);

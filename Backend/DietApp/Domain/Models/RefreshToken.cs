@@ -4,7 +4,7 @@ namespace DietApp.Domain.Models
 {
     public class RefreshToken
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Token { get; set; }
         public long Expiration { get; set; }
         public int UserID { get; set; }

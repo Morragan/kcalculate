@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20190924144415_FuckMeFriendshipsAreActuallyHarder.Designer.cs" />
     <Compile Remove="Migrations\20190924145007_FuckMeFriendshipsAreActuallyHarder.cs" />
     <Compile Remove="Migrations\20190924145007_FuckMeFriendshipsAreActuallyHarder.Designer.cs" />
+    <Compile Remove="Migrations\20200201144525_RefreshTokenIDToInt.cs" />
+    <Compile Remove="Migrations\20200201144525_RefreshTokenIDToInt.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

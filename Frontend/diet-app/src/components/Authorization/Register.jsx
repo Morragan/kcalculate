@@ -111,10 +111,6 @@ class Register extends Component {
 
   checkNicknameTaken = () => {
     checkNicknameTaken({ nickname: this.state.nickname })
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
       .then(data => {
         //TODO: ustawić style
       })
@@ -130,17 +126,11 @@ class Register extends Component {
       heightCm: this.state.height,
       gender: this.state.gender
     })
-      .then(response => {
-        if (response.ok) {
-          toast.success("Pomyślnie zarejestrowano użytkownika");
-          this.setState({ redirect: true });
-        } else
-          return response.text().then(response => {
-            throw response;
-          });
+      .then(data => {
+        toast.success(this.state.nickname + " successfully registered");
       })
       .catch(reason => {
-        toast.error(`Nie udało się zarejestrować użytkownika\n${reason}`);
+        toast.error(`Registration failed\n${reason}`);
         this.setState({ carouselActiveIndex: 0 });
       });
   };
@@ -345,7 +335,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

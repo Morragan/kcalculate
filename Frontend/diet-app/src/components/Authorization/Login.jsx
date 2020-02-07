@@ -5,7 +5,6 @@ import { navbarModes } from "../../constants";
 import { Redirect } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { login } from "../../api/AccountAPI";
 import { toast } from "react-toastify";
 import { setNavbarMode } from "../../actions/UIActions";
@@ -18,18 +17,36 @@ import { getUserData } from "../../api/AccountAPI";
 import { Link } from "react-router-dom";
 import { getFriends } from "../../api/SocialAPI";
 import { saveFriends } from "../../actions/socialActions";
+import DietButton from "../DietButton/DietButton";
 
 const StyledCard = styled(Card)`
-  max-width: 500px;
+  max-width: 375px;
   margin: 5vh auto;
   .card-body {
     display: flex;
     flex-direction: column;
   }
+
+  .card-title {
+    margin-bottom: 1.25rem;
+    text-align: center;
+    letter-spacing: 1.3px;
+  }
+
+  .card-footer {
+    text-align: center;
+  }
+
+  button {
+    margin: auto auto;
+    display: block;
+    width: 99%;
+    border-radius: 20px;
+  }
 `;
 
 class Login extends Component {
-  state = { nickname: "", password: "", redirect: false };
+  state = { nickname: "", password: "", redirect: false, isLoading: false };
   componentDidMount() {
     this.props.setNavbarMode(navbarModes.EMPTY);
   }
@@ -43,49 +60,30 @@ class Login extends Component {
   };
 
   handleLoginSubmit = async () => {
+    this.setState({ isLoading: true });
     await login({
       nickname: this.state.nickname,
       password: this.state.password
     })
-      .then(response => {
-        if (response.ok) {
-          toast.success(
-            `Pomyślnie zalogowano użytkownika ${this.state.nickname}`
-          );
-          return response.json().then(data => {
-            saveDataToCookie("expiration", data.expiration);
-            saveDataToCookie("access_token", data.accessToken);
-            saveDataToCookie("refresh_token", data.refreshToken);
-            this.props.setUserLoggedStatus(true);
-            this.setState({ redirect: true });
-          });
-        } else {
-          return response.text().then(response => {
-            throw response;
-          });
-        }
+      .then(data => {
+        toast.success(`Login successful: ${this.state.nickname}`);
+        saveDataToCookie("expiration", data.expiration);
+        saveDataToCookie("access_token", data.accessToken);
+        saveDataToCookie("refresh_token", data.refreshToken);
+        this.props.setUserLoggedStatus(true);
+        this.setState({ redirect: true, isLoading: false });
       })
       .catch(reason => {
-        toast.error(`Nie udało się zalogować użytkownika\n${reason}`);
+        this.setState({ isLoading: false });
+        toast.error(`Login failed\n${reason}`);
       });
 
     getUserData()
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
       .then(data => this.props.saveUserData(data))
       .catch(reason => console.error("getUserData", reason));
 
     getFriends()
-      .then(response => {
-        if (!response.ok) throw response;
-        return response.json();
-      })
-      .then(data => {
-        console.log("FRIENDS", data);
-        this.props.saveFriends(data);
-      })
+      .then(data => this.props.saveFriends(data))
       .catch(reason => console.error(reason));
   };
 
@@ -94,7 +92,7 @@ class Login extends Component {
     return (
       <StyledCard>
         <Card.Body>
-          <Card.Title>Logowanie</Card.Title>
+          <Card.Title>LOGIN</Card.Title>
           <Form
             onSubmit={e => {
               e.preventDefault();
@@ -102,32 +100,36 @@ class Login extends Component {
             }}
           >
             <Form.Group>
-              <Form.Label>Nazwa użytkownika</Form.Label>
               <Form.Control
                 required
                 type="text"
-                placeholder="Wpisz swoją nazwę użytkownika"
+                placeholder="Nickname"
                 value={this.state.nickname}
                 name="nickname"
                 onChange={this.handleChange}
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Hasło</Form.Label>
               <Form.Control
                 required
                 type="password"
-                placeholder="Wpisz swoje hasło"
+                placeholder="Password"
                 value={this.state.password}
                 name="password"
                 onChange={this.handleChange}
               />
             </Form.Group>
-            <Button type="submit">Zaloguj się</Button>
+            <DietButton
+              type="submit"
+              color="#ffa33f"
+              disabled={this.state.isLoading}
+            >
+              {this.state.isLoading ? "Loading..." : "Login"}
+            </DietButton>
           </Form>
         </Card.Body>
         <Card.Footer>
-          Nie masz konta? <Link to="/register">Zarejestruj się</Link>
+          Don't have an account? <Link to="/register">Sign up</Link>
         </Card.Footer>
       </StyledCard>
     );
@@ -147,7 +149,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

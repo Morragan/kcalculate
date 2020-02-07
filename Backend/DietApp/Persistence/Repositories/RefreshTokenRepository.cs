@@ -12,12 +12,13 @@ namespace DietApp.Persistence.Repositories
 
         public async Task Add(RefreshToken token)
         {
-            await context.AddAsync(token);
+            await context.RefreshTokens.AddAsync(token);
         }
 
         public async Task<RefreshToken> GetRefreshToken(string token)
         {
-            return await context.RefreshTokens.SingleOrDefaultAsync(refreshToken => refreshToken.Token == token).ConfigureAwait(false);
+            return await context.RefreshTokens.Include(refreshToken => refreshToken.User)
+                .SingleOrDefaultAsync(refreshToken => refreshToken.Token == token).ConfigureAwait(false);
         }
 
         public void Remove(RefreshToken token)

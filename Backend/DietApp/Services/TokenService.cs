@@ -3,11 +3,11 @@ using DietApp.Domain.Models;
 using DietApp.Domain.Repositories;
 using DietApp.Domain.Services;
 using DietApp.Domain.Tokens;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -36,20 +36,26 @@ namespace DietApp.Services
                 token: passwordHasher.HashPassword(Guid.NewGuid().ToString()),
                 expiration: DateTimeOffset.UtcNow.AddSeconds(tokenClaims.RefreshTokenExpiration).ToUnixTimeMilliseconds());
             //Access token
-            var accessTokenExpiration = DateTimeOffset.UtcNow.AddSeconds(tokenClaims.AccessTokenExpiration);
+            var accessTokenExpiration = DateTimeOffset.UtcNow.AddSeconds(tokenClaims.AccessTokenExpiration).UtcDateTime;
             var securityToken = new JwtSecurityToken(
                 issuer: tokenClaims.Issuer,
                 audience: tokenClaims.Audience,
                 claims: GetClaims(user),
-                expires: accessTokenExpiration.DateTime,
+                expires: accessTokenExpiration,
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingConfigurations.SigningCredentials);
             var jwtHandler = new JwtSecurityTokenHandler();
             var accessToken = jwtHandler.WriteToken(securityToken);
 
-            await SaveRefreshTokenToDatabase(refreshToken, user.ID).ConfigureAwait(false);
-
-            return new JwtAccessToken(accessToken, accessTokenExpiration.ToUnixTimeMilliseconds(), refreshToken);
+            try
+            {
+                await SaveRefreshTokenToDatabase(refreshToken, user.ID).ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+            return new JwtAccessToken(accessToken, new DateTimeOffset(accessTokenExpiration).ToUnixTimeMilliseconds(), refreshToken);
         }
 
         public async Task RevokeRefreshToken(string token)
@@ -61,6 +67,7 @@ namespace DietApp.Services
         {
             if (string.IsNullOrWhiteSpace(token)) return null;
             var refreshToken = await refreshTokenRepository.GetRefreshToken(token).ConfigureAwait(false);
+            if (refreshToken != null) refreshTokenRepository.Remove(refreshToken);
             return new JwtRefreshToken(refreshToken);
         }
 

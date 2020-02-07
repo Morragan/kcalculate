@@ -1,8 +1,8 @@
 ﻿using DietApp.Domain.Helpers;
+using DietApp.Domain.Repositories;
 using DietApp.Domain.Responses;
 using DietApp.Domain.Services;
 using DietApp.Domain.Tokens;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,13 +16,17 @@ namespace DietApp.Services
         readonly IUserService userService;
         readonly IPasswordHasher passwordHasher;
         readonly ITokenService tokenService;
+        readonly IRefreshTokenRepository refreshTokenRepository;
+        readonly IUnitOfWork unitOfWork;
         readonly SigningConfigurations configurations;
 
-        public AuthenticationService(IUserService userService, IPasswordHasher passwordHasher, ITokenService tokenService, SigningConfigurations configurations)
+        public AuthenticationService(IUserService userService, IPasswordHasher passwordHasher, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, SigningConfigurations configurations)
         {
             this.userService = userService;
             this.passwordHasher = passwordHasher;
             this.tokenService = tokenService;
+            this.refreshTokenRepository = refreshTokenRepository;
+            this.unitOfWork = unitOfWork;
             this.configurations = configurations;
         }
         public async Task<TokenResponse> CreateAccessToken(string nickname, string password)
@@ -35,16 +39,19 @@ namespace DietApp.Services
             return new TokenResponse(true, null, token);
         }
 
-        public async Task<TokenResponse> RefreshToken(string refreshToken, string userEmail)
+        public async Task<TokenResponse> RefreshToken(string refreshToken)
         {
-            var token = await tokenService.TakeRefreshToken(refreshToken).ConfigureAwait(false);
+            var token = await refreshTokenRepository.GetRefreshToken(refreshToken).ConfigureAwait(false);
             if (token == null) return new TokenResponse(false, "Invalid refresh token", null);
-            if (token.IsExpired()) return new TokenResponse(false, "Expired refresh token", null);
 
-            var user = await userService.FindByEmail(userEmail).ConfigureAwait(false);
-            if (user == null) return new TokenResponse(false, "Invalid refresh token", null);
+            refreshTokenRepository.Remove(token);
+            await unitOfWork.Complete().ConfigureAwait(false);
 
-            var accessToken = await tokenService.CreateAccessToken(user).ConfigureAwait(false);
+            if (token.Expiration < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) return new TokenResponse(false, "Expired refresh token", null);
+            if (token.User == null) return new TokenResponse(false, "Invalid refresh token", null);
+
+            var accessToken = await tokenService.CreateAccessToken(token.User).ConfigureAwait(false);
+            if (accessToken == null) return new TokenResponse(false, "Token is already being refreshed", null);
             return new TokenResponse(true, null, accessToken);
         }
 

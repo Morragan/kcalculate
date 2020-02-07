@@ -43,7 +43,7 @@ object ApiModule {
         Authenticator { _, response ->
             val token = sharedPreferences.getToken()
             val refreshResponse =
-                accountService.get().refreshTokenCall(RefreshTokenDTO(token.accessToken, token.refreshToken))
+                accountService.get().refreshTokenCall(RefreshTokenDTO(token.refreshToken))
                     .execute()
 
             if (refreshResponse.body() == null)

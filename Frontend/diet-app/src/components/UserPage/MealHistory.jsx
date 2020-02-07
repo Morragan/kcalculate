@@ -3,14 +3,16 @@ import styled from "styled-components";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import Image from "react-bootstrap/Image";
 import { areDatesTheSameDay } from "../../constants";
 
 const StyledJumbotron = styled(Jumbotron)`
   margin-top: 15px;
   overflow-y: auto;
-  height: 86vh;
-  padding-top: 20px;
+  height: 69vh;
+  -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  background-color: #fbf9f9;
   ::-webkit-scrollbar {
     width: 10px;
   }
@@ -20,9 +22,49 @@ const StyledJumbotron = styled(Jumbotron)`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #4cbb17;
+    background: #ffb44f;
     border-radius: 8px;
   }
+`;
+
+const StyledAccordion = styled(Accordion)`
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+
+  & > .card > .card-header {
+    background-color: #ffb44f;
+    font-weight: 500;
+    color: white;
+  }
+`;
+
+const JumbotronHeader = styled.div`
+  height: 3rem;
+  background-color: #ffa33f;
+  margin-top: -4rem;
+  margin-left: -2rem;
+  margin-right: -2rem;
+  margin-bottom: 1rem;
+  border: 1px solid #c2c2c2;
+  border-bottom: 2px solid #c2c2c2;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+  display: flex;
+
+  & > span {
+    margin: auto auto;
+    text-align: center;
+    color: white;
+    font-size: 18;
+    font-weight: 600;
+    letter-spacing: 1.2;
+  }
+`;
+
+const StyledMessage = styled.p`
+  text-align: center;
+  font-weight: 500;
+  font-size: 22px;
 `;
 
 class MealHistory extends Component {
@@ -36,30 +78,37 @@ class MealHistory extends Component {
     )
       return (
         <StyledJumbotron>
-          <p>Czas na śniadanie!</p>
+          <JumbotronHeader>
+            <span>Meals history</span>
+          </JumbotronHeader>
+          <StyledMessage>Time for breakfast!</StyledMessage>
         </StyledJumbotron>
       );
     else if (mealsFromSelectedDay.length === 0)
       return (
         <StyledJumbotron>
-          <p>Nic tu nie ma!</p>
+          <JumbotronHeader>
+            <span>Meals history</span>
+          </JumbotronHeader>
+          <StyledMessage>Nothing here!</StyledMessage>
         </StyledJumbotron>
       );
     return (
       <StyledJumbotron>
+        <JumbotronHeader>
+          <span>Meals history</span>
+        </JumbotronHeader>
         {mealsFromSelectedDay.map((meal, index) => (
-          <Accordion defaultActiveKey="0" key={index}>
+          <StyledAccordion defaultActiveKey="0" key={index}>
             <Card>
               <Accordion.Toggle as={Card.Header} variant="success">
                 {meal.name}
               </Accordion.Toggle>
               <Accordion.Collapse>
-                <Card.Body>
-                  <Image src={meal.imageLink} />
-                </Card.Body>
+                <Card.Body>{}</Card.Body>
               </Accordion.Collapse>
             </Card>
-          </Accordion>
+          </StyledAccordion>
         ))}
       </StyledJumbotron>
     );

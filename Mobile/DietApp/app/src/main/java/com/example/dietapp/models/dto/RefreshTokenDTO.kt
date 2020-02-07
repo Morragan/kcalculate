@@ -1,3 +1,3 @@
 package com.example.dietapp.models.dto
 
-data class RefreshTokenDTO(val accessToken: String, val refreshToken: String)
+data class RefreshTokenDTO(val refreshToken: String)

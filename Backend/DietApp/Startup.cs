@@ -87,7 +87,10 @@ namespace DietApp
                         ValidIssuer = tokenClaims.Issuer,
                         ValidAudience = tokenClaims.Audience,
                         IssuerSigningKey = signingConfigurations.Key,
-                        ClockSkew = TimeSpan.Zero
+                        ClockSkew = TimeSpan.Zero,
+                        LifetimeValidator =
+                            (DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters) =>
+                                notBefore <= DateTime.UtcNow && expires >= DateTime.UtcNow
                     };
                 })
             .AddGoogle(options =>
