@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "./components/Home/Home.jsx";
-import Login from "./components/Authorization/Login.jsx";
-import Register from "./components/Authorization/Register.jsx";
 import UserPage from "./components/UserPage/UserPage.jsx";
 import UserProfile from "./components/UserProfile/UserProfile.jsx";
+import Login from "./components/Login/Login.jsx";
+import Register from "./components/Register/Register.jsx";
 
 const mapStateToProps = state => {
   return {

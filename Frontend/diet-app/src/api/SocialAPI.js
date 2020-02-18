@@ -5,21 +5,21 @@ export const getFriends = async () => {
 };
 
 export const requestFriend = async friendId => {
-  return await fetchApi("social", "friends", "POST", {
-    friendID: friendId
-  });
+  return await fetchApi("social", `friends/${friendId}`, "POST");
 };
 
 export const acceptFriend = async friendId => {
-  return await fetchApi("social", "accept-friend", "PUT", {
-    friendID: friendId
-  });
+  return await fetchApi("social", `accept-friend/${friendId}`, "PUT");
 };
 
 export const deleteFriend = async friendId => {
-  return await fetchApi("social", "friends", "DELETE", { friendID: friendId });
+  return await fetchApi("social", `friends/${friendId}`, "DELETE");
 };
 
 export const blockUser = async userId => {
-  return await fetchApi("social", "block-user", "POST", { userID: userId });
+  return await fetchApi("social", `block-user/${userId}`, "POST");
+};
+
+export const searchUsersByNickname = async nickname => {
+  return await fetchApi("social", `search/?nickname=${nickname}`, "GET");
 };

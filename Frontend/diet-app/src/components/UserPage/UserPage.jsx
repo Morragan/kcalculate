@@ -12,15 +12,26 @@ import { getMealsHistory } from "../../api/MealsHistoryAPI";
 const PageContainer = styled.div`
   display: grid;
   grid-template-columns: 2.75fr 1fr 3fr;
+  grid-template-areas:
+    "date date date"
+    "history . summary";
   justify-content: space-between;
+
+  @media (max-width: 860px) {
+    grid-template-areas:
+      "date"
+      "summary"
+      "history";
+    grid-template-columns: auto;
+  }
 `;
 
 const StyledDayNutrientsSummary = styled(DayNutrientsSummary)`
-  grid-column: 3;
+  grid-area: summary;
 `;
 
 const StyledDatePicker = styled(DatePicker)`
-  grid-column: 1/4;
+  grid-area: date;
 `;
 
 class UserPage extends Component {
@@ -30,7 +41,7 @@ class UserPage extends Component {
 
   static defaultProps = {
     mealsHistory: [],
-    calorieLimit: 2000
+    user: { calorieLimit: 2000, carbsLimit: 10, fatLimit: 10, proteinLimit: 10 }
   };
 
   componentDidMount() {
@@ -39,17 +50,9 @@ class UserPage extends Component {
     getMealsHistory()
       .then(data => this.props.saveMealEntries(data))
       .catch(reason => console.error("user page", reason));
-    this.percentage =
-      this.props.mealsHistory.reduce((sum, meal) => sum + meal.kcal, 0) /
-      this.props.calorieLimit;
   }
 
-  componentDidUpdate() {
-    this.percentage =
-      this.props.mealsHistory.reduce((sum, meal) => {
-        return sum + meal.kcal;
-      }, 0) / this.props.calorieLimit;
-  }
+  componentDidUpdate() {}
 
   handleDateChange = date => {
     this.setState({
@@ -73,6 +76,7 @@ class UserPage extends Component {
           mealsHistory={this.props.mealsHistory}
           calorieLimit={this.props.calorieLimit}
           selectedDate={this.state.selectedDate}
+          user={this.props.user}
           className="day-nutrients-summary"
         />
       </PageContainer>
@@ -83,7 +87,7 @@ const mapStateToProps = state => {
   return {
     isUserLoggedIn: state.account.isUserLoggedIn,
     mealsHistory: state.mealsHistory.mealsHistory,
-    calorieLimit: state.account.user.calorieLimit
+    user: state.account.user
   };
 };
 

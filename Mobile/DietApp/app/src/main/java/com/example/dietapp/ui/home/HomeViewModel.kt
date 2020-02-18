@@ -86,6 +86,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+//TODO: multiply nutrients by weight
     private fun updateDaySummary(): DaySummaryData? {
         val selectedDateEntries = mealEntries.value?.filter { entry ->
             datesAreTheSameDay(entry.date, selectedDate.value!!)

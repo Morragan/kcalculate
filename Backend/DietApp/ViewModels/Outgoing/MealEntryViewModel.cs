@@ -11,6 +11,9 @@ namespace DietApp.ViewModels
         public string ImageLink { get; set; }
         public Nutrients Nutrients { get; set; }
         public int WeightGram { get; set; }
-        public int Kcal { get; set; }
+        public float Kcal { get; set; }
+        public float Carbs { get; set; }
+        public float Fat { get; set; }
+        public float Protein { get; set; }
     }
 }

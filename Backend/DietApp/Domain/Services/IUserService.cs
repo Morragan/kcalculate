@@ -19,6 +19,6 @@ namespace DietApp.Domain.Services
         Task<CreateUserResponse> Create(User user);
         Task<UpdateUserResponse> Update(User user);
         Task<UpdateUserResponse> UpdatePrivacy(int userId, bool isPrivate);
-        Task<UpdateUserResponse> UpdateNutrientGoals(int userId, int calorieLimitLower, int calorieLimit, int calorieLimitUpper, int carbsLimitLower, int carbsLimit, int carbsLimitUpper, int fatLimitLower, int fatLimit, int fatLimitUpper, int proteinLimitLower, int proteinLimit, int proteinLimitUpper);
+        Task<UpdateUserResponse> UpdateNutrientGoals(int userId, int calorieLimitLower, int calorieLimit, int calorieLimitUpper, float carbsLimitLower, float carbsLimit, float carbsLimitUpper, float fatLimitLower, float fatLimit, float fatLimitUpper, float proteinLimitLower, float proteinLimit, float proteinLimitUpper);
     }
 }

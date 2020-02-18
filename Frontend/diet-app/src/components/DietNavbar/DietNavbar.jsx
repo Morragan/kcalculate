@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUserPlus,
+  faSignOutAlt,
+  faSignInAlt,
+  faUser,
+  faPlus
+} from "@fortawesome/free-solid-svg-icons";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Image from "react-bootstrap/Image";
@@ -22,6 +30,10 @@ const StyledNavbar = styled(Navbar)`
   & > .navbar-brand {
     padding: 0;
   }
+
+  .navbar-nav {
+    margin-right: 28px;
+  }
 `;
 /*background-color: #4cbb17; /* Kelly */
 // {
@@ -38,6 +50,11 @@ const StyledNavLink = styled(Nav.Link)`
     color: white !important;
     text-shadow: 0px 0px 1px white;
   }
+`;
+
+const StyledIcon = styled(FontAwesomeIcon)`
+  margin-right: 6px;
+  margin-left: 8px;
 `;
 
 const LogoBackground = styled.div`
@@ -69,23 +86,36 @@ class DietNavbar extends Component {
         return (
           <>
             <StyledNavLink onClick={this.props.showAddMealModal}>
+              <StyledIcon icon={faPlus} />
               Add meal
             </StyledNavLink>
             <LinkContainer to="/profile">
-              <StyledNavLink>Profile</StyledNavLink>
+              <StyledNavLink>
+                <StyledIcon icon={faUser} />
+                Profile
+              </StyledNavLink>
             </LinkContainer>
 
-            <StyledNavLink onClick={this.logout}>Log out</StyledNavLink>
+            <StyledNavLink onClick={this.logout}>
+              <StyledIcon icon={faSignOutAlt} />
+              Log out
+            </StyledNavLink>
           </>
         );
       case navbarModes.LOGGED_OUT:
         return (
           <>
             <LinkContainer to="/login">
-              <StyledNavLink>Log in</StyledNavLink>
+              <StyledNavLink>
+                <StyledIcon icon={faSignInAlt} />
+                Log in
+              </StyledNavLink>
             </LinkContainer>
             <LinkContainer to="/register">
-              <StyledNavLink>Sign up</StyledNavLink>
+              <StyledNavLink>
+                <StyledIcon icon={faUserPlus} />
+                Sign up
+              </StyledNavLink>
             </LinkContainer>
           </>
         );

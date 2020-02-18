@@ -9,7 +9,7 @@ import { areDatesTheSameDay } from "../../constants";
 
 const StyledBaseDatePicker = styled(BaseDatePicker)`
   height: 50px;
-  width: 70vw;
+  width: 100%;
   border-style: solid;
   border-color: #ffa33f;
   border-width: 2.5px 0px;
@@ -65,6 +65,10 @@ const StyledInputGroup = styled(InputGroup)`
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
+
+  .react-datepicker-wrapper {
+    flex-grow: 1;
+  }
 `;
 
 class DatePicker extends Component {

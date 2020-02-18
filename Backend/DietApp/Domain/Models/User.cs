@@ -17,15 +17,15 @@ namespace DietApp.Domain.Models
         public int CalorieLimit { get; set; }
         public int CalorieLimitLower { get; set; }
         public int CalorieLimitUpper { get; set; }
-        public int CarbsLimit { get; set; }
-        public int CarbsLimitLower { get; set; }
-        public int CarbsLimitUpper { get; set; }
-        public int FatLimit { get; set; }
-        public int FatLimitLower { get; set; }
-        public int FatLimitUpper { get; set; }
-        public int ProteinLimit { get; set; }
-        public int ProteinLimitLower { get; set; }
-        public int ProteinLimitUpper { get; set; }
+        public float CarbsLimit { get; set; }
+        public float CarbsLimitLower { get; set; }
+        public float CarbsLimitUpper { get; set; }
+        public float FatLimit { get; set; }
+        public float FatLimitLower { get; set; }
+        public float FatLimitUpper { get; set; }
+        public float ProteinLimit { get; set; }
+        public float ProteinLimitLower { get; set; }
+        public float ProteinLimitUpper { get; set; }
         public bool IsPrivate { get; set; }
         public int Streak { get; set; }
         public int Points => ScoreLogs.Sum(score => score.ScoredPointsKcal + score.ScoredPointsCarbs + score.ScoredPointsFat + score.ScoredPointsProtein);

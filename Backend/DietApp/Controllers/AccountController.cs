@@ -36,7 +36,7 @@ namespace DietApp.Controllers
 
             if (!response.IsSuccess) return BadRequest(response.Message);
 
-            return Ok();
+            return Ok(new object());
         }
         [HttpPost]
         [Route("login")]

@@ -48,6 +48,9 @@ namespace DietApp.Persistence.Contexts
             modelBuilder.Entity<MealEntry>().Property(m => m.Date).IsRequired();
             modelBuilder.Entity<MealEntry>().Property(m => m.WeightGram).IsRequired();
             modelBuilder.Entity<MealEntry>().Ignore(m => m.Kcal);
+            modelBuilder.Entity<MealEntry>().Ignore(m => m.Carbs);
+            modelBuilder.Entity<MealEntry>().Ignore(m => m.Fat);
+            modelBuilder.Entity<MealEntry>().Ignore(m => m.Protein);
             #endregion
 
             #region Nutrients

@@ -68,7 +68,7 @@ namespace DietApp.Services
             return new UpdateUserResponse(true, null, existingUser);
         }
 
-        public async Task<UpdateUserResponse> UpdateNutrientGoals(int userId, int calorieLimitLower, int calorieLimit, int calorieLimitUpper, int carbsLimitLower, int carbsLimit, int carbsLimitUpper, int fatLimitLower, int fatLimit, int fatLimitUpper, int proteinLimitLower, int proteinLimit, int proteinLimitUpper)
+        public async Task<UpdateUserResponse> UpdateNutrientGoals(int userId, int calorieLimitLower, int calorieLimit, int calorieLimitUpper, float carbsLimitLower, float carbsLimit, float carbsLimitUpper, float fatLimitLower, float fatLimit, float fatLimitUpper, float proteinLimitLower, float proteinLimit, float proteinLimitUpper)
         {
             var existingUser = await userRepository.FindById(userId).ConfigureAwait(false);
             if (existingUser == null) return new UpdateUserResponse(false, "User does not exist", null);

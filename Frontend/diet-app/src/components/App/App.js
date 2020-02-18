@@ -8,14 +8,17 @@ import { connect } from "react-redux";
 import { getUserData } from "../../api/AccountAPI";
 import { saveUserData } from "../../actions/accountActions";
 import { saveFriends } from "../../actions/socialActions";
-import AddMealModal from "../Modals/AddMealModal";
+import AddMealModal from "../AddMealModal/AddMealModal";
 import { getFriends } from "../../api/SocialAPI";
+import { getUserMeals } from "../../api/MealsAPI";
+import { saveMeals } from "../../actions/mealsActions";
 
 const RoutesContainer = styled.div`
   margin-left: 12vh;
   margin-right: 12vh;
 `;
 
+// On expired token try refreshing
 class App extends Component {
   componentDidMount() {
     if (this.props.isUserLoggedIn) {
@@ -28,8 +31,28 @@ class App extends Component {
           this.props.saveFriends(data);
         })
         .catch(reason => console.error(reason));
+      getUserMeals()
+        .then(data => this.props.saveUserMeals(data))
+        .catch(reason => console.error("modal", reason));
     }
   }
+
+  componentDidUpdate() {
+    if (this.props.isUserLoggedIn) {
+      getUserData()
+        .then(data => this.props.saveUserData(data))
+        .catch(reason => console.error("getUserData", reason));
+      getFriends()
+        .then(data => {
+          this.props.saveFriends(data);
+        })
+        .catch(reason => console.error(reason));
+      getUserMeals()
+        .then(data => this.props.saveUserMeals(data))
+        .catch(reason => console.error("modal", reason));
+    }
+  }
+
   render() {
     return (
       <>
@@ -57,11 +80,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     saveUserData: userData => dispatch(saveUserData(userData)),
-    saveFriends: friends => dispatch(saveFriends(friends))
+    saveFriends: friends => dispatch(saveFriends(friends)),
+    saveUserMeals: meals => dispatch(saveMeals(meals))
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

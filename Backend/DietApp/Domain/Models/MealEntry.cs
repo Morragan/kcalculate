@@ -12,5 +12,8 @@ namespace DietApp.Domain.Models
         public Nutrients Nutrients { get; set; }
         public int WeightGram { get; set; }
         public float Kcal { get => WeightGram * Nutrients.Kcal / 100; }
+        public float Carbs { get => WeightGram * Nutrients.Carbs / 100; }
+        public float Fat { get => WeightGram * Nutrients.Fat / 100; }
+        public float Protein { get => WeightGram * Nutrients.Protein / 100; }
     }
 }
