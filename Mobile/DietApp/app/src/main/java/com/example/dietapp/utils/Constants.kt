@@ -1,7 +1,7 @@
 package com.example.dietapp.utils
 
 object Constants {
-    const val apiBaseUrl = "https://192.168.8.100:44332/api/"
+    const val apiBaseUrl = "https://dietapp20200221080100.azurewebsites.net/api/"
 
     //Shared preferences keys
     const val sharedPreferencesFileKey = "com.example.dietapp.utils.constants.sharedprefsfilekey"

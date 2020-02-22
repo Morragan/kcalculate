@@ -11,6 +11,7 @@ namespace DietApp.ViewModels
         public string AvatarLink { get; set; }
         public DateTime JoinDate { get; set; }
         public int Points { get; set; }
+        public int GoalPoints { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public int CalorieLimit { get; set; }
         public int CalorieLimitLower { get; set; }

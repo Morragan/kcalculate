@@ -47,7 +47,7 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<User> FindById(int id)
         {
-            return await context.Users.Include(u => u.ScoreLogs).SingleOrDefaultAsync(u => u.ID == id).ConfigureAwait(false);
+            return await context.Users.Include(u => u.ScoreLogs).Include(u => u.Goal).ThenInclude(g => g.Goal).SingleOrDefaultAsync(u => u.ID == id).ConfigureAwait(false);
         }
 
         public async Task<User> FindByIdIncludeFriendships(int id)
@@ -55,22 +55,23 @@ namespace DietApp.Persistence.Repositories
             return await context.Users
                 .Include(u => u.RequestedFriendships).ThenInclude(f => f.DestUser).ThenInclude(u => u.ScoreLogs)
                 .Include(u => u.ReceivedFriendships).ThenInclude(f => f.SrcUser).ThenInclude(u => u.ScoreLogs)
+                .Include(u => u.ScoreLogs).Include(u => u.Goal).ThenInclude(g => g.Goal)
                 .SingleOrDefaultAsync(u => u.ID == id);
         }
 
         public async Task<User> FindByEmail(string email)
         {
-            return await context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return await context.Users.Include(u => u.ScoreLogs).Include(u => u.Goal).ThenInclude(g => g.Goal).SingleOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User> FindByNickname(string nickname)
         {
-            return await context.Users.SingleOrDefaultAsync(u => u.Nickname == nickname);
+            return await context.Users.Include(u => u.ScoreLogs).Include(u => u.Goal).ThenInclude(g => g.Goal).SingleOrDefaultAsync(u => u.Nickname == nickname);
         }
 
         public IEnumerable<User> FindByIdRange(IEnumerable<int> ids)
         {
-            return from user in context.Users
+            return from user in context.Users.Include(u => u.ScoreLogs).Include(u => u.Goal).ThenInclude(g => g.Goal)
                    where ids.Contains(user.ID)
                    select user;
         }

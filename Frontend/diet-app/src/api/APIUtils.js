@@ -3,7 +3,8 @@ import APIRequestHandler from "./APIRequestHandler";
 
 const apiRequestHandler = new APIRequestHandler();
 
-export const apiUrl = "https://localhost:44332/api/";
+export const apiUrl = "https://dietapp20200221103617.azurewebsites.net/api/";
+// export const apiUrl = "https://localhost:44332/api/";
 
 export const fetchApi = (
   controller,

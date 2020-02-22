@@ -55,7 +55,7 @@ class CalculateNutrientGoalsViewModel @Inject constructor() : ViewModel() {
             val (heightCm, weightKg, gender, weightGoal, activityLevel) = it
 
             // Mifflin/St Jeor equation
-            val bmr =
+            val bmr = //TODO: check age
                 10 * weightKg + 6.25f * heightCm - 5 * 20 - if (gender == Enums.Gender.Male) -5 else 161
 
             val calorieLimit = bmr * when (activityLevel) {

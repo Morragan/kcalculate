@@ -17,17 +17,17 @@ data class NutrientGoalsDTO(
     val proteinLimitUpper: Int
 ) {
     constructor(nutrientGoalsData: NutrientGoalsData) : this(
-        nutrientGoalsData.kcalLower,
         nutrientGoalsData.kcalGoal,
+        nutrientGoalsData.kcalLower,
         nutrientGoalsData.kcalUpper,
-        nutrientGoalsData.carbsLower,
         nutrientGoalsData.carbsGoal,
+        nutrientGoalsData.carbsLower,
         nutrientGoalsData.carbsUpper,
-        nutrientGoalsData.fatLower,
         nutrientGoalsData.fatGoal,
+        nutrientGoalsData.fatLower,
         nutrientGoalsData.fatUpper,
-        nutrientGoalsData.proteinLower,
         nutrientGoalsData.proteinGoal,
-        nutrientGoalsData.proteinUpper,
+        nutrientGoalsData.proteinLower,
+        nutrientGoalsData.proteinUpper
         )
 }

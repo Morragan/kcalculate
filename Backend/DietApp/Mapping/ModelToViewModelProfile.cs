@@ -27,6 +27,8 @@ namespace DietApp.Mapping
                 .ForMember(dest => dest.Points, opt => opt.MapFrom(src => src.user.Points));
             CreateMap<User, SearchUserViewModel>();
             CreateMap<PublicMeal, MealViewModel>();
+            CreateMap<GoalParticipation, GoalViewModel>()
+                .ForMember(dest => dest.WeightGoal, opt => opt.MapFrom(src => src.Goal.WeightGoal));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace DietApp.Persistence.Contexts
         public DbSet<PublicMeal> PublicMeals { get; set; }
         public DbSet<ScoreLog> ScoreLogs { get; set; }
         public DbSet<Goal> Goals { get; set; }
-        public DbSet<GoalInvitation> GoalInvitations { get; set; }
+        public DbSet<GoalParticipation> GoalInvitations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,7 +27,7 @@ namespace DietApp.Persistence.Contexts
             modelBuilder.Entity<User>().HasMany(m => m.RefreshTokens).WithOne(m => m.User).HasForeignKey(m => m.UserID);
             modelBuilder.Entity<User>().HasMany(m => m.SavedMeals).WithOne(m => m.User).HasForeignKey(m => m.UserID);
             modelBuilder.Entity<User>().HasMany(m => m.ScoreLogs).WithOne(m => m.User).HasForeignKey(m => m.UserID);
-            modelBuilder.Entity<User>().HasMany(m => m.GoalInvitations).WithOne(m => m.InvitedUser).HasForeignKey(m => m.InvitedUserID);
+            modelBuilder.Entity<User>().HasOne(m => m.Goal).WithOne(m => m.InvitedUser).HasForeignKey<GoalParticipation>(m => m.InvitedUserID);
             modelBuilder.Entity<User>().Property(m => m.ID).IsRequired().ValueGeneratedOnAdd();
             modelBuilder.Entity<User>().Property(m => m.Nickname).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<User>().Property(m => m.Email).IsRequired();
@@ -84,11 +84,11 @@ namespace DietApp.Persistence.Contexts
             #endregion
 
             #region Goal
-            modelBuilder.Entity<Goal>().HasMany(m => m.GoalInvitations).WithOne(m => m.Goal).HasForeignKey(m => m.GoalID);
+            modelBuilder.Entity<Goal>().HasMany(m => m.GoalParticipations).WithOne(m => m.Goal).HasForeignKey(m => m.GoalID);
             #endregion
 
             #region GoalInvitation
-            modelBuilder.Entity<GoalInvitation>().Property(m => m.Status).IsRequired().HasDefaultValue(GoalInvitationStatus.Pending);
+            modelBuilder.Entity<GoalParticipation>().Property(m => m.Status).IsRequired().HasDefaultValue(GoalInvitationStatus.Pending);
             #endregion
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -99,6 +99,7 @@ namespace DietApp.Persistence.Contexts
                    .SetBasePath(Directory.GetCurrentDirectory())
                    .AddJsonFile("appsettings.json")
                    .Build();
+                //var connectionString = "Server=tcp:dietapp20200221103617dbserver.database.windows.net,1433;Initial Catalog=DietApp20200221103617_db;Persist Security Info=False;User ID=morragan;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
                 optionsBuilder.EnableSensitiveDataLogging();

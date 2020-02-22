@@ -1,15 +1,12 @@
-﻿using System;
+﻿using DietApp.Domain.Models;
+using System;
 
-namespace DietApp.Domain.Models
+namespace DietApp.ViewModels.Outgoing
 {
-    public class GoalParticipation
+    public class GoalViewModel
     {
-        public int ID { get; set; }
-        public User InvitedUser { get; set; }
-        public int InvitedUserID { get; set; }
         public GoalInvitationStatus Status { get; set; }
         public int GoalID { get; set; }
-        public Goal Goal { get; set; }
         public DateTime StartDate { get; set; }
         public int CalorieLimit { get; set; }
         public int CalorieLimitLower { get; set; }
@@ -23,5 +20,6 @@ namespace DietApp.Domain.Models
         public float ProteinLimit { get; set; }
         public float ProteinLimitLower { get; set; }
         public float ProteinLimitUpper { get; set; }
+        public int WeightGoal { get; set; }
     }
 }

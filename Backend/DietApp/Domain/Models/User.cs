@@ -9,7 +9,7 @@ namespace DietApp.Domain.Models
         public int ID { get; set; }
         public string Nickname { get; set; }
         public string Email { get; set; }
-        public string AvatarLink { get; set; } //TODO: dodać do rejestracji
+        public string AvatarLink { get; set; }
         public UserRole Role { get; set; }
         public string Password { get; set; }
         public bool IsEmailConfirmed { get; set; } //TODO: potwierdzenie emaila
@@ -33,9 +33,11 @@ namespace DietApp.Domain.Models
         public IEnumerable<Meal> SavedMeals { get; set; }
         public IEnumerable<RefreshToken> RefreshTokens { get; set; }
         public IEnumerable<ScoreLog> ScoreLogs { get; set; }
-        public IEnumerable<GoalInvitation> GoalInvitations { get; set; }
         public IEnumerable<Friendship> RequestedFriendships { get; set; }
         public IEnumerable<Friendship> ReceivedFriendships { get; set; }
         public IEnumerable<Friendship> Friendships => RequestedFriendships.Concat(ReceivedFriendships);
+        public GoalParticipation Goal { get; set; }
+        public int GoalPoints => ScoreLogs.Where(log => log.Date > Goal?.StartDate)
+            .Sum(score => score.ScoredPointsKcal + score.ScoredPointsCarbs + score.ScoredPointsFat + score.ScoredPointsProtein);
     }
 }

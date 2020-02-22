@@ -23,6 +23,8 @@
     <Compile Remove="Migrations\20190924145007_FuckMeFriendshipsAreActuallyHarder.Designer.cs" />
     <Compile Remove="Migrations\20200201144525_RefreshTokenIDToInt.cs" />
     <Compile Remove="Migrations\20200201144525_RefreshTokenIDToInt.Designer.cs" />
+    <Compile Remove="Migrations\20200221204432_TempMigration.cs" />
+    <Compile Remove="Migrations\20200221204432_TempMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,8 +42,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
