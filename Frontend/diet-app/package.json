@@ -1,6 +1,6 @@
 {
   "name": "diet-app",
-  "homepage": "https://morragan.github.io/diet-app",
+  "homepage": "https://morragan.github.io/kcalculate",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
