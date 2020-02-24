@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "https://morragan.github.io/kcalculate/precache-manifest.8467ba37f0106b87ace00b805fb57d6f.js"
+  "https://morragan.github.io/kcalculate/precache-manifest.7aa9d74e367e998ce9ebbff3e888fc5b.js"
 );
 
 self.addEventListener('message', (event) => {

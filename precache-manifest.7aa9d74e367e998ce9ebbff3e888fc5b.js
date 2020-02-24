@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1e6d6ddf280c630571086608180f6452",
+    "revision": "ccc73d7b6300fedc65830cac140cb8f1",
     "url": "https://morragan.github.io/kcalculate/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://morragan.github.io/kcalculate/static/css/2.169712ab.chunk.css"
   },
   {
-    "revision": "e8866144a4bd09462214",
+    "revision": "a2825a8d67e68a86343e",
     "url": "https://morragan.github.io/kcalculate/static/css/main.fcf1da21.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://morragan.github.io/kcalculate/static/js/2.a9bc741a.chunk.js"
   },
   {
-    "revision": "e8866144a4bd09462214",
-    "url": "https://morragan.github.io/kcalculate/static/js/main.2efd365b.chunk.js"
+    "revision": "a2825a8d67e68a86343e",
+    "url": "https://morragan.github.io/kcalculate/static/js/main.3d948dce.chunk.js"
   },
   {
     "revision": "4e1b5263ea643ba814ed",
