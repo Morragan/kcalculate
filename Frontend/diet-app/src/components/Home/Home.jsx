@@ -10,11 +10,7 @@ class Home extends Component {
   }
   render() {
     if (this.props.isUserLoggedIn) return <Redirect to="/user-page" />;
-    return (
-      <>
-        <h1>Home - Zaloguj się</h1>
-      </>
-    );
+    else return <Redirect to="/login" />;
   }
 }
 
@@ -32,7 +28,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

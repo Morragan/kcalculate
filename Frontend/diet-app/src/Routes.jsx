@@ -39,6 +39,7 @@ class Routes extends Component {
         <Route exact path="/register" component={Register} />
         <ProtectedRoute exact path="/user-page" component={UserPage} />
         <ProtectedRoute exact path="/profile" component={UserProfile} />
+        <Redirect from="*" to="/" />
       </Switch>
     );
   }
