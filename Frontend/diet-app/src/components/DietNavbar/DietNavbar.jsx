@@ -20,6 +20,7 @@ import {
 } from "../../actions/accountActions";
 import { deleteDataFromCookie } from "../../api/TokenAPI";
 import { setAddMealModalVisibility } from "../../actions/UIActions";
+import navLogo from "../../assets/navlogo.png";
 
 const StyledNavbar = styled(Navbar)`
   position: sticky;
@@ -133,7 +134,7 @@ class DietNavbar extends Component {
         <LinkContainer to="/">
           <Navbar.Brand>
             <LogoBackground>
-              <Image src="navlogo.png" />
+              <Image src={navLogo} />
             </LogoBackground>
           </Navbar.Brand>
         </LinkContainer>

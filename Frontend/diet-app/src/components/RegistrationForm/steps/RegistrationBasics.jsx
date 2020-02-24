@@ -6,6 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import DietButton from "../../DietButton/DietButton";
+import { Link } from "react-router-dom";
 
 const RegistrationBasics = props => {
   const [basics, changeBasics] = useState({
@@ -123,6 +124,9 @@ const RegistrationBasics = props => {
           </DietButton>
         </Form>
       </Card.Body>
+      <Card.Footer>
+        Already have an account? <Link to="/login">Log in</Link>
+      </Card.Footer>
     </StyledCard>
   );
 };
