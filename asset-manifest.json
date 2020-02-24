@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/diet-app/static/css/main.fcf1da21.chunk.css",
+    "main.js": "/diet-app/static/js/main.c7620e99.chunk.js",
+    "main.js.map": "/diet-app/static/js/main.c7620e99.chunk.js.map",
+    "runtime~main.js": "/diet-app/static/js/runtime~main.7c297397.js",
+    "runtime~main.js.map": "/diet-app/static/js/runtime~main.7c297397.js.map",
+    "static/css/2.169712ab.chunk.css": "/diet-app/static/css/2.169712ab.chunk.css",
+    "static/js/2.e1c94a5e.chunk.js": "/diet-app/static/js/2.e1c94a5e.chunk.js",
+    "static/js/2.e1c94a5e.chunk.js.map": "/diet-app/static/js/2.e1c94a5e.chunk.js.map",
+    "index.html": "/diet-app/index.html",
+    "precache-manifest.a36f45816a84850de62b4e2564758666.js": "/diet-app/precache-manifest.a36f45816a84850de62b4e2564758666.js",
+    "service-worker.js": "/diet-app/service-worker.js",
+    "static/css/2.169712ab.chunk.css.map": "/diet-app/static/css/2.169712ab.chunk.css.map",
+    "static/css/main.fcf1da21.chunk.css.map": "/diet-app/static/css/main.fcf1da21.chunk.css.map"
+  }
+}
