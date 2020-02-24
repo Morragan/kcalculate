@@ -1,16 +1,8 @@
 package com.example.dietapp.models.entity
 
-import java.util.Date
+import java.util.*
 
-data class User(
-    val id: Int,
-    val nickname: String,
-    val email: String,
-    val avatarLink: String,
-    val joinDate: Date,
-    val points: Int,
-    val goalPoints: Int,
-    val isEmailConfirmed: Boolean,
+data class Goal(
     val calorieLimit: Float,
     val calorieLimitLower: Float,
     val calorieLimitUpper: Float,
@@ -23,7 +15,9 @@ data class User(
     val proteinLimit: Float,
     val proteinLimitLower: Float,
     val proteinLimitUpper: Float,
-    val isPrivate: Boolean
-) {
-    fun toFriend() = Friend(id, nickname, avatarLink, points, goalPoints, 2, true)
-}
+    val goalID: Int,
+    val participatingFriends: List<Int>,
+    val startDate: Date,
+    val status: Int,
+    val weightGoal: Float
+)

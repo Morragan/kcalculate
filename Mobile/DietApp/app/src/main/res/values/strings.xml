@@ -163,7 +163,24 @@
     <string name="profile_text_level_points">%1$d/%2$d</string>
     <string name="calculate_goals_label_read_rows">Read rows as lower limit / goal / upper limit</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_text_try_again">TRY AGAIN</string>
+    <string name="tab_text_goal">GOAL</string>
+    <string name="tab_text_ranking">RANKING</string>
+    <string name="goals_create_goal_header">Set your monthly goal!</string>
+    <string name="goals_create_goal_text_lose">I want to lose</string>
+    <string name="goals_create_goal_text_gain">I want to gain</string>
+    <string name="goals_create_goal_text_kg">kilograms</string>
+    <string name="goals_invite_friends_button_text">Invite friends to participate</string>
+    <string name="goals_create_goal_create">Create goal</string>
+    <string name="goals_goal_give_up">Click here to give up</string>
+    <string name="text_invite_friends_dialog_title">Invite friends</string>
+    <string name="dialog_invite_friends_confirm">CONFIRM</string>
+    <string name="dialog_invite_friends_cancel">CANCEL</string>
+    <string name="dialog_invite_friends_no_friends">You don\'t have anyone in your friends list yet. Try finding them in the friends tab!</string>
+    <string name="goals_ranking_points">Points: %1$d</string>
+    <string name="goals_invitation_header">You\'ve been invited to participate in a goal!</string>
+    <string name="goals_invitation_button_accept">ACCEPT</string>
+    <string name="goals_invitation_button_reject">REJECT</string>
+    <string name="goals_goal_gain">Let\'s gain %1$.1f kilograms in a month!</string>
+    <string name="goals_goal_lose">Let\'s lose %1$.1f kilograms in a month!</string>
 </resources>

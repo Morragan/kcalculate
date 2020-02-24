@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:contentDescription="@string/description_app_logo"
-            android:src="@mipmap/img_logo_full"/>
+            android:src="@mipmap/img_logo_full" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -51,41 +52,33 @@
             android:id="@+id/login_button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:padding="10dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_button_shape"
-            android:text="@string/button_text_login"
+            android:layout_marginTop="18dp"
             android:layout_marginBottom="24dp"
-            />
+            android:background="@drawable/round_button_shape"
+            android:padding="10dp"
+            android:text="@string/button_text_login"
+            app:initialCornerAngle="100dp" />
 
         <!-- padding added to make it more clickable-->
         <TextView
             android:id="@+id/login_link_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
             android:gravity="center"
-            android:text="@string/link_to_register_activity_text"
-            android:textSize="16sp"
-            android:padding="20dp"/>
-
-        <TextView
-            android:id="@+id/login_link_forgot_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:text="@string/link_to_forgot_password_text"
             android:padding="20dp"
-            android:layout_marginBottom="50dp"/>
+            android:text="@string/link_to_register_activity_text"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/login_text_connection_failure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/error"
-            android:text="@string/text_connection_failure"
             android:gravity="center_horizontal"
-            android:visibility="gone"/>
+            android:text="@string/text_connection_failure"
+            android:textColor="@color/error"
+            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>

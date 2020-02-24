@@ -121,6 +121,7 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.fetchMealEntries()
         viewModel.fetchUserData()
+        viewModel.fetchGoal()
 
         // region ViewModel observers setup
         viewModel.selectedDateString.observe(this, Observer {
@@ -133,18 +134,18 @@ class HomeActivity : AppCompatActivity() {
             }
             // calories
             home_cpb.setProgressWithAnimation(it.kcalProgress, 800)
-            home_text_goal.text = it.kcalGoal.toString()
-            home_text_eaten.text = it.kcalEaten.toString()
-            home_text_left.text = it.kcalLeft.toString()
+            home_text_goal.text = "%.1f".format(it.kcalGoal)
+            home_text_eaten.text = "%.1f".format(it.kcalEaten)
+            home_text_left.text = "%.1f".format(it.kcalLeft)
             home_cpb.progressBarColor = getColor(it.kcalProgressColorId)
             home_text_left.setTextColor(it.kcalProgressColorId)
 
             // carbs
             home_progress_bar_carbs.isIndeterminate = false
             ProgressBarAnimator(home_progress_bar_carbs, 1200).setProgress(it.carbsProgress)
-            home_text_carbs_goal.text = it.carbsGoal.toString()
-            home_text_carbs_eaten.text = it.carbsEaten.toString()
-            home_text_carbs_left.text = it.carbsLeft.toString()
+            home_text_carbs_goal.text = "%.1f".format(it.carbsGoal)
+            home_text_carbs_eaten.text = "%.1f".format(it.carbsEaten)
+            home_text_carbs_left.text = "%.1f".format(it.carbsLeft)
             home_progress_bar_carbs.progressDrawable.setColorFilter(
                 getColor(it.carbsProgressColorId),
                 PorterDuff.Mode.SRC_IN
@@ -153,9 +154,9 @@ class HomeActivity : AppCompatActivity() {
             // fats
             home_progress_bar_fats.isIndeterminate = false
             ProgressBarAnimator(home_progress_bar_fats, 1200).setProgress(it.fatProgress)
-            home_text_fats_goal.text = it.fatGoal.toString()
-            home_text_fats_eaten.text = it.fatEaten.toString()
-            home_text_fats_left.text = it.fatLeft.toString()
+            home_text_fats_goal.text = "%.1f".format(it.fatGoal)
+            home_text_fats_eaten.text = "%.1f".format(it.fatEaten)
+            home_text_fats_left.text = "%.1f".format(it.fatLeft)
             home_progress_bar_fats.progressDrawable.setColorFilter(
                 getColor(it.fatProgressColorId),
                 PorterDuff.Mode.SRC_IN
@@ -164,9 +165,9 @@ class HomeActivity : AppCompatActivity() {
             // proteins
             home_progress_bar_proteins.isIndeterminate = false
             ProgressBarAnimator(home_progress_bar_proteins, 1200).setProgress(it.proteinProgress)
-            home_text_proteins_goal.text = it.proteinGoal.toString()
-            home_text_proteins_eaten.text = it.proteinEaten.toString()
-            home_text_proteins_left.text = it.proteinLeft.toString()
+            home_text_proteins_goal.text = "%.1f".format(it.proteinGoal)
+            home_text_proteins_eaten.text = "%.1f".format(it.proteinEaten)
+            home_text_proteins_left.text = "%.1f".format(it.proteinLeft)
             home_progress_bar_proteins.progressDrawable.setColorFilter(
                 getColor(it.proteinProgressColorId),
                 PorterDuff.Mode.SRC_IN

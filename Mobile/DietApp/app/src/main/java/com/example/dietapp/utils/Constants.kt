@@ -1,7 +1,7 @@
 package com.example.dietapp.utils
 
 object Constants {
-    const val apiBaseUrl = "https://dietapp20200221080100.azurewebsites.net/api/"
+    const val apiBaseUrl = "https://dietapp20200221103617.azurewebsites.net/api/"
 
     //Shared preferences keys
     const val sharedPreferencesFileKey = "com.example.dietapp.utils.constants.sharedprefsfilekey"
@@ -14,6 +14,7 @@ object Constants {
     const val sharedPreferencesKeyUserAvatarLink = "com.example.dietapp.utils.constants.preferenceuseravatarlink"
     const val sharedPreferencesKeyUserJoinDate = "com.example.dietapp.utils.constants.preferenceuser"
     const val sharedPreferencesKeyUserPoints = "com.example.dietapp.utils.constants.preferenceuserpoints"
+    const val sharedPreferencesKeyUserGoalPoints = "com.example.dietapp.utils.constants.preferenceusergoalpoints"
     const val sharedPreferencesKeyUserIsEmailConfirmed = "com.example.dietapp.utils.constants.preferenceuserisemailconfirmed"
     const val sharedPreferencesKeyUserCalorieLimit = "com.example.dietapp.utils.constants.preferenceusercalorielimit"
     const val sharedPreferencesKeyUserCalorieLimitLower = "com.example.dietapp.utils.constants.preferenceusercalorielimitlower"
@@ -28,8 +29,26 @@ object Constants {
     const val sharedPreferencesKeyUserProteinLimitLower = "com.example.dietapp.utils.constants.preferenceuserproteinlimitlower"
     const val sharedPreferencesKeyUserProteinLimitUpper = "com.example.dietapp.utils.constants.preferenceuserproteinlimitupper"
     const val sharedPreferencesKeyUserIsPrivate = "com.example.dietapp.utils.constants.preferenceuserisprivate"
+    const val sharedPreferencesKeyGoalCalorieLimit = "com.example.dietapp.utils.constants.preferencegoalcalorielimit"
+    const val sharedPreferencesKeyGoalCalorieLimitLower = "com.example.dietapp.utils.constants.preferencegoalcalorielimitlower"
+    const val sharedPreferencesKeyGoalCalorieLimitUpper = "com.example.dietapp.utils.constants.preferencegoalcalorielimitupper"
+    const val sharedPreferencesKeyGoalCarbsLimit = "com.example.dietapp.utils.constants.preferencegoalcarbslimit"
+    const val sharedPreferencesKeyGoalCarbsLimitLower = "com.example.dietapp.utils.constants.preferencegoalcarbslimitlower"
+    const val sharedPreferencesKeyGoalCarbsLimitUpper = "com.example.dietapp.utils.constants.preferencegoalcarbslimitupper"
+    const val sharedPreferencesKeyGoalFatLimit = "com.example.dietapp.utils.constants.preferencegoalfatlimit"
+    const val sharedPreferencesKeyGoalFatLimitLower = "com.examplse.dietapp.utils.constants.preferencegoalfatlimitlower"
+    const val sharedPreferencesKeyGoalFatLimitUpper = "com.example.dietapp.utils.constants.preferencegoalfatlimitupper"
+    const val sharedPreferencesKeyGoalProteinLimit = "com.example.dietapp.utils.constants.preferencegoalproteinlimit"
+    const val sharedPreferencesKeyGoalProteinLimitLower = "com.example.dietapp.utils.constants.preferencegoalproteinlimitlower"
+    const val sharedPreferencesKeyGoalProteinLimitUpper = "com.example.dietapp.utils.constants.preferencegoalproteinlimitupper"
+    const val sharedPreferencesKeyGoalID = "com.example.dietapp.utils.constants.preferencegoalid"
+    const val sharedPreferencesKeyGoalParticipatingFriends = "com.example.dietapp.utils.constants.preferencegoalparticipatingfriends"
+    const val sharedPreferencesKeyGoalStartDate = "com.example.dietapp.utils.constants.preferencegoalstartdate"
+    const val sharedPreferencesKeyGoalStatus = "com.example.dietapp.utils.constants.preferencegoalstatus"
+    const val sharedPreferencesKeyGoalWeightGoal = "com.example.dietapp.utils.constants.preferencegoalweightgoal"
 
-    // Intent keys
+
+        // Intent keys
     const val intentKeyCalculateNutrientGoalsResult = "com.example.dietapp.utils.constants.intentkeycalculatenutrientgoalsresult"
     const val intentKeyRegisterToLoginNickname =
         "com.example.dietapp.utils.constants.intentkeyregistertologinnickname"

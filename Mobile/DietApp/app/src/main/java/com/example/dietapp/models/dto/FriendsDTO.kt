@@ -12,6 +12,7 @@ data class FriendsDTO(val requestedFriends: List<FriendDTO>, val receivedFriends
                 friend.nickname,
                 friend.avatarLink,
                 friend.points,
+                friend.goalPoints,
                 friend.status,
                 isUserRequester = true
             )
@@ -22,6 +23,7 @@ data class FriendsDTO(val requestedFriends: List<FriendDTO>, val receivedFriends
                 friend.nickname,
                 friend.avatarLink,
                 friend.points,
+                friend.goalPoints,
                 friend.status,
                 isUserRequester = false
             )

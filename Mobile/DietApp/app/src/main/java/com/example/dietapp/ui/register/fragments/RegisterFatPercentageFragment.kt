@@ -26,14 +26,14 @@ class RegisterFatPercentageFragment : RegisterFragment() {
     }
 
     override fun passData(activity: RegisterActivity) {
-        val fatPercentage = when {
-            register_radio_button_fat_class1.isChecked -> Enums.BodyFatPercentage.Class1
-            register_radio_button_fat_class2.isChecked -> Enums.BodyFatPercentage.Class2
-            register_radio_button_fat_class3.isChecked -> Enums.BodyFatPercentage.Class3
-            register_radio_button_fat_class4.isChecked -> Enums.BodyFatPercentage.Class4
-            register_radio_button_fat_class5.isChecked -> Enums.BodyFatPercentage.Class5
-            else -> Enums.BodyFatPercentage.Class6
-        }
+//        val fatPercentage = when {
+//            register_radio_button_fat_class1.isChecked -> Enums.BodyFatPercentage.Class1
+//            register_radio_button_fat_class2.isChecked -> Enums.BodyFatPercentage.Class2
+//            register_radio_button_fat_class3.isChecked -> Enums.BodyFatPercentage.Class3
+//            register_radio_button_fat_class4.isChecked -> Enums.BodyFatPercentage.Class4
+//            register_radio_button_fat_class5.isChecked -> Enums.BodyFatPercentage.Class5
+//            else -> Enums.BodyFatPercentage.Class6
+//        }
         //activity.fatPercentage = fatPercentage
     }
 

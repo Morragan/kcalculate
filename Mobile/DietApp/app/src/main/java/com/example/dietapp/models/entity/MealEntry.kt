@@ -14,5 +14,8 @@ data class MealEntry(
     val date: Date,
     @Embedded val nutrients: Nutrients,
     @ColumnInfo(name = "weight_gram") val weightGram: Int,
-    val kcal: Double
+    val kcal: Double,
+    val carbs: Double,
+    val fat: Double,
+    val protein: Double
 )

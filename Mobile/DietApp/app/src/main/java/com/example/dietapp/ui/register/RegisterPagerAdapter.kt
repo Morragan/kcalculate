@@ -12,11 +12,10 @@ class RegisterPagerAdapter(
 ) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     companion object {
-        private const val FRAGMENTS_COUNT = 3
+        private const val FRAGMENTS_COUNT = 2
     }
 
     val fragments = listOf(
-        RegisterMethodFragment.newInstance(viewModel),
         RegisterBasicsFragment.newInstance(viewModel),
         RegisterLoadingFragment.newInstance(viewModel)
     )

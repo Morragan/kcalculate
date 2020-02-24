@@ -5,5 +5,6 @@ data class FriendDTO(
     val nickname: String,
     val avatarLink: String?,
     val points: Int,
+    val goalPoints: Int,
     val status: Int
 )
