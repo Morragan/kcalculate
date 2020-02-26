@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DietApp.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +12,6 @@ namespace DietApp.Controllers
     public class ScheduledActionsController : Controller
     {
         readonly IScheduledActionsService scheduledActionsService;
-        readonly IUserService userService;
 
         public ScheduledActionsController(IScheduledActionsService scheduledActionsService)
         {
@@ -24,10 +20,11 @@ namespace DietApp.Controllers
 
 
         [HttpPost]
-        [Route("")]
-        public async Task CreateDailyUserScoreSummaries()
+        [Route("scores")]
+        public async Task<IActionResult> CreateDailyUserScoreSummaries()
         {
             await scheduledActionsService.CreateDailyUserScoreSummaries().ConfigureAwait(false);
+            return Ok();
         }
 
     }

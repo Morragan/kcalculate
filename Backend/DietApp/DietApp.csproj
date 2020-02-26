@@ -25,6 +25,8 @@
     <Compile Remove="Migrations\20200201144525_RefreshTokenIDToInt.Designer.cs" />
     <Compile Remove="Migrations\20200221204432_TempMigration.cs" />
     <Compile Remove="Migrations\20200221204432_TempMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200223001850_Goals3.cs" />
+    <Compile Remove="Migrations\20200223001850_Goals3.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

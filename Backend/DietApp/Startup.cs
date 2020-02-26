@@ -39,7 +39,11 @@ namespace DietApp
             //services.AddControllers().AddNewtonsoftJson();
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
-                .AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new DecimalJsonConverter()));
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new DecimalJsonConverter());
+                    options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                });
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -54,6 +58,7 @@ namespace DietApp
             services.AddScoped<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IScoreLogRepository, ScoreLogRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IGoalsService, GoalsService>();
 
             services.AddScoped<Domain.Services.IAuthenticationService, Services.AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
@@ -63,6 +68,8 @@ namespace DietApp
             services.AddScoped<IFriendshipService, FriendshipService>();
             services.AddScoped<IScheduledActionsService, ScheduledActionsService>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IGoalsRepository, GoalsRepository>();
+            services.AddScoped<IGoalParticipationsRepository, GoalParticipationsRepository>();
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton(typeof(FatSecretAPITokenCache));

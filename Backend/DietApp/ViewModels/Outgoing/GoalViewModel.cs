@@ -21,5 +21,7 @@ namespace DietApp.ViewModels.Outgoing
         public float ProteinLimitLower { get; set; }
         public float ProteinLimitUpper { get; set; }
         public int WeightGoal { get; set; }
+        public int[] ParticipatingFriends { get; set; }
+
     }
 }

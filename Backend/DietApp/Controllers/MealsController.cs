@@ -120,6 +120,8 @@ namespace DietApp.Controllers
             var response = await mealService.FindByBarcode(barcode).ConfigureAwait(false);
             if (!response.IsSuccess) return BadRequest(response.Message);
 
+            if (!response.PublicMealsFound.Any()) return NoContent();
+
             var mealFound = mapper.Map<PublicMeal, MealViewModel>(response.PublicMealsFound.First());
             return Ok(mealFound);
         }

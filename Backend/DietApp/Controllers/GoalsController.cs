@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using DietApp.Domain.Models;
 using DietApp.Domain.Services;
-using DietApp.Services;
 using DietApp.ViewModels.Incoming;
 using DietApp.ViewModels.Outgoing;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DietApp.Controllers
@@ -34,7 +29,7 @@ namespace DietApp.Controllers
         public async Task<IActionResult> GetUserGoal()
         {
             var userId = userService.GetCurrentUserId(HttpContext);
-            var user = await userService.FindById(userId);
+            var user = await userService.FindById(userId).ConfigureAwait(false);
 
             var goalViewModel = mapper.Map<GoalParticipation, GoalViewModel>(user.Goal);
             return Ok(goalViewModel);
@@ -46,11 +41,32 @@ namespace DietApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var userId = userService.GetCurrentUserId(HttpContext);
-            var result = await goalsService.Create(userId, viewModel.WeightGoal, viewModel.InvitedUsers);
+            var result = await goalsService.Create(userId, viewModel.WeightGoal, viewModel.InvitedUsers).ConfigureAwait(false);
             if (!result.IsSuccess) return BadRequest(result.Message);
 
-            throw new NotImplementedException();
+            var goalViewModel = mapper.Map<GoalParticipation, GoalViewModel>(result.GoalParticipation);
+            return Ok(goalViewModel);
+        }
 
+        [HttpPut]
+        [Route("accept")]
+        public async Task<IActionResult> AcceptGoal()
+        {
+            var userId = userService.GetCurrentUserId(HttpContext);
+            await goalsService.AcceptInvitation(userId).ConfigureAwait(false);
+            var user = await userService.FindById(userId).ConfigureAwait(false);
+
+            var goalViewModel = mapper.Map<GoalParticipation, GoalViewModel>(user.Goal);
+            return Ok(goalViewModel);
+        }
+
+        [HttpDelete]
+        [Route("remove")]
+        public async Task<IActionResult> RemoveGoal()
+        {
+            var userId = userService.GetCurrentUserId(HttpContext);
+            await goalsService.Remove(userId).ConfigureAwait(false);
+            return Ok();
         }
     }
 }

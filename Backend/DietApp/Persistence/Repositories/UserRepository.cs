@@ -47,7 +47,10 @@ namespace DietApp.Persistence.Repositories
 
         public async Task<User> FindById(int id)
         {
-            return await context.Users.Include(u => u.ScoreLogs).Include(u => u.Goal).ThenInclude(g => g.Goal).SingleOrDefaultAsync(u => u.ID == id).ConfigureAwait(false);
+            return await context.Users
+                .Include(u => u.ScoreLogs)
+                .Include(u => u.Goal).ThenInclude(g => g.Goal).ThenInclude(g => g.GoalParticipations)
+                .SingleOrDefaultAsync(u => u.ID == id).ConfigureAwait(false);
         }
 
         public async Task<User> FindByIdIncludeFriendships(int id)

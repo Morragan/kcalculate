@@ -24,7 +24,7 @@ namespace DietApp.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<GoalResponse> Create(int userId, int weightGoal, int[] invitedUsers)
+        public async Task<GoalParticipationResponse> Create(int userId, float weightGoal, int[] invitedUsers)
         {
             var goal = new Goal() { WeightGoal = weightGoal };
             var user = await userRepository.FindById(userId);
@@ -57,9 +57,9 @@ namespace DietApp.Services
                     Goal = goal,
                     InvitedUser = invitedUser,
                     Status = GoalInvitationStatus.Pending,
-                    CalorieLimit = calorieLimit,
-                    CalorieLimitLower = calorieLimitLower,
-                    CalorieLimitUpper = calorieLimitUpper,
+                    CalorieLimit = Convert.ToInt32(calorieLimit),
+                    CalorieLimitLower = Convert.ToInt32(calorieLimitLower),
+                    CalorieLimitUpper = Convert.ToInt32(calorieLimitUpper),
                     CarbsLimit = carbsLimit,
                     CarbsLimitLower = carbsLimitLower,
                     CarbsLimitUpper = carbsLimitUpper,
@@ -87,15 +87,15 @@ namespace DietApp.Services
             var _proteinLimitLower = user.ProteinLimitLower * (100 + weightGoal) / 100;
             var _proteinLimitUpper = user.ProteinLimitUpper * (100 + weightGoal) / 100;
 
-            goalParticipations.Add(new GoalParticipation()
+            var creatorParticipation = new GoalParticipation()
             {
                 Goal = goal,
                 InvitedUserID = userId,
                 Status = GoalInvitationStatus.Accepted,
                 StartDate = DateTime.UtcNow,
-                CalorieLimit = _calorieLimit,
-                CalorieLimitLower = _calorieLimitLower,
-                CalorieLimitUpper = _calorieLimitUpper,
+                CalorieLimit = Convert.ToInt32(_calorieLimit),
+                CalorieLimitLower = Convert.ToInt32(_calorieLimitLower),
+                CalorieLimitUpper = Convert.ToInt32(_calorieLimitUpper),
                 CarbsLimit = _carbsLimit,
                 CarbsLimitLower = _carbsLimitLower,
                 CarbsLimitUpper = _carbsLimitUpper,
@@ -105,27 +105,31 @@ namespace DietApp.Services
                 ProteinLimit = _proteinLimit,
                 ProteinLimitLower = _proteinLimitLower,
                 ProteinLimitUpper = _proteinLimitUpper
-            });
+            };
+
+            goalParticipations.Add(creatorParticipation);
 
             goal.GoalParticipations = goalParticipations;
 
             await goalsRepository.Add(goal);
             await unitOfWork.Complete();
 
-            return new GoalResponse(true, null, goal);
+            return new GoalParticipationResponse(true, null, creatorParticipation);
         }
 
         public async Task AcceptInvitation(int userId)
         {
             var user = await userRepository.FindById(userId);
-            goalParticipationsRepository.Update(user.Goal.GoalID, GoalInvitationStatus.Accepted, DateTime.UtcNow);
+            user.Goal.Status = GoalInvitationStatus.Accepted;
+            user.Goal.StartDate = DateTime.UtcNow;
+            goalParticipationsRepository.Update(user.Goal);
             await unitOfWork.Complete();
         }
 
         public async Task Remove(int userId)
         {
             var user = await userRepository.FindById(userId);
-            goalParticipationsRepository.Delete(user.Goal.ID);
+            goalParticipationsRepository.Delete(user.Goal);
             await unitOfWork.Complete();
         }
     }

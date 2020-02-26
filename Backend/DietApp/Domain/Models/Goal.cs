@@ -6,6 +6,6 @@ namespace DietApp.Domain.Models
     {
         public int ID { get; set; }
         public IEnumerable<GoalParticipation> GoalParticipations { get; set; }
-        public int WeightGoal { get; set; }
+        public float WeightGoal { get; set; }
     }
 }

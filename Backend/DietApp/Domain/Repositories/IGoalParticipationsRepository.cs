@@ -5,7 +5,7 @@ namespace DietApp.Domain.Repositories
 {
     public interface IGoalParticipationsRepository
     {
-        void Update(int goalId, GoalInvitationStatus status, DateTime startDate);
-        void Delete(int goalParticipationId);
+        void Update(GoalParticipation goalParticipation);
+        void Delete(GoalParticipation goalParticipation);
     }
 }

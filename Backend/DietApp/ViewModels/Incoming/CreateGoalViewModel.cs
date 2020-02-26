@@ -2,7 +2,7 @@
 {
     public class CreateGoalViewModel
     {
-        public int WeightGoal { get; set; }
+        public float WeightGoal { get; set; }
         public int[] InvitedUsers { get; set; }
     }
 }

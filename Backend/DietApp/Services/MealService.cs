@@ -48,7 +48,7 @@ namespace DietApp.Services
             try
             {
                 var apiResponse = await publicMealRepository.FetchByBarcode(barcode).ConfigureAwait(false);
-                if (apiResponse == null) return new FindPublicMealsResponse(false, "Barcode not found", (PublicMeal)null);
+                if (apiResponse == null) return new FindPublicMealsResponse(true, "Barcode not found", (PublicMeal)null);
 
                 await publicMealRepository.Cache(apiResponse).ConfigureAwait(false);
                 await unitOfWork.Complete().ConfigureAwait(false);

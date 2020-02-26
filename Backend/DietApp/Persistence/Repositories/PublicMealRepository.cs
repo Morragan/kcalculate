@@ -30,12 +30,11 @@ namespace DietApp.Persistence.Repositories
             this.fatSecretAPITokenCache = fatSecretAPITokenCache;
             this.mapper = mapper;
         }
-//TODO: on barcode no found return empty collection
-//TODO: pair public meal with search phrase
-//TODO: change token exp check below to milliseconds
+
+        //TODO: pair public meal with search phrase
         public async Task<IEnumerable<PublicMeal>> FetchByName(string name, int quantity)
         {
-            if (fatSecretAPITokenCache.Expiration <= DateTime.UtcNow.Ticks)
+            if (fatSecretAPITokenCache.Expiration <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
                 await FetchFatSecretAccessToken().ConfigureAwait(false);
 
             using HttpClient httpClient = new HttpClient();
