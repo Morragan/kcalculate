@@ -10,6 +10,7 @@ data class Friend(
     val nickname: String,
     @ColumnInfo(name = "avatar_link") val avatarLink: String?,
     val points: Int,
+    @ColumnInfo(name = "goal_points") val goalPoints: Int,
     val status: Int,
     @ColumnInfo(name = "is_user_requester") val isUserRequester: Boolean
 )

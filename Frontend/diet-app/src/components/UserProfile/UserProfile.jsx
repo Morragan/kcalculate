@@ -21,6 +21,7 @@ import { Table } from "react-bootstrap";
 import DietButton from "../DietButton/DietButton";
 import { toast } from "react-toastify";
 import { saveFriends } from "../../actions/socialActions";
+import avatarImage from "../../assets/img_avatar.png";
 
 const StyledImage = styled(Image)`
   float: left;
@@ -215,7 +216,14 @@ class UserProfile extends Component {
       <Tabs defaultActiveKey="profile-info" style={{ marginTop: "24px" }}>
         <Tab title="Profile info" eventKey="profile-info">
           <TabContainer>
-            <StyledImage src={this.props.user.avatarLink} alt="User avatar" />
+            <StyledImage
+              src={
+                this.props.user.avatarLink
+                  ? this.props.user.avatarLink
+                  : avatarImage
+              }
+              alt="User avatar"
+            />
             <StyledP>
               <strong>Nickname:</strong> {this.props.user.nickname}
             </StyledP>
@@ -276,8 +284,6 @@ class UserProfile extends Component {
                 </tr>
               </tbody>
             </StyledTable>
-            {/*TODO*/}
-            <DietButton>Recalculate nutrient limits</DietButton>
           </TabContainer>
         </Tab>
         <Tab title="Friends" eventKey="friends">

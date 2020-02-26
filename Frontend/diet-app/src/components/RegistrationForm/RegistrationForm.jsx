@@ -1,6 +1,6 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
-import RegistrationMethod from "./steps/RegistrationMethod";
+// import RegistrationMethod from "./steps/RegistrationMethod";
 import RegistrationBasics from "./steps/RegistrationBasics";
 import RegistrationMeasurements from "./steps/RegistrationMeasurements";
 import RegistrationQuiz from "./steps/RegistrationQuiz";
@@ -29,13 +29,13 @@ const RegistrationForm = props => {
       activeIndex={props.activeIndex}
       onSelect={props.handleCarouselSelect}
     >
-      <Carousel.Item>
+      {/* <Carousel.Item>
         <RegistrationMethod
           callbackFacebook={props.callbackFacebook}
           callbackGoogle={props.callbackGoogle}
           handleNext={next}
         />
-      </Carousel.Item>
+      </Carousel.Item> */}
       <Carousel.Item>
         <RegistrationBasics
           submitBasics={props.handleBasicsSubmit}

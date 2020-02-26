@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.dietapp.R
 import com.example.dietapp.api.exceptions.NotAuthorizedException
 import com.example.dietapp.db.repositories.AccountRepository
+import com.example.dietapp.db.repositories.GoalRepository
 import com.example.dietapp.db.repositories.MealEntriesRepository
 import com.example.dietapp.utils.Methods.datesAreTheSameDay
 import com.example.dietapp.utils.Methods.offsetDate
@@ -15,11 +16,14 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val mealEntriesRepository: MealEntriesRepository,
+    private val goalRepository: GoalRepository,
     private val accountRepository: AccountRepository,
     private val stringResourcesProvider: StringResourcesProvider
 ) : ViewModel() {
+
     private val selectedDate = MutableLiveData<Date>(Date())
     private val mealEntries = mealEntriesRepository.allMealEntries
+    val goal = goalRepository.goal
     val user = accountRepository.user
     val loggedIn = accountRepository.loggedIn
 
@@ -51,6 +55,9 @@ class HomeViewModel @Inject constructor(
                 selectedDateMealsSummary.value = updateDaySummary()
             }
             addSource(mealEntries) {
+                selectedDateMealsSummary.value = updateDaySummary()
+            }
+            addSource(goal) {
                 selectedDateMealsSummary.value = updateDaySummary()
             }
         }
@@ -86,101 +93,140 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//TODO: multiply nutrients by weight
     private fun updateDaySummary(): DaySummaryData? {
         val selectedDateEntries = mealEntries.value?.filter { entry ->
             datesAreTheSameDay(entry.date, selectedDate.value!!)
         } ?: return null
 
         if (user.value?.email.isNullOrBlank()) return null
+        if (goal.value == null) return null
 
-        val kcalEaten = selectedDateEntries.sumByDouble { entry -> entry.kcal }
-        val carbsEaten = selectedDateEntries.sumByDouble { entry -> entry.nutrients.carbs }
-        val fatEaten = selectedDateEntries.sumByDouble { entry -> entry.nutrients.fat }
-        val proteinEaten = selectedDateEntries.sumByDouble { entry -> entry.nutrients.protein }
+        val calorieLimit =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.calorieLimit else user.value!!.calorieLimit
+        val calorieLimitLower =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.calorieLimitLower else user.value!!.calorieLimitLower
+        val calorieLimitUpper =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.calorieLimitUpper else user.value!!.calorieLimitUpper
+        val carbsLimit =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.carbsLimit else user.value!!.carbsLimit
+        val carbsLimitLower =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.carbsLimitLower else user.value!!.carbsLimitLower
+        val carbsLimitUpper =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.carbsLimitUpper else user.value!!.carbsLimitUpper
+        val fatLimit =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.fatLimit else user.value!!.fatLimit
+        val fatLimitLower =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.fatLimitLower else user.value!!.fatLimitLower
+        val fatLimitUpper =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.fatLimitUpper else user.value!!.fatLimitUpper
+        val proteinLimit =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.proteinLimit else user.value!!.proteinLimit
+        val proteinLimitLower =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.proteinLimitLower else user.value!!.proteinLimitLower
+        val proteinLimitUpper =
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.proteinLimitUpper else user.value!!.proteinLimitUpper
 
-        val kcalProgress = kcalEaten.toFloat() / user.value!!.calorieLimit * 100f
-        val carbsProgress = carbsEaten.toFloat() / user.value!!.carbsLimit * 100f
-        val fatProgress = fatEaten.toFloat() / user.value!!.fatLimit * 100f
-        val proteinProgress = proteinEaten.toFloat() / user.value!!.proteinLimit * 100f
+        val kcalEaten =
+            selectedDateEntries.sumByDouble { entry -> entry.kcal }
+        val carbsEaten =
+            selectedDateEntries.sumByDouble { entry -> entry.carbs }
+        val fatEaten =
+            selectedDateEntries.sumByDouble { entry -> entry.fat }
+        val proteinEaten =
+            selectedDateEntries.sumByDouble { entry -> entry.protein }
+
+        val kcalProgress = kcalEaten.toFloat() / calorieLimit * 100f
+        val carbsProgress = carbsEaten.toFloat() / carbsLimit * 100f
+        val fatProgress = fatEaten.toFloat() / fatLimit * 100f
+        val proteinProgress = proteinEaten.toFloat() / proteinLimit * 100f
 
         val kcalLeft: Double =
-            if (user.value!!.calorieLimit - kcalEaten < 0) 0.0 else user.value!!.calorieLimit - kcalEaten
+            if (calorieLimit - kcalEaten < 0) 0.0 else calorieLimit - kcalEaten
         val carbsLeft: Double =
-            if (user.value!!.carbsLimit - carbsEaten < 0) 0.0 else user.value!!.carbsLimit - carbsEaten
+            if (carbsLimit - carbsEaten < 0) 0.0 else carbsLimit - carbsEaten
         val fatLeft: Double =
-            if (user.value!!.fatLimit - fatEaten < 0) 0.0 else user.value!!.fatLimit - fatEaten
+            if (fatLimit - fatEaten < 0) 0.0 else fatLimit - fatEaten
         val proteinLeft: Double =
-            if (user.value!!.proteinLimit - proteinEaten < 0) 0.0 else user.value!!.proteinLimit - proteinEaten
+            if (proteinLimit - proteinEaten < 0) 0.0 else proteinLimit - proteinEaten
 
         val kcalProgressColorId = when {
-            kcalEaten < user.value!!.calorieLimitLower -> R.color.warning
-            kcalEaten > user.value!!.calorieLimitUpper -> R.color.error
+            kcalEaten < calorieLimitLower -> R.color.warning
+            kcalEaten > calorieLimitUpper -> R.color.error
             else -> R.color.success
         }
         val carbsProgressColorId = when {
-            carbsEaten < user.value!!.carbsLimitLower -> R.color.warning
-            carbsEaten > user.value!!.carbsLimitUpper -> R.color.error
+            carbsEaten < carbsLimitLower -> R.color.warning
+            carbsEaten > carbsLimitUpper -> R.color.error
             else -> R.color.success
         }
         val fatProgressColorId = when {
-            fatEaten < user.value!!.fatLimitLower -> R.color.warning
-            fatEaten > user.value!!.fatLimitUpper -> R.color.error
+            fatEaten < fatLimitLower -> R.color.warning
+            fatEaten > fatLimitUpper -> R.color.error
             else -> R.color.success
         }
         val proteinProgressColorId = when {
-            proteinEaten < user.value!!.proteinLimitLower -> R.color.warning
-            proteinEaten > user.value!!.proteinLimitUpper -> R.color.error
+            proteinEaten < proteinLimitLower -> R.color.warning
+            proteinEaten > proteinLimitUpper -> R.color.error
             else -> R.color.success
         }
 
 
         return DaySummaryData(
-            kcalEaten.toInt(),
-            user.value!!.calorieLimit,
-            kcalLeft.toInt(),
+            kcalEaten.toFloat(),
+            calorieLimit,
+            kcalLeft.toFloat(),
             kcalProgress,
             kcalProgressColorId,
-            carbsEaten.toInt(),
-            user.value!!.carbsLimit,
-            carbsLeft.toInt(),
+            carbsEaten.toFloat(),
+            carbsLimit,
+            carbsLeft.toFloat(),
             carbsProgress.toInt(),
             carbsProgressColorId,
-            fatEaten.toInt(),
-            user.value!!.fatLimit,
-            fatLeft.toInt(),
+            fatEaten.toFloat(),
+            fatLimit,
+            fatLeft.toFloat(),
             fatProgress.toInt(),
             fatProgressColorId,
-            proteinEaten.toInt(),
-            user.value!!.proteinLimit,
-            proteinLeft.toInt(),
+            proteinEaten.toFloat(),
+            proteinLimit,
+            proteinLeft.toFloat(),
             proteinProgress.toInt(),
             proteinProgressColorId
         )
     }
 
+    fun fetchGoal() = viewModelScope.launch {
+        try {
+            goalRepository.getGoal()
+        } catch (e: NotAuthorizedException) {
+            accountRepository.logout()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
     data class DaySummaryData(
-        val kcalEaten: Int,
-        val kcalGoal: Int,
-        val kcalLeft: Int,
+        val kcalEaten: Float,
+        val kcalGoal: Float,
+        val kcalLeft: Float,
         val kcalProgress: Float,
         val kcalProgressColorId: Int,
 
-        val carbsEaten: Int,
-        val carbsGoal: Int,
-        val carbsLeft: Int,
+        val carbsEaten: Float,
+        val carbsGoal: Float,
+        val carbsLeft: Float,
         val carbsProgress: Int,
         val carbsProgressColorId: Int,
 
-        val fatEaten: Int,
-        val fatGoal: Int,
-        val fatLeft: Int,
+        val fatEaten: Float,
+        val fatGoal: Float,
+        val fatLeft: Float,
         val fatProgress: Int,
         val fatProgressColorId: Int,
 
-        val proteinEaten: Int,
-        val proteinGoal: Int,
-        val proteinLeft: Int,
+        val proteinEaten: Float,
+        val proteinGoal: Float,
+        val proteinLeft: Float,
         val proteinProgress: Int,
         val proteinProgressColorId: Int
 

@@ -8,6 +8,7 @@ import com.example.dietapp.di.module.ViewModelModule
 import com.example.dietapp.ui.calculatenutrientgoals.CalculateNutrientGoalsActivity
 import com.example.dietapp.ui.createmeal.CreateMealActivity
 import com.example.dietapp.ui.friends.FriendsActivity
+import com.example.dietapp.ui.goals.GoalsActivity
 import com.example.dietapp.ui.home.HomeActivity
 import com.example.dietapp.ui.login.LoginActivity
 import com.example.dietapp.ui.main.MainActivity
@@ -30,6 +31,7 @@ interface AppComponent {
     fun inject(target: FriendsActivity)
     fun inject(target: ProfileActivity)
     fun inject(target: CalculateNutrientGoalsActivity)
+    fun inject(target: GoalsActivity)
 
     @Component.Factory
     interface Factory {

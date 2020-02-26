@@ -1,10 +1,7 @@
 package com.example.dietapp.di.module
 
 import android.content.SharedPreferences
-import com.example.dietapp.api.services.AccountService
-import com.example.dietapp.api.services.MealEntriesService
-import com.example.dietapp.api.services.MealsService
-import com.example.dietapp.api.services.SocialService
+import com.example.dietapp.api.services.*
 import com.example.dietapp.models.dto.RefreshTokenDTO
 import com.example.dietapp.models.dto.TokenDTO
 import com.example.dietapp.utils.Constants
@@ -130,7 +127,7 @@ object ApiModule {
                 .addInterceptor(getInterceptor(sharedPreferences))
                 .authenticator(getAuthenticator(sharedPreferences, accountService))
                 .connectTimeout(100, TimeUnit.SECONDS)
-                .readTimeout(100,TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
                 .build()
         } catch (e: Exception) {
             throw RuntimeException(e)
@@ -181,5 +178,12 @@ object ApiModule {
     @JvmStatic
     fun provideFriendsService(retrofit: Retrofit): SocialService {
         return retrofit.create(SocialService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideGoalService(retrofit: Retrofit): GoalService {
+        return retrofit.create(GoalService::class.java)
     }
 }
