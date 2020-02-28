@@ -179,6 +179,7 @@ class RecordMealActivity : AppCompatActivity(), RecordMealAdapter.AddMealOnClick
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val cooool = 0
         if (requestCode == Constants.requestCodeScanBarcode) {
             val result: IntentResult? =
                 IntentIntegrator.parseActivityResult(requestCode, resultCode, data)

@@ -190,7 +190,9 @@ class FriendsActivity : AppCompatActivity(),
         return true
     }
 
-    private fun sync() {}
+    private fun sync() {
+        viewModel.fetchFriends()
+    }
 
     private fun getCurrentFragment(): BaseFriendsFragment {
         val position = friends_view_pager.currentItem

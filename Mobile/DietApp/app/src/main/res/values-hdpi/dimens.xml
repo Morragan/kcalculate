@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="home_cpb_height">150dp</dimen>
+    <dimen name="home_cpb_margin_top">6dp</dimen>
+    <dimen name="home_cpb_text_size">26sp</dimen>
+    <dimen name="home_divider_margin_top">2dp</dimen>
+    <dimen name="home_arrow_height">40dp</dimen>
+</resources>

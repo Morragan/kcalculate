@@ -244,9 +244,6 @@ class AddMealModal extends Component {
                 )}
               </BodyContent>
               <Modal.Footer>
-                <DietButton onClick={() => this.recordMealEntry()}>
-                  Record
-                </DietButton>
                 <Button variant="danger" onClick={this.hideModal}>
                   Cancel
                 </Button>

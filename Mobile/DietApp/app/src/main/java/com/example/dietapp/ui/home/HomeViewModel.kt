@@ -1,5 +1,6 @@
 package com.example.dietapp.ui.home
 
+import android.text.format.DateUtils
 import androidx.lifecycle.*
 import com.example.dietapp.R
 import com.example.dietapp.api.exceptions.NotAuthorizedException
@@ -102,29 +103,29 @@ class HomeViewModel @Inject constructor(
         if (goal.value == null) return null
 
         val calorieLimit =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.calorieLimit else user.value!!.calorieLimit
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.calorieLimit else user.value!!.calorieLimit
         val calorieLimitLower =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.calorieLimitLower else user.value!!.calorieLimitLower
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.calorieLimitLower else user.value!!.calorieLimitLower
         val calorieLimitUpper =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.calorieLimitUpper else user.value!!.calorieLimitUpper
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.calorieLimitUpper else user.value!!.calorieLimitUpper
         val carbsLimit =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.carbsLimit else user.value!!.carbsLimit
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.carbsLimit else user.value!!.carbsLimit
         val carbsLimitLower =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.carbsLimitLower else user.value!!.carbsLimitLower
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.carbsLimitLower else user.value!!.carbsLimitLower
         val carbsLimitUpper =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.carbsLimitUpper else user.value!!.carbsLimitUpper
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.carbsLimitUpper else user.value!!.carbsLimitUpper
         val fatLimit =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.fatLimit else user.value!!.fatLimit
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.fatLimit else user.value!!.fatLimit
         val fatLimitLower =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.fatLimitLower else user.value!!.fatLimitLower
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.fatLimitLower else user.value!!.fatLimitLower
         val fatLimitUpper =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.fatLimitUpper else user.value!!.fatLimitUpper
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.fatLimitUpper else user.value!!.fatLimitUpper
         val proteinLimit =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.proteinLimit else user.value!!.proteinLimit
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.proteinLimit else user.value!!.proteinLimit
         val proteinLimitLower =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.proteinLimitLower else user.value!!.proteinLimitLower
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.proteinLimitLower else user.value!!.proteinLimitLower
         val proteinLimitUpper =
-            if (goal.value != null && goal.value!!.startDate >= selectedDate.value) goal.value!!.proteinLimitUpper else user.value!!.proteinLimitUpper
+            if (goal.value != null && goal.value!!.startDate >= selectedDate.value || DateUtils.isToday(goal.value!!.startDate.time)) goal.value!!.proteinLimitUpper else user.value!!.proteinLimitUpper
 
         val kcalEaten =
             selectedDateEntries.sumByDouble { entry -> entry.kcal }

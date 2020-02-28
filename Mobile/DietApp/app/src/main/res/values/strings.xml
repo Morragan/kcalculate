@@ -115,11 +115,11 @@
     <string name="friends_placeholder_people_default">Search for people using the search box above</string>
     <string name="tab_text_friends">Friends</string>
     <string name="tab_text_people">People</string>
-    <string name="calculate_goals_description_activity_very_low">lalal</string>
-    <string name="calculate_goals_description_activity_low">lalala</string>
-    <string name="calculate_goals_description_activity_moderate">alala</string>
-    <string name="calculate_goals_description_activity_high">kakaka</string>
-    <string name="calculate_goals_description_activity_very_high">susuasd</string>
+    <string name="calculate_goals_description_activity_very_low">If you have a sitting job</string>
+    <string name="calculate_goals_description_activity_low">If your job involves a little bit of moving or you do a little bit of sports</string>
+    <string name="calculate_goals_description_activity_moderate">If your regularly do sports</string>
+    <string name="calculate_goals_description_activity_high">If your job is physically heavy or you take sports very seriously</string>
+    <string name="calculate_goals_description_activity_very_high">For heavy-duty workers and people who work out every day</string>
     <string name="calculate_goals_label_calorie_limit">Kcal</string>
     <string name="calculate_goals_label_carbs_limit">Carbs</string>
     <string name="calculate_goals_label_fat_limit">Fat</string>
@@ -159,7 +159,7 @@
     <string name="profile_public_description"><![CDATA[Your account is public. This means other users will be able to see you when searching for friends in <b><i>Friends</i></b> tab and send you friend requests. To change it, click the button below]]></string>
     <string name="profile_button_text_make_private">MAKE MY ACCOUNT PRIVATE</string>
     <string name="profile_button_text_make_public">MAKE MY ACCOUNT PUBLIC</string>
-    <string name="profile_limits">%1$d kcal | Carbs: %2$d | Fat: %3$d | Protein: %4$d</string>
+    <string name="profile_limits">%1$.0f kcal | Carbs: %2$.0f | Fat: %3$.0f | Protein: %4$.0f</string>
     <string name="profile_text_level_points">%1$d/%2$d</string>
     <string name="calculate_goals_label_read_rows">Read rows as lower limit / goal / upper limit</string>
 
@@ -183,4 +183,5 @@
     <string name="goals_invitation_button_reject">REJECT</string>
     <string name="goals_goal_gain">Let\'s gain %1$.1f kilograms in a month!</string>
     <string name="goals_goal_lose">Let\'s lose %1$.1f kilograms in a month!</string>
+    <string name="title_menu_friends">Friends</string>
 </resources>

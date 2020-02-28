@@ -3,7 +3,7 @@ import StyledCard from "./components/StyledCard";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import DietButton from "../../DietButton/DietButton";
+import DietButton from "../../../DietButton/DietButton";
 
 const RegistrationMeasurements = props => {
   const [measurements, changeMeasurements] = useState({

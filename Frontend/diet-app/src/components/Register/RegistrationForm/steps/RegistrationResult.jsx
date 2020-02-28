@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import StyledCard from "./components/StyledCard";
-import DietButton from "../../DietButton/DietButton";
+import DietButton from "../../../DietButton/DietButton";
 
 const ButtonsContainer = styled.div`
   display: flex;

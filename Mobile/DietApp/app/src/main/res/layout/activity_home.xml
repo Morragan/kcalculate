@@ -17,7 +17,7 @@
     <ImageButton
         android:id="@+id/home_button_day_back"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/home_arrow_height"
         android:backgroundTint="@android:color/transparent"
         android:src="@drawable/baseline_arrow_back_ios_black_36"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -40,7 +40,7 @@
     <ImageButton
         android:id="@+id/home_button_day_forward"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/home_arrow_height"
         android:backgroundTint="@android:color/transparent"
         android:src="@drawable/baseline_arrow_forward_ios_black_36"
         app:layout_constraintLeft_toRightOf="@id/home_text_day"
@@ -52,9 +52,9 @@
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/home_cpb"
         android:layout_width="wrap_content"
-        android:layout_height="260dp"
+        android:layout_height="@dimen/home_cpb_height"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/home_cpb_margin_top"
         app:cpb_background_progressbar_width="8dp"
         app:cpb_progressbar_width="18dp"
         app:cpb_round_border="true"
@@ -69,7 +69,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@color/warning"
-        android:textSize="48sp"
+        android:textSize="@dimen/home_cpb_text_size"
         android:text="@string/text_zero"
         app:layout_constraintVertical_bias="0.45"
         app:layout_constraintBottom_toBottomOf="@id/home_cpb"
@@ -129,7 +129,7 @@
         android:id="@+id/home_divider_hr"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/home_divider_margin_top"
         android:background="@color/colorPrimaryLight"
         app:layout_constraintTop_toBottomOf="@id/home_cpb" />
 

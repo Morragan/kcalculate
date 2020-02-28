@@ -123,9 +123,9 @@ class ProfileActivity : AppCompatActivity() {
             profile_email.text = it.email
             profile_streak.text = "0"
             profile_points.text = it.points.toString()
-            profile_icon_level.text = "2"
-            profile_level_bar.progress = "30".toFloat()
-            profile_level_points.text = getString(R.string.profile_text_level_points, 30, 200)
+            profile_icon_level.text = "1"
+            profile_level_bar.progress = (it.points.toFloat() / 3f)
+            profile_level_points.text = getString(R.string.profile_text_level_points, it.points, 300)
             profile_limits_lower.text = getString(
                 R.string.profile_limits,
                 it.calorieLimitLower,
@@ -192,6 +192,5 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun sync() {
-
     }
 }

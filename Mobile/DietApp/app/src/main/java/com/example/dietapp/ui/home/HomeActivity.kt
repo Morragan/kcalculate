@@ -114,6 +114,8 @@ class HomeActivity : AppCompatActivity() {
         home_app_bar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.app_bar_profile -> startActivity(Intent(this, ProfileActivity::class.java))
+                R.id.app_bar_friends -> startActivity(Intent(this, FriendsActivity::class.java))
+                R.id.app_bar_goals -> startActivity(Intent(this, GoalsActivity::class.java))
             }
 
             return@setOnMenuItemClickListener true
@@ -192,5 +194,9 @@ class HomeActivity : AppCompatActivity() {
         // endregion
     }
 
-    private fun sync() {}
+    private fun sync() {
+        viewModel.fetchGoal()
+        viewModel.fetchMealEntries()
+        viewModel.fetchUserData()
+    }
 }

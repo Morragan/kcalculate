@@ -122,5 +122,7 @@ class GoalsActivity : AppCompatActivity() {
     }
 
     private fun sync() {
+        viewModel.getGoal()
+        viewModel.getFriends()
     }
 }

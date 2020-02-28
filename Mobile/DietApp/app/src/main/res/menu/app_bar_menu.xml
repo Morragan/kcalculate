@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/app_bar_home"
-        android:icon="@drawable/ic_home_white"
-        android:title="@string/title_menu_home"
+        android:id="@+id/app_bar_friends"
+        android:icon="@drawable/ic_people_white"
+        android:title="@string/title_menu_friends"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/app_bar_profile"

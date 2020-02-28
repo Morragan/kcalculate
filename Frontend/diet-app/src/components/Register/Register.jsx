@@ -5,7 +5,7 @@ import { navbarModes } from "../../constants";
 import { register, checkNicknameTaken } from "../../api/AccountAPI";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
-import RegistrationForm from "../RegistrationForm/RegistrationForm";
+import RegistrationForm from "./RegistrationForm/RegistrationForm";
 
 class Register extends Component {
   state = {

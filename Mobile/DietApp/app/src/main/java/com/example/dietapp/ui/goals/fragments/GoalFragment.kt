@@ -109,7 +109,6 @@ class GoalFragment : BaseGoalFragment(), InviteFriendsAdapter.OnFriendCheckedLis
                 goals_create_goal_number.textColor = R.color.error
                 return@setOnClickListener
             }
-
             viewModel!!.createGoal()
         }
 
@@ -244,7 +243,9 @@ class GoalFragment : BaseGoalFragment(), InviteFriendsAdapter.OnFriendCheckedLis
         )
 
         Handler().postDelayed({
-            button.revertAnimation()
+            try {
+                button.revertAnimation()
+            } catch(e: Exception){}
         }, 1000)
     }
 }

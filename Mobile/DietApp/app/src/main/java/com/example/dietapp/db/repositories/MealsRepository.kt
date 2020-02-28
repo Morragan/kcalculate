@@ -2,6 +2,7 @@ package com.example.dietapp.db.repositories
 
 import androidx.lifecycle.MutableLiveData
 import com.example.dietapp.api.ApiRequestHandler
+import com.example.dietapp.api.exceptions.BadRequestException
 import com.example.dietapp.api.services.MealsService
 import com.example.dietapp.db.dao.MealDao
 import com.example.dietapp.models.dto.CreateMealDTO
@@ -49,9 +50,7 @@ class MealsRepository @Inject constructor(
     suspend fun findBarcodeMeal(barcode: String) {
         val mealResponse =
             apiRequestHandler.executeRequest(mealsService::searchMealByBarcode, barcode)
-        mealResponse.data?.let {
-            foundBarcodeMeal.postValue(it.toMeal())
-        }
+        foundBarcodeMeal.postValue(mealResponse.data?.toMeal())
     }
 
     suspend fun addPublicMeal(publicMeal: CreatePublicMealDTO) {

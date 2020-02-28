@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import StyledCard from "./components/StyledCard";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-import DietButton from "../../DietButton/DietButton";
+import DietButton from "../../../DietButton/DietButton";
 
 const RegistrationQuiz = props => {
   const [quiz, changeQuiz] = useState({ weightGoal: 2, activityLevel: 2 });
@@ -53,7 +53,9 @@ const RegistrationQuiz = props => {
             value={1}
             onChange={handleChange}
           />
-          <Form.Text className="text-muted">Description</Form.Text>
+          <Form.Text className="text-muted">
+            Sitting job and no exercising
+          </Form.Text>
           <Form.Check
             type="radio"
             name="activityLevel"
@@ -62,7 +64,9 @@ const RegistrationQuiz = props => {
             onChange={handleChange}
             defaultChecked
           />
-          <Form.Text className="text-muted">Description</Form.Text>
+          <Form.Text className="text-muted">
+            Job that involves moving around, some exercising
+          </Form.Text>
           <Form.Check
             type="radio"
             name="activityLevel"
@@ -70,7 +74,9 @@ const RegistrationQuiz = props => {
             value={3}
             onChange={handleChange}
           />
-          <Form.Text className="text-muted">Description</Form.Text>
+          <Form.Text className="text-muted">
+            Job that involves moving around a lot, regular exercises
+          </Form.Text>
           <Form.Check
             type="radio"
             name="activityLevel"
@@ -78,7 +84,9 @@ const RegistrationQuiz = props => {
             value={4}
             onChange={handleChange}
           />
-          <Form.Text className="text-muted">Description</Form.Text>
+          <Form.Text className="text-muted">
+            Physical-oriented job, regular sports or exercises
+          </Form.Text>
           <Form.Check
             type="radio"
             name="activityLevel"
@@ -86,7 +94,9 @@ const RegistrationQuiz = props => {
             value={5}
             onChange={handleChange}
           />
-          <Form.Text className="text-muted">Description</Form.Text>
+          <Form.Text className="text-muted">
+            For heavy-duty workers and people that work out every day
+          </Form.Text>
           <DietButton color="#ffa33f" type="submit">
             Next
           </DietButton>
