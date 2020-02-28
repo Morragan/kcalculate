@@ -38,18 +38,18 @@ namespace DietApp.Services
             {
                 if (invitedUser.Goal != null) continue;
 
-                var calorieLimit = invitedUser.CalorieLimit * (100 + weightGoal) / 100;
-                var calorieLimitLower = invitedUser.CalorieLimitLower * (100 + weightGoal) / 100;
-                var calorieLimitUpper = invitedUser.CalorieLimitUpper * (100 + weightGoal) / 100;
-                var carbsLimit = invitedUser.CarbsLimit * (100 + weightGoal) / 100;
-                var carbsLimitLower = invitedUser.CarbsLimitLower * (100 + weightGoal) / 100;
-                var carbsLimitUpper = invitedUser.CarbsLimitUpper * (100 + weightGoal) / 100;
-                var fatLimit = invitedUser.FatLimit * (100 + weightGoal) / 100;
-                var fatLimitLower = invitedUser.FatLimitLower * (100 + weightGoal) / 100;
-                var fatLimitUpper = invitedUser.FatLimitUpper * (100 + weightGoal) / 100;
-                var proteinLimit = invitedUser.ProteinLimit * (100 + weightGoal) / 100;
-                var proteinLimitLower = invitedUser.ProteinLimitLower * (100 + weightGoal) / 100;
-                var proteinLimitUpper = invitedUser.ProteinLimitUpper * (100 + weightGoal) / 100;
+                var calorieLimit = invitedUser.CalorieLimit + 257 * weightGoal;
+                var calorieLimitLower = invitedUser.CalorieLimitLower + 257 * weightGoal;
+                var calorieLimitUpper = invitedUser.CalorieLimitUpper + 257 * weightGoal;
+                var carbsLimit = invitedUser.CarbsLimit + 257 * weightGoal;
+                var carbsLimitLower = invitedUser.CarbsLimitLower + 257 * weightGoal;
+                var carbsLimitUpper = invitedUser.CarbsLimitUpper + 257 * weightGoal;
+                var fatLimit = invitedUser.FatLimit + 257 * weightGoal;
+                var fatLimitLower = invitedUser.FatLimitLower + 257 * weightGoal;
+                var fatLimitUpper = invitedUser.FatLimitUpper + 257 * weightGoal;
+                var proteinLimit = invitedUser.ProteinLimit + 257 * weightGoal;
+                var proteinLimitLower = invitedUser.ProteinLimitLower + 257 * weightGoal;
+                var proteinLimitUpper = invitedUser.ProteinLimitUpper + 257 * weightGoal;
 
 
                 var goalParticipation = new GoalParticipation()
@@ -74,18 +74,18 @@ namespace DietApp.Services
                 goalParticipations.Add(goalParticipation);
             }
 
-            var _calorieLimit = user.CalorieLimit * (100 + weightGoal) / 100;
-            var _calorieLimitLower = user.CalorieLimitLower * (100 + weightGoal) / 100;
-            var _calorieLimitUpper = user.CalorieLimitUpper * (100 + weightGoal) / 100;
-            var _carbsLimit = user.CarbsLimit * (100 + weightGoal) / 100;
-            var _carbsLimitLower = user.CarbsLimitLower * (100 + weightGoal) / 100;
-            var _carbsLimitUpper = user.CarbsLimitUpper * (100 + weightGoal) / 100;
-            var _fatLimit = user.FatLimit * (100 + weightGoal) / 100;
-            var _fatLimitLower = user.FatLimitLower * (100 + weightGoal) / 100;
-            var _fatLimitUpper = user.FatLimitUpper * (100 + weightGoal) / 100;
-            var _proteinLimit = user.ProteinLimit * (100 + weightGoal) / 100;
-            var _proteinLimitLower = user.ProteinLimitLower * (100 + weightGoal) / 100;
-            var _proteinLimitUpper = user.ProteinLimitUpper * (100 + weightGoal) / 100;
+            var _calorieLimit = user.CalorieLimit + 257 * weightGoal;
+            var _calorieLimitLower = user.CalorieLimitLower + 257 * weightGoal;
+            var _calorieLimitUpper = user.CalorieLimitUpper + 257 * weightGoal;
+            var _carbsLimit = user.CarbsLimit + 257 * weightGoal;
+            var _carbsLimitLower = user.CarbsLimitLower + 257 * weightGoal;
+            var _carbsLimitUpper = user.CarbsLimitUpper + 257 * weightGoal;
+            var _fatLimit = user.FatLimit + 257 * weightGoal;
+            var _fatLimitLower = user.FatLimitLower + 257 * weightGoal;
+            var _fatLimitUpper = user.FatLimitUpper + 257 * weightGoal;
+            var _proteinLimit = user.ProteinLimit + 257 * weightGoal;
+            var _proteinLimitLower = user.ProteinLimitLower + 257 * weightGoal;
+            var _proteinLimitUpper = user.ProteinLimitUpper + 257 * weightGoal;
 
             var creatorParticipation = new GoalParticipation()
             {

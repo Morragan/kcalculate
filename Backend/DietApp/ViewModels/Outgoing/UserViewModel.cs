@@ -9,6 +9,7 @@ namespace DietApp.ViewModels
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string AvatarLink { get; set; }
+        public int Streak { get; set; }
         public DateTime JoinDate { get; set; }
         public int Points { get; set; }
         public int GoalPoints { get; set; }
